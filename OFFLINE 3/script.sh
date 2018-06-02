@@ -9,4 +9,4 @@ g++ -w -c -o l.o lex.yy.c
 echo '4'
 g++ -o a.out y.o l.o -lfl -ly
 echo '5'
-./a.out
+./a.out input.txt
