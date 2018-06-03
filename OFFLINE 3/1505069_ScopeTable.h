@@ -102,7 +102,7 @@ public:
 
 
             //fprintf(logout," Inserted in ScopeTable# %d at position %d, 0\n",uniqueid,hashv); 
-		printScopeTable();
+	    	//printScopeTable();
           
            
             return true;
@@ -116,7 +116,7 @@ public:
 
         }
         temp->set_next(new_symbol);
-	printScopeTable();
+	    //printScopeTable();
        // cout<<"Inserted in ScopeTable# "<<uniqueid<<" at position "<<hashv<<", "<<pos+1<<endl;
         return true;
 
@@ -151,8 +151,8 @@ public:
             pos++;
         }
         prev->set_next(next->get_next());
-        cout<<" Deleted entry at "<<hashv<<", "<<pos<<" from current ScopeTable"<<endl;
-
+       // cout<<" Deleted entry at "<<hashv<<", "<<pos<<" from current ScopeTable"<<endl;
+        return true;
 
 
 
@@ -170,19 +170,19 @@ public:
 		{
 			continue;
 		}
-	fprintf(logout," %d  --> ",i); 
+	    fprintf(logout," %d  --> ",i); 
 
-            //cout <<" "<< i << " --> ";
+        //cout <<" "<< i << " --> ";
 
-            while (temp)
-            {
-	fprintf(logout,"< %s: %s > ",temp->get_type().c_str(),temp->get_name().c_str()); 
+        while (temp)
+        {
+	        fprintf(logout,"< %s: %s > ",temp->get_type().c_str(),temp->get_name().c_str()); 
                 
 
-               // cout << "<" << temp->get_name() << " : " << temp->get_type()<< ">  ";
-                temp = temp->get_next();
-            }
-	fprintf(logout,"\n"); 
+            // cout << "<" << temp->get_name() << " : " << temp->get_type()<< ">  ";
+            temp = temp->get_next();
+        }
+	    fprintf(logout,"\n"); 
 
            // cout<<endl;
         }

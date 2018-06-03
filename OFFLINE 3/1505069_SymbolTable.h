@@ -26,7 +26,7 @@ public:
         this->n=num;
         this->current_id=0;
         current=0;
-	logout=x;
+	    logout=x;
     }
     void Enter_Scope()
     {
@@ -36,8 +36,9 @@ public:
         if(!Scopes.empty())
         {
             new_table=new ScopeTable(current_id,n,Scopes.back(),logout);
-	   // fprintf(logout," New ScopeTable with id %d created\n",current_id);
-          //  cout<<" New ScopeTable with id "<<current_id<<" created"<<endl;
+            if(current_id!=1)
+	        fprintf(logout," New ScopeTable with id %d created\n\n",current_id);
+           // cout<<" New ScopeTable with id "<<current_id<<" created"<<endl;
         }
         else
         {
@@ -54,11 +55,12 @@ public:
             // fprintf(logout," No scope Table Found\n");
             return;
         }
- 	//fprintf(logout," New ScopeTable with id %d removed\n",current_id);
+        if(current_id!=1)
+ 	    fprintf(logout," New ScopeTable with id %d removed\n\n",current_id);
        // cout<<"ScopeTable with id "<<current_id<<" removed"<<endl;
         current=Scopes.back()->get_parent();
 
-        current_id--;
+       // current_id--;
         Scopes.pop_back();
     }
     bool Insert(string name,string type)

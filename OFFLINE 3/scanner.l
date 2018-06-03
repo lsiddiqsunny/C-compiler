@@ -139,92 +139,78 @@ NEWLINE [\n]
 
 
 "+"|"-"		{
-			SymbolInfo *s= new  SymbolInfo(yytext, "ADDOP");
-			yylval.symbolinfo = s;
+			
 			return ADDOP;
 
 			
 		}
 "*"|"/"|"%"	{
-			SymbolInfo *s= new  SymbolInfo(yytext, "MULOP");
-			yylval.symbolinfo = s;
+			
 			return MULOP;
 			
 		}
 
 "++"	{
-			SymbolInfo *s= new  SymbolInfo(yytext, "INCOP");
-			yylval.symbolinfo = s;
+			
 			return INCOP;
 		}
 "--"	{
-			SymbolInfo *s= new  SymbolInfo(yytext, "DECOP");
-			yylval.symbolinfo = s;
+			
 			return DECOP;
 		}
 "<"|"<="|">"|">="|"=="|"!="	{
-			SymbolInfo *s= new  SymbolInfo(yytext, "RELOP");
-			yylval.symbolinfo = s;
+			
 			return RELOP;
 				}
 "="		{
-			SymbolInfo *s= new  SymbolInfo(yytext,"ASSIGNOP");
-			yylval.symbolinfo =s;
+			
 			return ASSIGNOP;
 		}
 "&&"|"||"	{
-			SymbolInfo *s= new  SymbolInfo(yytext, "LOGICOP");
-			yylval.symbolinfo = s;
+			
 			return LOGICOP;
 		}
 "&"|"|"|"^"|"<<"|">>"		{
-			SymbolInfo *s= new  SymbolInfo(yytext, "BITOP");
-			yylval.symbolinfo = s;
+			
 			return BITOP;
 				}
 "!"		{
-			SymbolInfo *s= new  SymbolInfo(yytext, "NOT");
-			yylval.symbolinfo = s;
+			
 			return NOT;
 		}
 "("		{
-			SymbolInfo *s= new  SymbolInfo(yytext, "LPAREN");
-			yylval.symbolinfo = s;
+		
 			return LPAREN;
 		}
 ")"		{
-			SymbolInfo *s= new  SymbolInfo(yytext, "RPAREN");
-			yylval.symbolinfo =s;
+			
 			return RPAREN;
 		}
 "{"		{
-			SymbolInfo *s= new  SymbolInfo(yytext, "LCURL");
-			yylval.symbolinfo = s;
+			
+			table->Enter_Scope();
 			return LCURL;
 		}
 "}"		{
-			SymbolInfo *s= new  SymbolInfo(yytext, "RCURL");
-			yylval.symbolinfo =s;
+			
+			table->printall();
+			table->Exit_Scope();
 			return RCURL;
 		}
 "["		{
-			SymbolInfo *s= new  SymbolInfo(yytext, "LTHIRD");
-			yylval.symbolinfo =s;
+			
 			return LTHIRD;
 		}
 "]"		{
-			SymbolInfo *s= new  SymbolInfo(yytext, "RTHIRD");
-			yylval.symbolinfo =s;
+			
 			return RTHIRD;
 		}
 ","		{
-			SymbolInfo *s= new  SymbolInfo(yytext, "COMMA");
-			yylval.symbolinfo =s;
+		
 			return COMMA;
 		}
 ";"		{
-			SymbolInfo *s= new  SymbolInfo(yytext, "SEMICOLON");
-			yylval.symbolinfo =s;
+		
 			return SEMICOLON;
 		}
 
@@ -253,9 +239,8 @@ NEWLINE [\n]
 								if(s==NULL)
 								{					
 									s= new SymbolInfo(yytext,"ID");
+									yylval.symbolinfo =s;
 								}
-								yylval.symbolinfo =s;
-							
 								return ID;
 							}
 

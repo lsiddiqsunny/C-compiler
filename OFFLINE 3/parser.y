@@ -14,14 +14,14 @@ int yyparse(void);
 int yylex(void);
 extern FILE *yyin;
 FILE *fp;
-FILE *logout;
-FILE *error;
-FILE *parsertext;
+FILE *error=fopen("error.txt","w");
+FILE *logout= fopen("logout.txt","w");
+FILE *parsertext= fopen("parsertext.txt","w");
 int line_count=1;
 int error_count=0;
 
 
-SymbolTable *table=new SymbolTable(30,logout);
+SymbolTable *table=new SymbolTable(100,parsertext);
 
 
 void yyerror(char *s)
@@ -77,9 +77,9 @@ func_definition : type_specifier ID LPAREN parameter_list RPAREN compound_statem
  		;
 
 
-parameter_list  : parameter_list COMMA type_specifier ID {fprintf(parsertext,"Line at %d : parameter_list->parameter_list COMMA type_specifier ID\n\n",line_count);}
+parameter_list  : parameter_list COMMA type_specifier ID {fprintf(parsertext,"Line at %d : parameter_list->parameter_list COMMA type_specifier ID\n\n",line_count);cout<<line_count<<" "<< $<symbolinfo>4->get_name()<<endl;}
 		| parameter_list COMMA type_specifier {fprintf(parsertext,"Line at %d : parameter_list->parameter_list COMMA type_specifier\n\n",line_count);}
- 		| type_specifier ID {fprintf(parsertext,"Line at %d : parameter_list->type_specifier ID\n\n",line_count);}
+ 		| type_specifier ID {fprintf(parsertext,"Line at %d : parameter_list->type_specifier ID\n\n",line_count);cout<<line_count<<" "<< $<symbolinfo>2->get_name()<<endl;}
 		| type_specifier {fprintf(parsertext,"Line at %d : parameter_list->type_specifier\n\n",line_count);}
  		;
 
@@ -96,10 +96,10 @@ type_specifier	: INT  {fprintf(parsertext,"Line at %d : type_specifier	: INT\n\n
  		| VOID  {fprintf(parsertext,"Line at %d : type_specifier	: VOID\n\n",line_count);}
  		;
 
-declaration_list : declaration_list COMMA ID {fprintf(parsertext,"Line at %d : declaration_list->declaration_list COMMA ID\n\n",line_count);}
- 		  | declaration_list COMMA ID LTHIRD CONST_INT RTHIRD {fprintf(parsertext,"Line at %d : declaration_list->declaration_list COMMA ID LTHIRD CONST_INT RTHIRD\n\n",line_count);}
- 		  | ID {fprintf(parsertext,"Line at %d : declaration_list->ID\n\n",line_count);}
- 		  | ID LTHIRD CONST_INT RTHIRD {fprintf(parsertext,"Line at %d : declaration_list->ID LTHIRD CONST_INT RTHIRD\n\n",line_count);}
+declaration_list : declaration_list COMMA ID {fprintf(parsertext,"Line at %d : declaration_list->declaration_list COMMA ID\n\n",line_count);cout<<line_count<<" "<< $<symbolinfo>3->get_name()<<endl;}
+ 		  | declaration_list COMMA ID LTHIRD CONST_INT RTHIRD {fprintf(parsertext,"Line at %d : declaration_list->declaration_list COMMA ID LTHIRD CONST_INT RTHIRD\n\n",line_count);cout<<line_count<<" "<< $<symbolinfo>3->get_name()<<endl;}
+ 		  | ID {fprintf(parsertext,"Line at %d : declaration_list->ID\n\n",line_count);cout<<line_count<<" "<< $<symbolinfo>1->get_name()<<endl;}
+ 		  | ID LTHIRD CONST_INT RTHIRD {fprintf(parsertext,"Line at %d : declaration_list->ID LTHIRD CONST_INT RTHIRD\n\n",line_count);cout<<line_count<<" "<< $<symbolinfo>1->get_name()<<endl;}
  		  ;
 
 statements : statement {fprintf(parsertext,"Line at %d : statements->statement\n\n",line_count);}
@@ -170,21 +170,21 @@ arguments : arguments COMMA logic_expression {fprintf(parsertext,"Line at %d : a
 int main(int argc,char *argv[])
 {
 
-/*	if((fp=fopen(argv[1],"r"))==NULL)
+	if((fp=fopen(argv[1],"r"))==NULL)
 	{
 		printf("Cannot Open Input File.\n");
 		return 0;
-	}*/
-	fp=fopen("input.txt","r");
-	yyin=fp;
-	error=fopen("error.txt","w");
-	logout= fopen("logout.txt","w");
-	parsertext= fopen("parsertext.txt","w");
+	}
 
+	yyin=fp;
+	
 	yyparse();
+	fprintf(parsertext," Symbol Table : \n\n");
+	table->printall();
 	fprintf(parsertext,"Total Lines : %d \n\n",line_count);
 	fprintf(parsertext,"Total Errors : %d \n\n",error_count);
 	fprintf(error,"Total Errors : %d \n\n",error_count);
+
 	fclose(fp);
 	fclose(logout);
 	fclose(error);

@@ -79,14 +79,14 @@ int yyparse(void);
 int yylex(void);
 extern FILE *yyin;
 FILE *fp;
-FILE *logout;
-FILE *error;
-FILE *parsertext;
+FILE *error=fopen("error.txt","w");
+FILE *logout= fopen("logout.txt","w");
+FILE *parsertext= fopen("parsertext.txt","w");
 int line_count=1;
 int error_count=0;
 
 
-SymbolTable *table=new SymbolTable(30,logout);
+SymbolTable *table=new SymbolTable(100,parsertext);
 
 
 void yyerror(char *s)
@@ -1481,7 +1481,7 @@ yyreduce:
 
   case 12:
 #line 80 "parser.y" /* yacc.c:1646  */
-    {fprintf(parsertext,"Line at %d : parameter_list->parameter_list COMMA type_specifier ID\n\n",line_count);}
+    {fprintf(parsertext,"Line at %d : parameter_list->parameter_list COMMA type_specifier ID\n\n",line_count);cout<<line_count<<" "<< (yyvsp[0].symbolinfo)->get_name()<<endl;}
 #line 1486 "y.tab.c" /* yacc.c:1646  */
     break;
 
@@ -1493,7 +1493,7 @@ yyreduce:
 
   case 14:
 #line 82 "parser.y" /* yacc.c:1646  */
-    {fprintf(parsertext,"Line at %d : parameter_list->type_specifier ID\n\n",line_count);}
+    {fprintf(parsertext,"Line at %d : parameter_list->type_specifier ID\n\n",line_count);cout<<line_count<<" "<< (yyvsp[0].symbolinfo)->get_name()<<endl;}
 #line 1498 "y.tab.c" /* yacc.c:1646  */
     break;
 
@@ -1541,25 +1541,25 @@ yyreduce:
 
   case 22:
 #line 99 "parser.y" /* yacc.c:1646  */
-    {fprintf(parsertext,"Line at %d : declaration_list->declaration_list COMMA ID\n\n",line_count);}
+    {fprintf(parsertext,"Line at %d : declaration_list->declaration_list COMMA ID\n\n",line_count);cout<<line_count<<" "<< (yyvsp[0].symbolinfo)->get_name()<<endl;}
 #line 1546 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 23:
 #line 100 "parser.y" /* yacc.c:1646  */
-    {fprintf(parsertext,"Line at %d : declaration_list->declaration_list COMMA ID LTHIRD CONST_INT RTHIRD\n\n",line_count);}
+    {fprintf(parsertext,"Line at %d : declaration_list->declaration_list COMMA ID LTHIRD CONST_INT RTHIRD\n\n",line_count);cout<<line_count<<" "<< (yyvsp[-3].symbolinfo)->get_name()<<endl;}
 #line 1552 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 24:
 #line 101 "parser.y" /* yacc.c:1646  */
-    {fprintf(parsertext,"Line at %d : declaration_list->ID\n\n",line_count);}
+    {fprintf(parsertext,"Line at %d : declaration_list->ID\n\n",line_count);cout<<line_count<<" "<< (yyvsp[0].symbolinfo)->get_name()<<endl;}
 #line 1558 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 25:
 #line 102 "parser.y" /* yacc.c:1646  */
-    {fprintf(parsertext,"Line at %d : declaration_list->ID LTHIRD CONST_INT RTHIRD\n\n",line_count);}
+    {fprintf(parsertext,"Line at %d : declaration_list->ID LTHIRD CONST_INT RTHIRD\n\n",line_count);cout<<line_count<<" "<< (yyvsp[-3].symbolinfo)->get_name()<<endl;}
 #line 1564 "y.tab.c" /* yacc.c:1646  */
     break;
 
@@ -2025,21 +2025,21 @@ yyreturn:
 int main(int argc,char *argv[])
 {
 
-/*	if((fp=fopen(argv[1],"r"))==NULL)
+	if((fp=fopen(argv[1],"r"))==NULL)
 	{
 		printf("Cannot Open Input File.\n");
 		return 0;
-	}*/
-	fp=fopen("input.txt","r");
-	yyin=fp;
-	error=fopen("error.txt","w");
-	logout= fopen("logout.txt","w");
-	parsertext= fopen("parsertext.txt","w");
+	}
 
+	yyin=fp;
+	
 	yyparse();
+	fprintf(parsertext," Symbol Table : \n\n");
+	table->printall();
 	fprintf(parsertext,"Total Lines : %d \n\n",line_count);
 	fprintf(parsertext,"Total Errors : %d \n\n",error_count);
 	fprintf(error,"Total Errors : %d \n\n",error_count);
+
 	fclose(fp);
 	fclose(logout);
 	fclose(error);

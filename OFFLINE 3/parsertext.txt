@@ -70,6 +70,8 @@ Line at 6 : statement->RETURN expression SEMICOLON
 
 Line at 6 : statements->statement
 
+ ScopeTable# 1 
+
 Line at 7 : compound_statement->LCURL statements RCURL
 
 Line at 9 : type_specifier	: VOID
@@ -127,6 +129,10 @@ Line at 11 : expression_statement->expression SEMICOLON
 Line at 11 : statement -> expression_statement
 
 Line at 11 : statements->statements statement
+
+ ScopeTable# 2 
+
+ New ScopeTable with id 2 removed
 
 Line at 12 : compound_statement->LCURL statements RCURL
 
@@ -474,6 +480,10 @@ Line at 21 : statement->RETURN expression SEMICOLON
 
 Line at 21 : statements->statements statement
 
+ ScopeTable# 3 
+
+ New ScopeTable with id 3 removed
+
 Line at 22 : compound_statement->LCURL statements RCURL
 
 Line at 22 : func_definition->type_specifier ID LPAREN RPAREN compound_statement
@@ -483,6 +493,8 @@ Line at 22 : unit->func_definition
 Line at 22 : program->program unit
 
 Line at 22 : start>program unit
+
+ Symbol Table : 
 
 Total Lines : 22 
 
