@@ -9,8 +9,8 @@ extern SymbolTable *table;
 extern FILE *error;
 void yyerror(char *);
 
-int line_count=0;
-int error_count=0;
+extern int line_count;
+extern int error_count;
 
 pair<string,int> ModifyString(string s,int line);
 char ModifyChar(string s);
@@ -82,9 +82,7 @@ NEWLINE [\n]
 "continue"	{
 			return CONTINUE;
 		}
-"main"		{
-			return MAIN;
-		}
+
 "println"	{
 			return PRINTLN;
 		}

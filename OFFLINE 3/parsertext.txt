@@ -1,71 +1,486 @@
-type_specifier	: INT
-declaration_list->ID
-declaration_list->declaration_list COMMA ID
-declaration_list->declaration_list COMMA ID
-var_declaration->type_specifier declaration_list SEMICOLON
-unit->var_declaration
-program->unit
-type_specifier	: FLOAT
-declaration_list->ID
-var_declaration->type_specifier declaration_list SEMICOLON
-unit->var_declaration
-program->program unit
-type_specifier	: VOID
-func_declaration->type_specifier ID LPAREN RPAREN SEMICOLON
-unit->func_declaration
-program->program unit
-type_specifier	: INT
-type_specifier	: INT
-parameter_list->type_specifier ID
-type_specifier	: INT
-parameter_list->parameter_list COMMA type_specifier ID
-variable->ID
-factor->variable
-unary_expression->factor
-term->unary_expression
-simple_expression->term
-variable->ID
-factor->variable
-unary_expression->factor
-term->unary_expression
-simple_expression->simple_expression ADDOP term
-rel_expression->simple_expression
-logic_expression->rel_expression
-expression->logic_expression
-statement->RETURN expression SEMICOLON
-statements->statement
-compound_statement->LCURL statements RCURL
-type_specifier	: VOID
-variable->ID
-factor->CONST_INT
-unary_expression->factor
-term->unary_expression
-simple_expression->term
-rel_expression->simple_expression
-logic_expression->rel_expression
-expression->variable ASSIGNOP logic_expression
-expression_statement->expression SEMICOLON
-statement -> expression_statement
-statements->statement
-variable->ID
-variable->ID
-factor->variable
-unary_expression->factor
-term->unary_expression
-simple_expression->term
-factor->CONST_INT
-unary_expression->factor
-term->unary_expression
-simple_expression->simple_expression ADDOP term
-rel_expression->simple_expression
-logic_expression->rel_expression
-expression->variable ASSIGNOP logic_expression
-expression_statement->expression SEMICOLON
-statement -> expression_statement
-statements->statements statement
-compound_statement->LCURL statements RCURL
-func_definition->type_specifier ID LPAREN RPAREN compound_statement
-func_definition->type_specifier ID LPAREN parameter_list RPAREN compound_statement func_definition
-unit->func_definition
-program->program unit
-type_specifier	: INT
+Line at 1 : type_specifier	: INT
+
+Line at 1 : declaration_list->ID
+
+Line at 1 : declaration_list->declaration_list COMMA ID
+
+Line at 1 : declaration_list->declaration_list COMMA ID
+
+Line at 1 : var_declaration->type_specifier declaration_list SEMICOLON
+
+Line at 1 : unit->var_declaration
+
+Line at 1 : program->unit
+
+Line at 1 : type_specifier	: FLOAT
+
+Line at 1 : declaration_list->ID
+
+Line at 1 : var_declaration->type_specifier declaration_list SEMICOLON
+
+Line at 1 : unit->var_declaration
+
+Line at 1 : program->program unit
+
+Line at 3 : type_specifier	: VOID
+
+Line at 3 : func_declaration->type_specifier ID LPAREN RPAREN SEMICOLON
+
+Line at 3 : unit->func_declaration
+
+Line at 3 : program->program unit
+
+Line at 5 : type_specifier	: INT
+
+Line at 5 : type_specifier	: INT
+
+Line at 5 : parameter_list->type_specifier ID
+
+Line at 5 : type_specifier	: INT
+
+Line at 5 : parameter_list->parameter_list COMMA type_specifier ID
+
+Line at 6 : variable->ID
+
+Line at 6 : factor->variable
+
+Line at 6 : unary_expression->factor
+
+Line at 6 : term->unary_expression
+
+Line at 6 : simple_expression->term
+
+Line at 6 : variable->ID
+
+Line at 6 : factor->variable
+
+Line at 6 : unary_expression->factor
+
+Line at 6 : term->unary_expression
+
+Line at 6 : simple_expression->simple_expression ADDOP term
+
+Line at 6 : rel_expression->simple_expression
+
+Line at 6 : logic_expression->rel_expression
+
+Line at 6 : expression->logic_expression
+
+Line at 6 : statement->RETURN expression SEMICOLON
+
+Line at 6 : statements->statement
+
+Line at 7 : compound_statement->LCURL statements RCURL
+
+Line at 9 : type_specifier	: VOID
+
+Line at 10 : variable->ID
+
+Line at 10 : factor->CONST_INT
+
+Line at 10 : unary_expression->factor
+
+Line at 10 : term->unary_expression
+
+Line at 10 : simple_expression->term
+
+Line at 10 : rel_expression->simple_expression
+
+Line at 10 : logic_expression->rel_expression
+
+Line at 10 : expression->variable ASSIGNOP logic_expression
+
+Line at 10 : expression_statement->expression SEMICOLON
+
+Line at 10 : statement -> expression_statement
+
+Line at 10 : statements->statement
+
+Line at 11 : variable->ID
+
+Line at 11 : variable->ID
+
+Line at 11 : factor->variable
+
+Line at 11 : unary_expression->factor
+
+Line at 11 : term->unary_expression
+
+Line at 11 : simple_expression->term
+
+Line at 11 : factor->CONST_INT
+
+Line at 11 : unary_expression->factor
+
+Line at 11 : term->unary_expression
+
+Line at 11 : simple_expression->simple_expression ADDOP term
+
+Line at 11 : rel_expression->simple_expression
+
+Line at 11 : logic_expression->rel_expression
+
+Line at 11 : expression->variable ASSIGNOP logic_expression
+
+Line at 11 : expression_statement->expression SEMICOLON
+
+Line at 11 : statement -> expression_statement
+
+Line at 11 : statements->statements statement
+
+Line at 12 : compound_statement->LCURL statements RCURL
+
+Line at 12 : func_definition->type_specifier ID LPAREN RPAREN compound_statement
+
+Line at 12 : func_definition->type_specifier ID LPAREN parameter_list RPAREN compound_statement func_definition
+
+Line at 12 : unit->func_definition
+
+Line at 12 : program->program unit
+
+Line at 14 : type_specifier	: INT
+
+Line at 15 : type_specifier	: INT
+
+Line at 15 : declaration_list->ID LTHIRD CONST_INT RTHIRD
+
+Line at 15 : declaration_list->declaration_list COMMA ID
+
+Line at 15 : declaration_list->declaration_list COMMA ID
+
+Line at 15 : declaration_list->declaration_list COMMA ID
+
+Line at 15 : var_declaration->type_specifier declaration_list SEMICOLON
+
+Line at 15 : statement -> var_declaration
+
+Line at 15 : statements->statement
+
+Line at 15 : type_specifier	: FLOAT
+
+Line at 15 : declaration_list->ID
+
+Line at 15 : var_declaration->type_specifier declaration_list SEMICOLON
+
+Line at 15 : statement -> var_declaration
+
+Line at 15 : statements->statements statement
+
+Line at 16 : factor->CONST_INT
+
+Line at 16 : unary_expression->factor
+
+Line at 16 : term->unary_expression
+
+Line at 16 : simple_expression->term
+
+Line at 16 : rel_expression->simple_expression
+
+Line at 16 : logic_expression->rel_expression
+
+Line at 16 : expression->logic_expression
+
+Line at 16 : variable->ID LTHIRD expression RTHIRD
+
+Line at 16 : factor->CONST_INT
+
+Line at 16 : unary_expression->factor
+
+Line at 16 : term->unary_expression
+
+Line at 16 : simple_expression->term
+
+Line at 16 : rel_expression->simple_expression
+
+Line at 16 : logic_expression->rel_expression
+
+Line at 16 : expression->variable ASSIGNOP logic_expression
+
+Line at 16 : expression_statement->expression SEMICOLON
+
+Line at 16 : statement -> expression_statement
+
+Line at 16 : statements->statements statement
+
+Line at 17 : factor->CONST_INT
+
+Line at 17 : unary_expression->factor
+
+Line at 17 : term->unary_expression
+
+Line at 17 : simple_expression->term
+
+Line at 17 : rel_expression->simple_expression
+
+Line at 17 : logic_expression->rel_expression
+
+Line at 17 : expression->logic_expression
+
+Line at 17 : variable->ID LTHIRD expression RTHIRD
+
+Line at 17 : factor->CONST_INT
+
+Line at 17 : unary_expression->factor
+
+Line at 17 : term->unary_expression
+
+Line at 17 : simple_expression->term
+
+Line at 17 : rel_expression->simple_expression
+
+Line at 17 : logic_expression->rel_expression
+
+Line at 17 : expression->variable ASSIGNOP logic_expression
+
+Line at 17 : expression_statement->expression SEMICOLON
+
+Line at 17 : statement -> expression_statement
+
+Line at 17 : statements->statements statement
+
+Line at 18 : variable->ID
+
+Line at 18 : factor->CONST_INT
+
+Line at 18 : unary_expression->factor
+
+Line at 18 : term->unary_expression
+
+Line at 18 : simple_expression->term
+
+Line at 18 : rel_expression->simple_expression
+
+Line at 18 : logic_expression->rel_expression
+
+Line at 18 : expression->logic_expression
+
+Line at 18 : variable->ID LTHIRD expression RTHIRD
+
+Line at 18 : factor->variable
+
+Line at 18 : unary_expression->factor
+
+Line at 18 : term->unary_expression
+
+Line at 18 : simple_expression->term
+
+Line at 18 : factor->CONST_INT
+
+Line at 18 : unary_expression->factor
+
+Line at 18 : term->unary_expression
+
+Line at 18 : simple_expression->term
+
+Line at 18 : rel_expression->simple_expression
+
+Line at 18 : logic_expression->rel_expression
+
+Line at 18 : expression->logic_expression
+
+Line at 18 : variable->ID LTHIRD expression RTHIRD
+
+Line at 18 : factor->variable
+
+Line at 18 : unary_expression->factor
+
+Line at 18 : term->unary_expression
+
+Line at 18 : simple_expression->simple_expression ADDOP term
+
+Line at 18 : rel_expression->simple_expression
+
+Line at 18 : logic_expression->rel_expression
+
+Line at 18 : expression->variable ASSIGNOP logic_expression
+
+Line at 18 : expression_statement->expression SEMICOLON
+
+Line at 18 : statement -> expression_statement
+
+Line at 18 : statements->statements statement
+
+Line at 19 : variable->ID
+
+Line at 19 : factor->CONST_INT
+
+Line at 19 : unary_expression->factor
+
+Line at 19 : term->unary_expression
+
+Line at 19 : factor->CONST_INT
+
+Line at 19 : unary_expression->factor
+
+Line at 19 : term->term MULOP unary_expression
+
+Line at 19 : simple_expression->term
+
+Line at 19 : factor->CONST_INT
+
+Line at 19 : unary_expression->factor
+
+Line at 19 : term->unary_expression
+
+Line at 19 : factor->CONST_INT
+
+Line at 19 : unary_expression->factor
+
+Line at 19 : term->term MULOP unary_expression
+
+Line at 19 : simple_expression->term
+
+Line at 19 : factor->CONST_INT
+
+Line at 19 : unary_expression->factor
+
+Line at 19 : term->unary_expression
+
+Line at 19 : simple_expression->term
+
+Line at 19 : rel_expression->simple_expression RELOP simple_expression
+
+Line at 19 : factor->CONST_INT
+
+Line at 19 : unary_expression->factor
+
+Line at 19 : term->unary_expression
+
+Line at 19 : simple_expression->term
+
+Line at 19 : rel_expression->simple_expression
+
+Line at 19 : logic_expression->rel_expression LOGICOP rel_expression
+
+Line at 19 : expression->logic_expression
+
+Line at 19 : factor->LPAREN expression RPAREN
+
+Line at 19 : unary_expression->factor
+
+Line at 19 : term->unary_expression
+
+Line at 19 : simple_expression->simple_expression ADDOP term
+
+Line at 19 : rel_expression->simple_expression
+
+Line at 19 : factor->CONST_INT
+
+Line at 19 : unary_expression->factor
+
+Line at 19 : term->unary_expression
+
+Line at 19 : simple_expression->term
+
+Line at 19 : rel_expression->simple_expression
+
+Line at 19 : logic_expression->rel_expression LOGICOP rel_expression
+
+Line at 19 : expression->variable ASSIGNOP logic_expression
+
+Line at 19 : expression_statement->expression SEMICOLON
+
+Line at 19 : statement -> expression_statement
+
+Line at 19 : statements->statements statement
+
+Line at 20 : variable->ID
+
+Line at 20 : factor->CONST_INT
+
+Line at 20 : unary_expression->factor
+
+Line at 20 : term->unary_expression
+
+Line at 20 : simple_expression->term
+
+Line at 20 : rel_expression->simple_expression
+
+Line at 20 : logic_expression->rel_expression
+
+Line at 20 : arguments->logic_expression
+
+Line at 20 : factor->CONST_INT
+
+Line at 20 : unary_expression->factor
+
+Line at 20 : term->unary_expression
+
+Line at 20 : factor->CONST_INT
+
+Line at 20 : unary_expression->factor
+
+Line at 20 : term->term MULOP unary_expression
+
+Line at 20 : simple_expression->term
+
+Line at 20 : rel_expression->simple_expression
+
+Line at 20 : logic_expression->rel_expression
+
+Line at 20 : arguments->arguments COMMA logic_expression 
+
+Line at 20 : argument_list->arguments
+
+Line at 20 : factor->ID LPAREN argument_list RPAREN
+
+Line at 20 : unary_expression->factor
+
+Line at 20 : term->unary_expression
+
+Line at 20 : simple_expression->term
+
+Line at 20 : factor->CONST_FLOAT
+
+Line at 20 : unary_expression->factor
+
+Line at 20 : term->unary_expression
+
+Line at 20 : factor->CONST_INT
+
+Line at 20 : unary_expression->factor
+
+Line at 20 : term->term MULOP unary_expression
+
+Line at 20 : simple_expression->simple_expression ADDOP term
+
+Line at 20 : rel_expression->simple_expression
+
+Line at 20 : logic_expression->rel_expression
+
+Line at 20 : expression->variable ASSIGNOP logic_expression
+
+Line at 20 : expression_statement->expression SEMICOLON
+
+Line at 20 : statement -> expression_statement
+
+Line at 20 : statements->statements statement
+
+Line at 21 : factor->CONST_INT
+
+Line at 21 : unary_expression->factor
+
+Line at 21 : term->unary_expression
+
+Line at 21 : simple_expression->term
+
+Line at 21 : rel_expression->simple_expression
+
+Line at 21 : logic_expression->rel_expression
+
+Line at 21 : expression->logic_expression
+
+Line at 21 : statement->RETURN expression SEMICOLON
+
+Line at 21 : statements->statements statement
+
+Line at 22 : compound_statement->LCURL statements RCURL
+
+Line at 22 : func_definition->type_specifier ID LPAREN RPAREN compound_statement
+
+Line at 22 : unit->func_definition
+
+Line at 22 : program->program unit
+
+Line at 22 : start>program unit
+

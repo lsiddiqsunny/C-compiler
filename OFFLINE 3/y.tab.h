@@ -82,10 +82,9 @@ extern int yydebug;
     SEMICOLON = 292,
     STRING = 293,
     ID = 294,
-    MAIN = 295,
-    PRINTLN = 296,
-    DECOP = 297,
-    LOWER_THAN_ELSE = 298
+    PRINTLN = 295,
+    DECOP = 296,
+    LOWER_THAN_ELSE = 297
   };
 #endif
 /* Tokens.  */
@@ -126,21 +125,20 @@ extern int yydebug;
 #define SEMICOLON 292
 #define STRING 293
 #define ID 294
-#define MAIN 295
-#define PRINTLN 296
-#define DECOP 297
-#define LOWER_THAN_ELSE 298
+#define PRINTLN 295
+#define DECOP 296
+#define LOWER_THAN_ELSE 297
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 
 union YYSTYPE
 {
-#line 49 "parser.y" /* yacc.c:1909  */
+#line 50 "parser.y" /* yacc.c:1909  */
 
         SymbolInfo* symbolinfo;
 
-#line 144 "y.tab.h" /* yacc.c:1909  */
+#line 142 "y.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;
