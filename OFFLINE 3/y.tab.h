@@ -84,7 +84,8 @@ extern int yydebug;
     ID = 294,
     MAIN = 295,
     PRINTLN = 296,
-    DECOP = 297
+    DECOP = 297,
+    LOWER_THAN_ELSE = 298
   };
 #endif
 /* Tokens.  */
@@ -128,17 +129,18 @@ extern int yydebug;
 #define MAIN 295
 #define PRINTLN 296
 #define DECOP 297
+#define LOWER_THAN_ELSE 298
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 
 union YYSTYPE
 {
-#line 46 "parser.y" /* yacc.c:1909  */
+#line 49 "parser.y" /* yacc.c:1909  */
 
         SymbolInfo* symbolinfo;
 
-#line 142 "y.tab.h" /* yacc.c:1909  */
+#line 144 "y.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

@@ -1,0 +1,71 @@
+type_specifier	: INT
+declaration_list->ID
+declaration_list->declaration_list COMMA ID
+declaration_list->declaration_list COMMA ID
+var_declaration->type_specifier declaration_list SEMICOLON
+unit->var_declaration
+program->unit
+type_specifier	: FLOAT
+declaration_list->ID
+var_declaration->type_specifier declaration_list SEMICOLON
+unit->var_declaration
+program->program unit
+type_specifier	: VOID
+func_declaration->type_specifier ID LPAREN RPAREN SEMICOLON
+unit->func_declaration
+program->program unit
+type_specifier	: INT
+type_specifier	: INT
+parameter_list->type_specifier ID
+type_specifier	: INT
+parameter_list->parameter_list COMMA type_specifier ID
+variable->ID
+factor->variable
+unary_expression->factor
+term->unary_expression
+simple_expression->term
+variable->ID
+factor->variable
+unary_expression->factor
+term->unary_expression
+simple_expression->simple_expression ADDOP term
+rel_expression->simple_expression
+logic_expression->rel_expression
+expression->logic_expression
+statement->RETURN expression SEMICOLON
+statements->statement
+compound_statement->LCURL statements RCURL
+type_specifier	: VOID
+variable->ID
+factor->CONST_INT
+unary_expression->factor
+term->unary_expression
+simple_expression->term
+rel_expression->simple_expression
+logic_expression->rel_expression
+expression->variable ASSIGNOP logic_expression
+expression_statement->expression SEMICOLON
+statement -> expression_statement
+statements->statement
+variable->ID
+variable->ID
+factor->variable
+unary_expression->factor
+term->unary_expression
+simple_expression->term
+factor->CONST_INT
+unary_expression->factor
+term->unary_expression
+simple_expression->simple_expression ADDOP term
+rel_expression->simple_expression
+logic_expression->rel_expression
+expression->variable ASSIGNOP logic_expression
+expression_statement->expression SEMICOLON
+statement -> expression_statement
+statements->statements statement
+compound_statement->LCURL statements RCURL
+func_definition->type_specifier ID LPAREN RPAREN compound_statement
+func_definition->type_specifier ID LPAREN parameter_list RPAREN compound_statement func_definition
+unit->func_definition
+program->program unit
+type_specifier	: INT

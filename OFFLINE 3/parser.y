@@ -14,13 +14,13 @@ int yyparse(void);
 int yylex(void);
 extern FILE *yyin;
 FILE *fp;
-FILE *logout= fopen("logout.txt","w");
-FILE *error= fopen("error.txt","w");
-FILE *parsertext= fopen("parsertext.txt","w");
+FILE *logout;
+FILE *error;
+FILE *parsertext;
 	
 	
 
-SymbolTable *table;
+SymbolTable *table=new SymbolTable(30,logout);
 
 
 void yyerror(char *s)
@@ -42,6 +42,9 @@ void yyerror(char *s)
 %token LPAREN RPAREN LCURL RCURL LTHIRD RTHIRD COMMA SEMICOLON 
 %token STRING ID MAIN PRINTLN DECOP
 
+%nonassoc LOWER_THAN_ELSE
+%nonassoc ELSE
+
 %union 
 {
         SymbolInfo* symbolinfo;
@@ -51,7 +54,8 @@ void yyerror(char *s)
 
 %%
 
-start : program;
+start : program {fprintf(parsertext,"start>program unit\n");}
+	  ;
 
 program : program unit {fprintf(parsertext,"program->program unit\n");}
 
@@ -105,7 +109,7 @@ statement : var_declaration {fprintf(parsertext,"statement -> var_declaration\n"
 	  | expression_statement {fprintf(parsertext,"statement -> expression_statement\n");}
 	  | compound_statement {fprintf(parsertext,"statement->compound_statement\n");}
 	  | FOR LPAREN expression_statement expression_statement expression RPAREN statement {fprintf(parsertext,"statement ->FOR LPAREN expression_statement expression_statement expression RPAREN statement\n");}
-	  | IF LPAREN expression RPAREN statement {fprintf(parsertext,"statement->IF LPAREN expression RPAREN statement\n");}
+	  | IF LPAREN expression RPAREN statement %prec LOWER_THAN_ELSE {fprintf(parsertext,"statement->IF LPAREN expression RPAREN statement\n");}
 	  | IF LPAREN expression RPAREN statement ELSE statement {fprintf(parsertext,"statement->IF LPAREN expression RPAREN statement ELSE statement\n");}
 	  | WHILE LPAREN expression RPAREN statement {fprintf(parsertext,"statement->WHILE LPAREN expression RPAREN statement\n");}
 	  | PRINTLN LPAREN ID RPAREN SEMICOLON {fprintf(parsertext,"statement->PRINTLN LPAREN ID RPAREN SEMICOLON\n");}
@@ -155,6 +159,7 @@ factor	: variable {fprintf(parsertext,"factor->variable\n");}
 	;
 	
 argument_list : arguments  {fprintf(parsertext,"argument_list->arguments\n");}
+				|
 			  ;
 	
 arguments : arguments COMMA logic_expression {fprintf(parsertext,"arguments->arguments COMMA logic_expression \n");}
@@ -163,20 +168,23 @@ arguments : arguments COMMA logic_expression {fprintf(parsertext,"arguments->arg
  %%
 int main(int argc,char *argv[])
 {
-
-	if((fp=fopen(argv[1],"r"))==NULL)
+	
+/*	if((fp=fopen(argv[1],"r"))==NULL)
 	{
 		printf("Cannot Open Input File.\n");
 		return 0;
-	}
-
-
+	}*/
+	fp=fopen("input.txt","r");
 	yyin=fp;
-	yyparse();
+	error=fopen("error.txt","w");
+	logout= fopen("logout.txt","w");
+	parsertext= fopen("parsertext.txt","w");
 	
+	yyparse();
 	fclose(fp);
 	fclose(logout);
 	fclose(error);
+	fclose(parsertext);
 	
 	return 0;
 }
