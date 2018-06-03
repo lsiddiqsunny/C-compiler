@@ -484,3 +484,7 @@ Line at 22 : program->program unit
 
 Line at 22 : start>program unit
 
+Total Lines : 22 
+
+Total Errors : 0 
+

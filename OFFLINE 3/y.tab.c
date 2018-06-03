@@ -1541,7 +1541,7 @@ yyreduce:
 
   case 22:
 #line 99 "parser.y" /* yacc.c:1646  */
-    {fprintf(parsertext,"Line at %d : declaration_list->declaration_list COMMA ID\n\n",line_count);cout<<yylval.symbolinfo->get_name()<<endl;}
+    {fprintf(parsertext,"Line at %d : declaration_list->declaration_list COMMA ID\n\n",line_count);}
 #line 1546 "y.tab.c" /* yacc.c:1646  */
     break;
 
@@ -1643,7 +1643,7 @@ yyreduce:
 
   case 39:
 #line 124 "parser.y" /* yacc.c:1646  */
-    {fprintf(parsertext,"Line at %d : variable->ID\n\n",line_count); }
+    {fprintf(parsertext,"Line at %d : variable->ID\n\n",line_count);}
 #line 1648 "y.tab.c" /* yacc.c:1646  */
     break;
 
@@ -2037,6 +2037,9 @@ int main(int argc,char *argv[])
 	parsertext= fopen("parsertext.txt","w");
 
 	yyparse();
+	fprintf(parsertext,"Total Lines : %d \n\n",line_count);
+	fprintf(parsertext,"Total Errors : %d \n\n",error_count);
+	fprintf(error,"Total Errors : %d \n\n",error_count);
 	fclose(fp);
 	fclose(logout);
 	fclose(error);

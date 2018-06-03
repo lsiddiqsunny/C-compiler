@@ -182,6 +182,9 @@ int main(int argc,char *argv[])
 	parsertext= fopen("parsertext.txt","w");
 
 	yyparse();
+	fprintf(parsertext,"Total Lines : %d \n\n",line_count);
+	fprintf(parsertext,"Total Errors : %d \n\n",error_count);
+	fprintf(error,"Total Errors : %d \n\n",error_count);
 	fclose(fp);
 	fclose(logout);
 	fclose(error);
