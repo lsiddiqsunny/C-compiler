@@ -30,7 +30,7 @@ NEWLINE [\n]
 %%
 {WHITESPACE}    {}
 
-{NEWLINE}       {
+{NEWLINE}       { 
 			line_count++;
 		}
 
@@ -139,13 +139,15 @@ NEWLINE [\n]
 
 
 "+"|"-"		{
-			
+			SymbolInfo *s= new SymbolInfo(yytext,"ADDOP");
+			yylval.symbolinfo =s;
 			return ADDOP;
 
 			
 		}
 "*"|"/"|"%"	{
-			
+			SymbolInfo *s= new SymbolInfo(yytext,"MUOLP");
+			yylval.symbolinfo =s;
 			return MULOP;
 			
 		}
@@ -159,7 +161,8 @@ NEWLINE [\n]
 			return DECOP;
 		}
 "<"|"<="|">"|">="|"=="|"!="	{
-			
+			SymbolInfo *s= new SymbolInfo(yytext,"REOP");
+			yylval.symbolinfo =s;
 			return RELOP;
 				}
 "="		{
@@ -167,11 +170,13 @@ NEWLINE [\n]
 			return ASSIGNOP;
 		}
 "&&"|"||"	{
-			
+			SymbolInfo *s= new SymbolInfo(yytext,"LOGICOP");
+			yylval.symbolinfo =s;
 			return LOGICOP;
 		}
 "&"|"|"|"^"|"<<"|">>"		{
-			
+			SymbolInfo *s= new SymbolInfo(yytext,"BITOP");
+			yylval.symbolinfo =s;
 			return BITOP;
 				}
 "!"		{
