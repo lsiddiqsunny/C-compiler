@@ -90,15 +90,33 @@ func_definition : type_specifier ID LPAREN parameter_list RPAREN compound_statem
 
 
 parameter_list  : parameter_list COMMA type_specifier ID {fprintf(parsertext,"Line at %d : parameter_list->parameter_list COMMA type_specifier ID\n\n",line_count);
-															fprintf(parsertext,"%s,%s %s\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>3->get_name().c_str(),$<symbolinfo>4->get_name().c_str());}
-		| parameter_list COMMA type_specifier {fprintf(parsertext,"Line at %d : parameter_list->parameter_list COMMA type_specifier\n\n",line_count);fprintf(parsertext,"%s,%s\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>3->get_name().c_str());}
- 		| type_specifier ID {fprintf(parsertext,"Line at %d : parameter_list->type_specifier ID\n\n",line_count);fprintf(parsertext,"%s %s\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>2->get_name().c_str());}
-		| type_specifier {fprintf(parsertext,"Line at %d : parameter_list->type_specifier\n\n",line_count);fprintf(parsertext,"%s \n\n",$<symbolinfo>1->get_name().c_str());}
+															fprintf(parsertext,"%s,%s %s\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>3->get_name().c_str(),$<symbolinfo>4->get_name().c_str());
+															$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+","+$<symbolinfo>3->get_name()+" "+$<symbolinfo>4->get_name());
+															}
+		| parameter_list COMMA type_specifier {fprintf(parsertext,"Line at %d : parameter_list->parameter_list COMMA type_specifier\n\n",line_count);
+											fprintf(parsertext,"%s,%s\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>3->get_name().c_str());
+											$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+","+$<symbolinfo>3->get_name());
+
+											}
+ 		| type_specifier ID {fprintf(parsertext,"Line at %d : parameter_list->type_specifier ID\n\n",line_count);
+		 fprintf(parsertext,"%s %s\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>2->get_name().c_str());
+		 $<symbolinfo>$->set_name($<symbolinfo>1->get_name()+" "+$<symbolinfo>2->get_name());
+		 }
+		| type_specifier {fprintf(parsertext,"Line at %d : parameter_list->type_specifier\n\n",line_count);
+			fprintf(parsertext,"%s \n\n",$<symbolinfo>1->get_name().c_str());
+			$<symbolinfo>$->set_name($<symbolinfo>1->get_name());
+
+			}
  		;
 
 
-compound_statement : LCURL statements RCURL {fprintf(parsertext,"Line at %d : compound_statement->LCURL statements RCURL\n\n",line_count);fprintf(parsertext,"{%s}\n\n",$<symbolinfo>1->get_name().c_str());}
- 		    | LCURL RCURL {fprintf(parsertext,"Line at %d : compound_statement->LCURL RCURL\n\n",line_count);fprintf(parsertext,"{}\n\n");}
+compound_statement : LCURL statements RCURL {fprintf(parsertext,"Line at %d : compound_statement->LCURL statements RCURL\n\n",line_count);
+											fprintf(parsertext,"{%s}\n\n",$<symbolinfo>1->get_name().c_str());
+											$<symbolinfo>$->set_name("{"+$<symbolinfo>2->get_name()+"}");
+											}
+ 		    | LCURL RCURL {fprintf(parsertext,"Line at %d : compound_statement->LCURL RCURL\n\n",line_count);fprintf(parsertext,"{}\n\n");
+			 	$<symbolinfo>$->set_name("{}");
+			 }
  		    ;
 
 var_declaration : type_specifier declaration_list SEMICOLON {fprintf(parsertext,"Line at %d : var_declaration->type_specifier declaration_list SEMICOLON\n\n",line_count);
@@ -107,9 +125,15 @@ var_declaration : type_specifier declaration_list SEMICOLON {fprintf(parsertext,
 															}
  		 ;
 
-type_specifier	: INT  {fprintf(parsertext,"Line at %d : type_specifier	: INT\n\n",line_count);fprintf(parsertext,"int \n\n");}
- 		| FLOAT  {fprintf(parsertext,"Line at %d : type_specifier	: FLOAT\n\n",line_count);fprintf(parsertext,"float \n\n");}
- 		| VOID  {fprintf(parsertext,"Line at %d : type_specifier	: VOID\n\n",line_count);fprintf(parsertext,"void \n\n");}
+type_specifier	: INT  {fprintf(parsertext,"Line at %d : type_specifier	: INT\n\n",line_count);fprintf(parsertext,"int \n\n");
+				$<symbolinfo>$->set_name("int ");
+				}
+ 		| FLOAT  {fprintf(parsertext,"Line at %d : type_specifier	: FLOAT\n\n",line_count);fprintf(parsertext,"float \n\n");
+		 $<symbolinfo>$->set_name("float ");
+		 }
+ 		| VOID  {fprintf(parsertext,"Line at %d : type_specifier	: VOID\n\n",line_count);fprintf(parsertext,"void \n\n");
+		 $<symbolinfo>$->set_name("void ");
+		 }
  		;
 
 declaration_list : declaration_list COMMA ID {fprintf(parsertext,"Line at %d : declaration_list->declaration_list COMMA ID\n\n",line_count);
@@ -131,19 +155,58 @@ declaration_list : declaration_list COMMA ID {fprintf(parsertext,"Line at %d : d
 		   }
  		  ;
 
-statements : statement {fprintf(parsertext,"Line at %d : statements->statement\n\n",line_count);fprintf(parsertext,"%s\n\n",$<symbolinfo>1->get_name().c_str()); }
-	   | statements statement {fprintf(parsertext,"Line at %d : statements->statements statement\n\n",line_count);fprintf(parsertext,"%s %s\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>2->get_name().c_str()); }
+statements : statement {fprintf(parsertext,"Line at %d : statements->statement\n\n",line_count);
+						fprintf(parsertext,"%s\n\n",$<symbolinfo>1->get_name().c_str()); 
+						$<symbolinfo>$->set_name($<symbolinfo>1->get_name());
+						}
+	   | statements statement {fprintf(parsertext,"Line at %d : statements->statements statement\n\n",line_count);
+	   						fprintf(parsertext,"%s %s\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>2->get_name().c_str()); 
+							   $<symbolinfo>$->set_name($<symbolinfo>1->get_name()+" "+$<symbolinfo>2->get_name()); 
+							   }
 	   ;
 
-statement : var_declaration { fprintf(parsertext,"Line at %d : statement -> var_declaration\n\n",line_count);fprintf(parsertext,"%s\n\n",$<symbolinfo>1->get_name().c_str());}
-	  | expression_statement {fprintf(parsertext,"Line at %d : statement -> expression_statement\n\n",line_count);fprintf(parsertext,"%s\n\n",$<symbolinfo>1->get_name().c_str()); }
-	  | compound_statement {fprintf(parsertext,"Line at %d : statement->compound_statement\n\n",line_count);fprintf(parsertext,"%s\n\n",$<symbolinfo>1->get_name().c_str()); }
-	  | FOR LPAREN expression_statement expression_statement expression RPAREN statement {fprintf(parsertext,"Line at %d : statement ->FOR LPAREN expression_statement expression_statement expression RPAREN statement\n\n",line_count);fprintf(parsertext,"for(%s %s %s)\n%s \n\n",$<symbolinfo>3->get_name().c_str(),$<symbolinfo>4->get_name().c_str(),$<symbolinfo>5->get_name().c_str(),$<symbolinfo>7->get_name().c_str());}
-	  | IF LPAREN expression RPAREN statement %prec LOWER_THAN_ELSE {fprintf(parsertext,"Line at %d : statement->IF LPAREN expression RPAREN statement\n\n",line_count);fprintf(parsertext,"if(%s)\n%s\n\n",$<symbolinfo>3->get_name().c_str(),$<symbolinfo>5->get_name().c_str());}
-	  | IF LPAREN expression RPAREN statement ELSE statement {fprintf(parsertext,"Line at %d : statement->IF LPAREN expression RPAREN statement ELSE statement\n\n",line_count);fprintf(parsertext,"if(%s)\n%s\n else \n %s\n\n",$<symbolinfo>3->get_name().c_str(),$<symbolinfo>5->get_name().c_str(),$<symbolinfo>7->get_name().c_str());}
-	  | WHILE LPAREN expression RPAREN statement {fprintf(parsertext,"Line at %d : statement->WHILE LPAREN expression RPAREN statement\n\n",line_count);fprintf(parsertext,"while(%s)\n%s\n\n",$<symbolinfo>3->get_name().c_str(),$<symbolinfo>5->get_name().c_str());}
-	  | PRINTLN LPAREN ID RPAREN SEMICOLON {fprintf(parsertext,"Line at %d : statement->PRINTLN LPAREN ID RPAREN SEMICOLON\n\n",line_count);fprintf(parsertext,"\n (%s);\n\n",$<symbolinfo>3->get_name().c_str());}
-	  | RETURN expression SEMICOLON {fprintf(parsertext,"Line at %d : statement->RETURN expression SEMICOLON\n\n",line_count);fprintf(parsertext,"return %s;\n\n",$<symbolinfo>2->get_name().c_str());}
+statement : var_declaration { fprintf(parsertext,"Line at %d : statement -> var_declaration\n\n",line_count);
+							fprintf(parsertext,"%s\n\n",$<symbolinfo>1->get_name().c_str());
+							$<symbolinfo>$->set_name($<symbolinfo>1->get_name()); 
+
+							}
+	  | expression_statement {fprintf(parsertext,"Line at %d : statement -> expression_statement\n\n",line_count);
+	  						fprintf(parsertext,"%s\n\n",$<symbolinfo>1->get_name().c_str()); 
+							$<symbolinfo>$->set_name($<symbolinfo>1->get_name()); 
+
+							  }
+	  | compound_statement {fprintf(parsertext,"Line at %d : statement->compound_statement\n\n",line_count);
+	  						fprintf(parsertext,"%s\n\n",$<symbolinfo>1->get_name().c_str()); 
+							 $<symbolinfo>$->set_name($<symbolinfo>1->get_name()); 
+ 
+							  }
+	  | FOR LPAREN expression_statement expression_statement expression RPAREN statement {fprintf(parsertext,"Line at %d : statement ->FOR LPAREN expression_statement expression_statement expression RPAREN statement\n\n",line_count);
+	  																					fprintf(parsertext,"for(%s %s %s)\n%s \n\n",$<symbolinfo>3->get_name().c_str(),$<symbolinfo>4->get_name().c_str(),$<symbolinfo>5->get_name().c_str(),$<symbolinfo>7->get_name().c_str());
+																						  $<symbolinfo>$->set_name("for("+$<symbolinfo>3->get_name()+$<symbolinfo>4->get_name()+$<symbolinfo>5->get_name()+")\n"+$<symbolinfo>5->get_name()); 
+
+																						  }
+	  | IF LPAREN expression RPAREN statement %prec LOWER_THAN_ELSE {fprintf(parsertext,"Line at %d : statement->IF LPAREN expression RPAREN statement\n\n",line_count);
+	  																fprintf(parsertext,"if(%s)\n%s\n\n",$<symbolinfo>3->get_name().c_str(),$<symbolinfo>5->get_name().c_str());
+																	$<symbolinfo>$->set_name("if("+$<symbolinfo>3->get_name()+")\n"+$<symbolinfo>5->get_name()); 
+
+																	  }
+	  | IF LPAREN expression RPAREN statement ELSE statement {fprintf(parsertext,"Line at %d : statement->IF LPAREN expression RPAREN statement ELSE statement\n\n",line_count);
+	  														fprintf(parsertext,"if(%s)\n%s\n else \n %s\n\n",$<symbolinfo>3->get_name().c_str(),$<symbolinfo>5->get_name().c_str(),$<symbolinfo>7->get_name().c_str());
+															$<symbolinfo>$->set_name("if("+$<symbolinfo>3->get_name()+")\n"+$<symbolinfo>5->get_name()+" else \n"+$<symbolinfo>7->get_name()); 
+															}
+
+	  | WHILE LPAREN expression RPAREN statement {fprintf(parsertext,"Line at %d : statement->WHILE LPAREN expression RPAREN statement\n\n",line_count);
+	  											fprintf(parsertext,"while(%s)\n%s\n\n",$<symbolinfo>3->get_name().c_str(),$<symbolinfo>5->get_name().c_str());
+												  $<symbolinfo>$->set_name("while("+$<symbolinfo>3->get_name()+")\n"+$<symbolinfo>5->get_name()); 
+												  }
+	  | PRINTLN LPAREN ID RPAREN SEMICOLON {fprintf(parsertext,"Line at %d : statement->PRINTLN LPAREN ID RPAREN SEMICOLON\n\n",line_count);
+	  										fprintf(parsertext,"\n (%s);\n\n",$<symbolinfo>3->get_name().c_str());
+											  $<symbolinfo>$->set_name("\n("+$<symbolinfo>3->get_name()+")"); 
+											  }
+	  | RETURN expression SEMICOLON {fprintf(parsertext,"Line at %d : statement->RETURN expression SEMICOLON\n\n",line_count);
+	  								fprintf(parsertext,"return %s;\n\n",$<symbolinfo>2->get_name().c_str());
+									$<symbolinfo>$->set_name("return "+$<symbolinfo>2->get_name()+";"); 
+									}
 	  ;
 
 expression_statement 	: SEMICOLON	{fprintf(parsertext,"Line at %d : expression_statement->SEMICOLON\n\n",line_count);

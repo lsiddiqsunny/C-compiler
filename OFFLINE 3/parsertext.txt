@@ -16,15 +16,15 @@ x,y,z
 
 Line at 1 : var_declaration->type_specifier declaration_list SEMICOLON
 
-int x,y,z;
+int  x,y,z;
 
 Line at 1 : unit->var_declaration
 
-int x,y,z;
+int  x,y,z;
 
 Line at 1 : program->unit
 
-int x,y,z;
+int  x,y,z;
 
 Line at 1 : type_specifier	: FLOAT
 
@@ -36,16 +36,16 @@ a
 
 Line at 1 : var_declaration->type_specifier declaration_list SEMICOLON
 
-float a;
+float  a;
 
 Line at 1 : unit->var_declaration
 
-float a;
+float  a;
 
 Line at 1 : program->program unit
 
-int x,y,z;
- float a;
+int  x,y,z;
+ float  a;
 
 Line at 3 : type_specifier	: VOID
 
@@ -53,16 +53,16 @@ void
 
 Line at 3 : func_declaration->type_specifier ID LPAREN RPAREN SEMICOLON
 
-void foo();
+void  foo();
 
 Line at 3 : unit->func_declaration
 
-void
+void 
 
 Line at 3 : program->program unit
 
-int x,y,z;
-float a; void
+int  x,y,z;
+float  a; void 
 
 Line at 5 : type_specifier	: INT
 
@@ -74,7 +74,7 @@ int
 
 Line at 5 : parameter_list->type_specifier ID
 
-int a
+int  a
 
 Line at 5 : type_specifier	: INT
 
@@ -82,7 +82,7 @@ int
 
 Line at 5 : parameter_list->parameter_list COMMA type_specifier ID
 
-int,int b
+int  a,int  b
 
 Line at 6 : variable->ID
 
@@ -142,13 +142,13 @@ return a+b;
 
 Line at 6 : statements->statement
 
-b
+return a+b;
 
  ScopeTable# 1 
 
 Line at 7 : compound_statement->LCURL statements RCURL
 
-{b}
+{return a+b;}
 
 Line at 9 : type_specifier	: VOID
 
@@ -272,20 +272,20 @@ Line at 12 : compound_statement->LCURL statements RCURL
 
 Line at 12 : func_definition->type_specifier ID LPAREN RPAREN compound_statement
 
-void foo() foo
+void  {x=2; y=x-5;}() {x=2; y=x-5;}
 
 Line at 12 : func_definition->type_specifier ID LPAREN parameter_list RPAREN compound_statement func_definition
 
-int var(int) b void 
+int  var(int  a,int  b) {return a+b;} void  
 
 Line at 12 : unit->func_definition
 
-int
+int 
 
 Line at 12 : program->program unit
 
-int x,y,z;
-float a;void int
+int  x,y,z;
+float  a;void  int 
 
 Line at 14 : type_specifier	: INT
 
@@ -313,15 +313,15 @@ a[2],c,i,j
 
 Line at 15 : var_declaration->type_specifier declaration_list SEMICOLON
 
-int a[2],c,i,j;
+int  a[2],c,i,j;
 
 Line at 15 : statement -> var_declaration
 
-int a[2],c,i,j;
+int  a[2],c,i,j;
 
 Line at 15 : statements->statement
 
-int a[2],c,i,j;
+int  a[2],c,i,j;
 
 Line at 15 : type_specifier	: FLOAT
 
@@ -333,15 +333,15 @@ d
 
 Line at 15 : var_declaration->type_specifier declaration_list SEMICOLON
 
-float d;
+float  d;
 
 Line at 15 : statement -> var_declaration
 
-float d;
+float  d;
 
 Line at 15 : statements->statements statement
 
-int a[2],c,i,j; float d;
+int  a[2],c,i,j; float  d;
 
 Line at 16 : factor->CONST_INT
 
@@ -413,7 +413,7 @@ a[0]=1;
 
 Line at 16 : statements->statements statement
 
-int a[2],c,i,j; a[0]=1;
+int  a[2],c,i,j; float  d; a[0]=1;
 
 Line at 17 : factor->CONST_INT
 
@@ -485,7 +485,7 @@ a[1]=5;
 
 Line at 17 : statements->statements statement
 
-int a[2],c,i,j; a[1]=5;
+int  a[2],c,i,j; float  d; a[0]=1; a[1]=5;
 
 Line at 18 : variable->ID
 
@@ -609,7 +609,7 @@ i=a[0]+a[1];
 
 Line at 18 : statements->statements statement
 
-int a[2],c,i,j; i=a[0]+a[1];
+int  a[2],c,i,j; float  d; a[0]=1; a[1]=5; i=a[0]+a[1];
 
 Line at 19 : variable->ID
 
@@ -777,7 +777,7 @@ j=2*3(5%3<4&&8)(5%3<4&&8)||2;
 
 Line at 19 : statements->statements statement
 
-int a[2],c,i,j; j=2*3(5%3<4&&8)(5%3<4&&8)||2;
+int  a[2],c,i,j; float  d; a[0]=1; a[1]=5; i=a[0]+a[1]; j=2*3(5%3<4&&8)(5%3<4&&8)||2;
 
 Line at 20 : variable->ID
 
@@ -921,7 +921,7 @@ d=var(1,2*3)+3.5*2;
 
 Line at 20 : statements->statements statement
 
-int a[2],c,i,j; d=var(1,2*3)+3.5*2;
+int  a[2],c,i,j; float  d; a[0]=1; a[1]=5; i=a[0]+a[1]; j=2*3(5%3<4&&8)(5%3<4&&8)||2; d=var(1,2*3)+3.5*2;
 
 Line at 21 : factor->CONST_INT
 
@@ -957,7 +957,7 @@ return 0;
 
 Line at 21 : statements->statements statement
 
-int a[2],c,i,j; 2
+int  a[2],c,i,j; float  d; a[0]=1; a[1]=5; i=a[0]+a[1]; j=2*3(5%3<4&&8)(5%3<4&&8)||2; d=var(1,2*3)+3.5*2; return 0;
 
  ScopeTable# 3 
 
@@ -969,16 +969,16 @@ Line at 22 : compound_statement->LCURL statements RCURL
 
 Line at 22 : func_definition->type_specifier ID LPAREN RPAREN compound_statement
 
-int main() main
+int  {int  a[2],c,i,j; float  d; a[0]=1; a[1]=5; i=a[0]+a[1]; j=2*3(5%3<4&&8)(5%3<4&&8)||2; d=var(1,2*3)+3.5*2; return 0;}() {int  a[2],c,i,j; float  d; a[0]=1; a[1]=5; i=a[0]+a[1]; j=2*3(5%3<4&&8)(5%3<4&&8)||2; d=var(1,2*3)+3.5*2; return 0;}
 
 Line at 22 : unit->func_definition
 
-int
+int 
 
 Line at 22 : program->program unit
 
-int x,y,z;
-float a;voidint int
+int  x,y,z;
+float  a;void int  int 
 
  Symbol Table : 
 
