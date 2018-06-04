@@ -134,11 +134,12 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 50 "parser.y" /* yacc.c:1909  */
+#line 49 "parser.y" /* yacc.c:1909  */
 
         SymbolInfo* symbolinfo;
+		vector<string>*s;
 
-#line 142 "y.tab.h" /* yacc.c:1909  */
+#line 143 "y.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

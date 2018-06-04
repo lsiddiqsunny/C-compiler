@@ -52,19 +52,22 @@ NEWLINE [\n]
 "break"		{
 			return BREAK;
 		}
-"int"		{
+"int"		{ SymbolInfo *s= new  SymbolInfo(yytext, "INT");
+				yylval.symbolinfo= s;
 			return INT;
 		}
 "char"		{
 			return CHAR;
 		}
-"float"		{
+"float"		{ SymbolInfo *s= new  SymbolInfo(yytext, "FLOAT");
+				yylval.symbolinfo= s;
 			return FLOAT;
 		}
 "double"		{
 			return DOUBLE;
 		}
-"void"		{
+"void"		{ SymbolInfo *s= new  SymbolInfo(yytext, "VOID");
+				yylval.symbolinfo= s;
 			return VOID;
 		}
 "return"		{

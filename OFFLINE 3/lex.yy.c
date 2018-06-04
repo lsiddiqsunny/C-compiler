@@ -1001,83 +1001,86 @@ YY_RULE_SETUP
 case 9:
 YY_RULE_SETUP
 #line 55 "scanner.l"
-{
+{ SymbolInfo *s= new  SymbolInfo(yytext, "INT");
+				yylval.symbolinfo= s;
 			return INT;
 		}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 58 "scanner.l"
+#line 59 "scanner.l"
 {
 			return CHAR;
 		}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 61 "scanner.l"
-{
+#line 62 "scanner.l"
+{ SymbolInfo *s= new  SymbolInfo(yytext, "FLOAT");
+				yylval.symbolinfo= s;
 			return FLOAT;
 		}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 64 "scanner.l"
+#line 66 "scanner.l"
 {
 			return DOUBLE;
 		}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 67 "scanner.l"
-{
+#line 69 "scanner.l"
+{ SymbolInfo *s= new  SymbolInfo(yytext, "VOID");
+				yylval.symbolinfo= s;
 			return VOID;
 		}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 70 "scanner.l"
+#line 73 "scanner.l"
 {
 			return RETURN;
 		}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 73 "scanner.l"
+#line 76 "scanner.l"
 {
 			return SWITCH;
 		}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 76 "scanner.l"
+#line 79 "scanner.l"
 {
 			return CASE;
 		}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 79 "scanner.l"
+#line 82 "scanner.l"
 {
 			return DEFAULT;
 		}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 82 "scanner.l"
+#line 85 "scanner.l"
 {
 			return CONTINUE;
 		}
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 86 "scanner.l"
+#line 89 "scanner.l"
 {
 			return PRINTLN;
 		}
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 91 "scanner.l"
+#line 94 "scanner.l"
 {
 				SymbolInfo *s= new  SymbolInfo(yytext, "CONST_INT");
 				yylval.symbolinfo= s;
@@ -1086,10 +1089,10 @@ YY_RULE_SETUP
 		}
 	YY_BREAK
 case 21:
-#line 99 "scanner.l"
+#line 102 "scanner.l"
 case 22:
 YY_RULE_SETUP
-#line 99 "scanner.l"
+#line 102 "scanner.l"
 {
 						SymbolInfo *s= new  SymbolInfo(yytext, "CONST_FLOAT");
 						yylval.symbolinfo = s;
@@ -1098,7 +1101,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 105 "scanner.l"
+#line 108 "scanner.l"
 {
 										fprintf(error,"Error at Line No.%d:  Too many decimal point %s \n",line_count,yytext);
 										error_count++;
@@ -1107,7 +1110,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 110 "scanner.l"
+#line 113 "scanner.l"
 {						
 								fprintf(error,"Error at Line No.%d:  Ill formed number %s \n",line_count,yytext);
 								error_count++;
@@ -1116,7 +1119,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 116 "scanner.l"
+#line 119 "scanner.l"
 {
 						//char x=ModifyChar(yytext);
 						SymbolInfo *s= new  SymbolInfo(yytext, "CONST_CHAR");
@@ -1127,7 +1130,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 123 "scanner.l"
+#line 126 "scanner.l"
 {
 						
 							fprintf(error,"Error at Line No.%d: Unfinished Character Sequence found %s \n",line_count,yytext);
@@ -1136,7 +1139,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 129 "scanner.l"
+#line 132 "scanner.l"
 {
 						
 						fprintf(error,"Error at Line No.%d: Invalid Character Sequence found %s \n",line_count,yytext);
@@ -1147,7 +1150,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 141 "scanner.l"
+#line 144 "scanner.l"
 {
 			SymbolInfo *s= new SymbolInfo(yytext,"ADDOP");
 			yylval.symbolinfo =s;
@@ -1158,7 +1161,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 148 "scanner.l"
+#line 151 "scanner.l"
 {
 			SymbolInfo *s= new SymbolInfo(yytext,"MUOLP");
 			yylval.symbolinfo =s;
@@ -1168,7 +1171,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 155 "scanner.l"
+#line 158 "scanner.l"
 {
 			
 			return INCOP;
@@ -1176,7 +1179,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 159 "scanner.l"
+#line 162 "scanner.l"
 {
 			
 			return DECOP;
@@ -1184,7 +1187,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 163 "scanner.l"
+#line 166 "scanner.l"
 {
 			SymbolInfo *s= new SymbolInfo(yytext,"REOP");
 			yylval.symbolinfo =s;
@@ -1193,7 +1196,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 168 "scanner.l"
+#line 171 "scanner.l"
 {
 			
 			return ASSIGNOP;
@@ -1201,7 +1204,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 172 "scanner.l"
+#line 175 "scanner.l"
 {
 			SymbolInfo *s= new SymbolInfo(yytext,"LOGICOP");
 			yylval.symbolinfo =s;
@@ -1210,7 +1213,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 177 "scanner.l"
+#line 180 "scanner.l"
 {
 			SymbolInfo *s= new SymbolInfo(yytext,"BITOP");
 			yylval.symbolinfo =s;
@@ -1219,7 +1222,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 182 "scanner.l"
+#line 185 "scanner.l"
 {
 			
 			return NOT;
@@ -1227,7 +1230,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 186 "scanner.l"
+#line 189 "scanner.l"
 {
 		
 			return LPAREN;
@@ -1235,7 +1238,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 190 "scanner.l"
+#line 193 "scanner.l"
 {
 			
 			return RPAREN;
@@ -1243,7 +1246,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 194 "scanner.l"
+#line 197 "scanner.l"
 {
 			
 			table->Enter_Scope();
@@ -1252,7 +1255,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 199 "scanner.l"
+#line 202 "scanner.l"
 {
 			
 			table->printall();
@@ -1262,7 +1265,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 205 "scanner.l"
+#line 208 "scanner.l"
 {
 			
 			return LTHIRD;
@@ -1270,7 +1273,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 209 "scanner.l"
+#line 212 "scanner.l"
 {
 			
 			return RTHIRD;
@@ -1278,7 +1281,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 213 "scanner.l"
+#line 216 "scanner.l"
 {
 		
 			return COMMA;
@@ -1286,7 +1289,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 217 "scanner.l"
+#line 220 "scanner.l"
 {
 		
 			return SEMICOLON;
@@ -1295,7 +1298,7 @@ YY_RULE_SETUP
 case 45:
 /* rule 45 can match eol */
 YY_RULE_SETUP
-#line 222 "scanner.l"
+#line 225 "scanner.l"
 {	
 							
 							pair<string,int> modify=ModifyString(yytext,line_count);
@@ -1310,7 +1313,7 @@ YY_RULE_SETUP
 case 46:
 /* rule 46 can match eol */
 YY_RULE_SETUP
-#line 232 "scanner.l"
+#line 235 "scanner.l"
 {
 							pair<string,int> modify=ModifyString(yytext,line_count);
 							fprintf(error,"Error at Line No.%d:  Unfinished String found %s \n",line_count,yytext);
@@ -1321,7 +1324,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-#line 242 "scanner.l"
+#line 245 "scanner.l"
 {
 								SymbolInfo *s= table->lookup(yytext);
 								if(s==NULL)
@@ -1334,7 +1337,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
-#line 252 "scanner.l"
+#line 255 "scanner.l"
 {
 								fprintf(error,"Error at Line No.%d:  Invalid Identifier %s \n",line_count,yytext);
 								error_count++;
@@ -1344,7 +1347,7 @@ YY_RULE_SETUP
 case 49:
 /* rule 49 can match eol */
 YY_RULE_SETUP
-#line 258 "scanner.l"
+#line 261 "scanner.l"
 {	 pair<string,int> modify=ModifyString(yytext,line_count);
 					
 						 fprintf(error,"Line no %d: TOKEN <COMMENT> Lexeme %s found\n",line_count,yytext);
@@ -1356,7 +1359,7 @@ YY_RULE_SETUP
 case 50:
 /* rule 50 can match eol */
 YY_RULE_SETUP
-#line 265 "scanner.l"
+#line 268 "scanner.l"
 {
 						pair<string,int> modify=ModifyString(yytext,line_count);
 						fprintf(error,"Line no %d: TOKEN <COMMENT> Lexeme %s found\n",line_count,yytext);
@@ -1368,7 +1371,7 @@ YY_RULE_SETUP
 case 51:
 /* rule 51 can match eol */
 YY_RULE_SETUP
-#line 272 "scanner.l"
+#line 275 "scanner.l"
 {
 								pair<string,int> modify=ModifyString(yytext,line_count);
 								fprintf(error,"Error at Line No.%d:  Unfinished Comment %s \n",line_count,yytext);
@@ -1379,7 +1382,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 52:
 YY_RULE_SETUP
-#line 279 "scanner.l"
+#line 282 "scanner.l"
 {
 								fprintf(error,"Error at Line No.%d:  Unrecognized character %s \n",line_count,yytext);
 								error_count++;
@@ -1388,10 +1391,10 @@ YY_RULE_SETUP
 	YY_BREAK
 case 53:
 YY_RULE_SETUP
-#line 285 "scanner.l"
+#line 288 "scanner.l"
 ECHO;
 	YY_BREAK
-#line 1395 "lex.yy.c"
+#line 1398 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -2392,7 +2395,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 285 "scanner.l"
+#line 288 "scanner.l"
 
 
 
