@@ -243,12 +243,14 @@ NEWLINE [\n]
 
 
 ({LETTER}|_)({LETTER}|{DIGIT}|_)*		        {
-								SymbolInfo *s= table->lookup(yytext);
+								/*SymbolInfo *s= table->lookup(yytext);
 								if(s==NULL)
 								{					
 									s= new SymbolInfo(yytext,"ID");
 									yylval.symbolinfo =s;
-								}
+								}*/
+								SymbolInfo *s= new SymbolInfo(yytext,"ID");
+								yylval.symbolinfo =s;
 								return ID;
 							}
 

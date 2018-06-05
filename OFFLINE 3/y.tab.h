@@ -72,18 +72,18 @@ extern int yydebug;
     LOGICOP = 282,
     BITOP = 283,
     NOT = 284,
-    LPAREN = 285,
-    RPAREN = 286,
-    LCURL = 287,
-    RCURL = 288,
-    LTHIRD = 289,
-    RTHIRD = 290,
-    COMMA = 291,
-    SEMICOLON = 292,
-    STRING = 293,
-    ID = 294,
-    PRINTLN = 295,
-    DECOP = 296,
+    DECOP = 285,
+    LPAREN = 286,
+    RPAREN = 287,
+    LCURL = 288,
+    RCURL = 289,
+    LTHIRD = 290,
+    RTHIRD = 291,
+    COMMA = 292,
+    SEMICOLON = 293,
+    STRING = 294,
+    ID = 295,
+    PRINTLN = 296,
     LOWER_THAN_ELSE = 297
   };
 #endif
@@ -115,18 +115,18 @@ extern int yydebug;
 #define LOGICOP 282
 #define BITOP 283
 #define NOT 284
-#define LPAREN 285
-#define RPAREN 286
-#define LCURL 287
-#define RCURL 288
-#define LTHIRD 289
-#define RTHIRD 290
-#define COMMA 291
-#define SEMICOLON 292
-#define STRING 293
-#define ID 294
-#define PRINTLN 295
-#define DECOP 296
+#define DECOP 285
+#define LPAREN 286
+#define RPAREN 287
+#define LCURL 288
+#define RCURL 289
+#define LTHIRD 290
+#define RTHIRD 291
+#define COMMA 292
+#define SEMICOLON 293
+#define STRING 294
+#define ID 295
+#define PRINTLN 296
 #define LOWER_THAN_ELSE 297
 
 /* Value type.  */

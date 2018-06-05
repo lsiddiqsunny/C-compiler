@@ -38,9 +38,9 @@ void yyerror(char *s)
 %token INT FLOAT CHAR DOUBLE VOID
 %token RETURN SWITCH CASE DEFAULT CONTINUE
 %token CONST_INT CONST_FLOAT CONST_CHAR
-%token ADDOP MULOP INCOP RELOP ASSIGNOP LOGICOP BITOP NOT
+%token ADDOP MULOP INCOP RELOP ASSIGNOP LOGICOP BITOP NOT DECOP
 %token LPAREN RPAREN LCURL RCURL LTHIRD RTHIRD COMMA SEMICOLON
-%token STRING ID PRINTLN DECOP
+%token STRING ID PRINTLN
 
 %nonassoc LOWER_THAN_ELSE
 %nonassoc ELSE
@@ -66,26 +66,43 @@ program : program unit {fprintf(parsertext,"Line at %d : program->program unit\n
 
 	| unit {fprintf(parsertext,"Line at %d : program->unit\n\n",line_count);
 	fprintf(parsertext,"%s\n\n",$<symbolinfo>1->get_name().c_str());
-	$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+"\n");
+	$<symbolinfo>$->set_name($<symbolinfo>1->get_name());
 	}
 	;
 
 unit : var_declaration {fprintf(parsertext,"Line at %d : unit->var_declaration\n\n",line_count);
 						fprintf(parsertext,"%s\n\n",$<symbolinfo>1->get_name().c_str()); 
-						$<symbolinfo>$->set_name($<symbolinfo>1->get_name());}
+						$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+"\n");}
      | func_declaration {fprintf(parsertext,"Line at %d : unit->func_declaration\n\n",line_count);
 	 					fprintf(parsertext,"%s\n\n",$<symbolinfo>1->get_name().c_str()); 
-						 
+						 $<symbolinfo>$->set_name($<symbolinfo>1->get_name()+"\n");
 						}
-     | func_definition { fprintf(parsertext,"Line at %d : unit->func_definition\n\n",line_count);fprintf(parsertext,"%s\n\n",$<symbolinfo>1->get_name().c_str());}
+     | func_definition { fprintf(parsertext,"Line at %d : unit->func_definition\n\n",line_count);
+	 					fprintf(parsertext,"%s\n\n",$<symbolinfo>1->get_name().c_str());
+						 $<symbolinfo>$->set_name($<symbolinfo>1->get_name()+"\n");
+						 }
      ;
 
-func_declaration : type_specifier ID LPAREN parameter_list RPAREN SEMICOLON {fprintf(parsertext,"Line at %d : func_declaration->type_specifier ID LPAREN parameter_list RPAREN SEMICOLON\n\n",line_count);fprintf(parsertext,"%s %s(%s);\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>2->get_name().c_str(),$<symbolinfo>4->get_name().c_str());}
-		| type_specifier ID LPAREN RPAREN SEMICOLON {fprintf(parsertext,"Line at %d : func_declaration->type_specifier ID LPAREN RPAREN SEMICOLON\n\n",line_count);fprintf(parsertext,"%s %s();\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>2->get_name().c_str());}
+func_declaration : type_specifier ID LPAREN parameter_list RPAREN SEMICOLON {fprintf(parsertext,"Line at %d : func_declaration->type_specifier ID LPAREN parameter_list RPAREN SEMICOLON\n\n",line_count);
+		fprintf(parsertext,"%s %s(%s);\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>2->get_name().c_str(),$<symbolinfo>4->get_name().c_str());
+		$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+" "+$<symbolinfo>2->get_name()+"("+$<symbolinfo>4->get_name()+");");
+		}
+		|type_specifier ID LPAREN RPAREN SEMICOLON {fprintf(parsertext,"Line at %d : func_declaration->type_specifier ID LPAREN RPAREN SEMICOLON\n\n",line_count);
+				fprintf(parsertext,"%s %s();\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>2->get_name().c_str());
+				$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+" "+$<symbolinfo>2->get_name()+"();");
+				}
 		;
 
-func_definition : type_specifier ID LPAREN parameter_list RPAREN compound_statement func_definition {fprintf(parsertext,"Line at %d : func_definition->type_specifier ID LPAREN parameter_list RPAREN compound_statement func_definition\n\n",line_count);fprintf(parsertext,"%s %s(%s) %s %s \n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>2->get_name().c_str(),$<symbolinfo>4->get_name().c_str(),$<symbolinfo>6->get_name().c_str(),$<symbolinfo>7->get_name().c_str());}
-		| type_specifier ID LPAREN RPAREN compound_statement {fprintf(parsertext,"Line at %d : func_definition->type_specifier ID LPAREN RPAREN compound_statement\n\n",line_count);fprintf(parsertext,"%s %s() %s\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>2->get_name().c_str(),$<symbolinfo>5->get_name().c_str());}
+func_definition : type_specifier ID LPAREN parameter_list RPAREN compound_statement {fprintf(parsertext,"Line at %d : func_definition->type_specifier ID LPAREN parameter_list RPAREN compound_statement \n\n",line_count);
+				fprintf(parsertext,"%s %s(%s) %s \n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>2->get_name().c_str(),$<symbolinfo>4->get_name().c_str(),$<symbolinfo>6->get_name().c_str());
+				$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+" "+$<symbolinfo>2->get_name()+"("+$<symbolinfo>4->get_name()+")"+$<symbolinfo>6->get_name());
+
+				}
+		| type_specifier ID LPAREN RPAREN {$<symbolinfo>1->set_name($<symbolinfo>1->get_name()+" "+$<symbolinfo>2->get_name()+"()");} compound_statement {fprintf(parsertext,"Line at %d : func_definition->type_specifier ID LPAREN RPAREN compound_statement\n\n",line_count);
+					fprintf(parsertext,"%s %s\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>6->get_name().c_str());
+					$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+$<symbolinfo>6->get_name());
+			
+					}
  		;
 
 
@@ -104,18 +121,19 @@ parameter_list  : parameter_list COMMA type_specifier ID {fprintf(parsertext,"Li
 		 }
 		| type_specifier {fprintf(parsertext,"Line at %d : parameter_list->type_specifier\n\n",line_count);
 			fprintf(parsertext,"%s \n\n",$<symbolinfo>1->get_name().c_str());
-			$<symbolinfo>$->set_name($<symbolinfo>1->get_name());
+			$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+" ");
 
 			}
  		;
 
 
 compound_statement : LCURL statements RCURL {fprintf(parsertext,"Line at %d : compound_statement->LCURL statements RCURL\n\n",line_count);
-											fprintf(parsertext,"{%s}\n\n",$<symbolinfo>1->get_name().c_str());
-											$<symbolinfo>$->set_name("{"+$<symbolinfo>2->get_name()+"}");
+											fprintf(parsertext,"{%s}\n\n",$<symbolinfo>2->get_name().c_str());
+											$<symbolinfo>$->set_name("{\n"+$<symbolinfo>2->get_name()+"\n}");
 											}
- 		    | LCURL RCURL {fprintf(parsertext,"Line at %d : compound_statement->LCURL RCURL\n\n",line_count);fprintf(parsertext,"{}\n\n");
-			 	$<symbolinfo>$->set_name("{}");
+ 		    | LCURL RCURL {fprintf(parsertext,"Line at %d : compound_statement->LCURL RCURL\n\n",line_count);
+			 				fprintf(parsertext,"{}\n\n");
+			 				$<symbolinfo>$->set_name("{}");
 			 }
  		    ;
 
@@ -161,7 +179,7 @@ statements : statement {fprintf(parsertext,"Line at %d : statements->statement\n
 						}
 	   | statements statement {fprintf(parsertext,"Line at %d : statements->statements statement\n\n",line_count);
 	   						fprintf(parsertext,"%s %s\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>2->get_name().c_str()); 
-							   $<symbolinfo>$->set_name($<symbolinfo>1->get_name()+" "+$<symbolinfo>2->get_name()); 
+							   $<symbolinfo>$->set_name($<symbolinfo>1->get_name()+"\n"+$<symbolinfo>2->get_name()); 
 							   }
 	   ;
 
@@ -211,7 +229,7 @@ statement : var_declaration { fprintf(parsertext,"Line at %d : statement -> var_
 
 expression_statement 	: SEMICOLON	{fprintf(parsertext,"Line at %d : expression_statement->SEMICOLON\n\n",line_count);
 									fprintf(parsertext,";\n\n"); 
-										$<symbolinfo>$->set_name(";"); 
+									$<symbolinfo>$->set_name(";"); 
 									}
 			| expression SEMICOLON {fprintf(parsertext,"Line at %d : expression_statement->expression SEMICOLON\n\n",line_count);
 									fprintf(parsertext,"%s;\n\n",$<symbolinfo>1->get_name().c_str());
@@ -228,8 +246,7 @@ variable : ID 		{fprintf(parsertext,"Line at %d : variable->ID\n\n",line_count);
 									$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+"["+$<symbolinfo>3->get_name()+"]");  
 									}
 	 ;
-
- expression : logic_expression	{fprintf(parsertext,"Line at %d : expression->logic_expression\n\n",line_count);
+expression : logic_expression	{fprintf(parsertext,"Line at %d : expression->logic_expression\n\n",line_count);
  								fprintf(parsertext,"%s\n\n",$<symbolinfo>1->get_name().c_str());
 								 	$<symbolinfo>$->set_name($<symbolinfo>1->get_name()); 
 								 }
@@ -239,7 +256,6 @@ variable : ID 		{fprintf(parsertext,"Line at %d : variable->ID\n\n",line_count);
 
 											}
 	   ;
-
 logic_expression : rel_expression 	{fprintf(parsertext,"Line at %d : logic_expression->rel_expression\n\n",line_count);
 										fprintf(parsertext,"%s\n\n",$<symbolinfo>1->get_name().c_str());
 										$<symbolinfo>$->set_name($<symbolinfo>1->get_name()); 
@@ -267,9 +283,9 @@ simple_expression : term {fprintf(parsertext,"Line at %d : simple_expression->te
 							$<symbolinfo>$->set_name($<symbolinfo>1->get_name());  
 
 							}
-		  | simple_expression ADDOP term { fprintf(parsertext,"Line at %d : simple_expression->simple_expression ADDOP term\n\n",line_count);
-		  								fprintf(parsertext,"%s%s%s\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>2->get_name().c_str(),$<symbolinfo>3->get_name().c_str());
-										 $<symbolinfo>$->set_name($<symbolinfo>1->get_name()+$<symbolinfo>2->get_name()+$<symbolinfo>3->get_name());  
+		  | simple_expression ADDOP{ $<symbolinfo>1->set_name($<symbolinfo>1->get_name()+$<symbolinfo>2->get_name());} term { fprintf(parsertext,"Line at %d : simple_expression->simple_expression ADDOP term\n\n",line_count);
+		  								fprintf(parsertext,"%s%s\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>4->get_name().c_str());
+										 $<symbolinfo>$->set_name($<symbolinfo>1->get_name()+$<symbolinfo>4->get_name());  
 										  }
 		  ;
 
@@ -292,8 +308,8 @@ unary_expression : ADDOP unary_expression  { fprintf(parsertext,"Line at %d : un
 		 $<symbolinfo>$->set_name("!"+$<symbolinfo>2->get_name()); 
 		 }
 		 | factor {fprintf(parsertext,"Line at %d : unary_expression->factor\n\n",line_count);
-		 fprintf(parsertext,"%s\n\n",$<symbolinfo>1->get_name().c_str()); 
-		 $<symbolinfo>$->set_name($<symbolinfo>1->get_name()); 
+		 		fprintf(parsertext,"%s\n\n",$<symbolinfo>1->get_name().c_str()); 
+				 $<symbolinfo>$->set_name($<symbolinfo>1->get_name()); 
 		 }
 		 ;
 
@@ -331,7 +347,6 @@ argument_list : arguments  { fprintf(parsertext,"Line at %d : argument_list->arg
 							fprintf(parsertext,"%s\n\n",$<symbolinfo>1->get_name().c_str());
 							 $<symbolinfo>$->set_name($<symbolinfo>1->get_name());
 							}
-				|
 			  ;
 
 arguments : arguments COMMA logic_expression { fprintf(parsertext,"Line at %d : arguments->arguments COMMA logic_expression \n\n",line_count);

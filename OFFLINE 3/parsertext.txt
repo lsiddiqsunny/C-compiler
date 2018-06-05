@@ -26,6 +26,7 @@ Line at 1 : program->unit
 
 int  x,y,z;
 
+
 Line at 1 : type_specifier	: FLOAT
 
 float 
@@ -47,6 +48,7 @@ Line at 1 : program->program unit
 int  x,y,z;
  float  a;
 
+
 Line at 3 : type_specifier	: VOID
 
 void 
@@ -57,12 +59,14 @@ void  foo();
 
 Line at 3 : unit->func_declaration
 
-void 
+void  foo();
 
 Line at 3 : program->program unit
 
 int  x,y,z;
-float  a; void 
+float  a;
+ void  foo();
+
 
 Line at 5 : type_specifier	: INT
 
@@ -149,6 +153,28 @@ return a+b;
 Line at 7 : compound_statement->LCURL statements RCURL
 
 {return a+b;}
+
+Line at 7 : func_definition->type_specifier ID LPAREN parameter_list RPAREN compound_statement 
+
+int  var(int  a,int  b) {
+return a+b;
+} 
+
+Line at 7 : unit->func_definition
+
+int  var(int  a,int  b){
+return a+b;
+}
+
+Line at 7 : program->program unit
+
+int  x,y,z;
+float  a;
+void  foo();
+ int  var(int  a,int  b){
+return a+b;
+}
+
 
 Line at 9 : type_specifier	: VOID
 
@@ -268,24 +294,36 @@ x=2; y=x-5;
 
 Line at 12 : compound_statement->LCURL statements RCURL
 
-{foo}
+{x=2;
+y=x-5;}
 
 Line at 12 : func_definition->type_specifier ID LPAREN RPAREN compound_statement
 
-void  {x=2; y=x-5;}() {x=2; y=x-5;}
-
-Line at 12 : func_definition->type_specifier ID LPAREN parameter_list RPAREN compound_statement func_definition
-
-int  var(int  a,int  b) {return a+b;} void  
+void  foo() {
+x=2;
+y=x-5;
+}
 
 Line at 12 : unit->func_definition
 
-int 
+void  foo(){
+x=2;
+y=x-5;
+}
 
 Line at 12 : program->program unit
 
 int  x,y,z;
-float  a;void  int 
+float  a;
+void  foo();
+int  var(int  a,int  b){
+return a+b;
+}
+ void  foo(){
+x=2;
+y=x-5;
+}
+
 
 Line at 14 : type_specifier	: INT
 
@@ -413,7 +451,8 @@ a[0]=1;
 
 Line at 16 : statements->statements statement
 
-int  a[2],c,i,j; float  d; a[0]=1;
+int  a[2],c,i,j;
+float  d; a[0]=1;
 
 Line at 17 : factor->CONST_INT
 
@@ -485,7 +524,9 @@ a[1]=5;
 
 Line at 17 : statements->statements statement
 
-int  a[2],c,i,j; float  d; a[0]=1; a[1]=5;
+int  a[2],c,i,j;
+float  d;
+a[0]=1; a[1]=5;
 
 Line at 18 : variable->ID
 
@@ -609,7 +650,10 @@ i=a[0]+a[1];
 
 Line at 18 : statements->statements statement
 
-int  a[2],c,i,j; float  d; a[0]=1; a[1]=5; i=a[0]+a[1];
+int  a[2],c,i,j;
+float  d;
+a[0]=1;
+a[1]=5; i=a[0]+a[1];
 
 Line at 19 : variable->ID
 
@@ -733,11 +777,11 @@ Line at 19 : term->unary_expression
 
 Line at 19 : simple_expression->simple_expression ADDOP term
 
-2*3(5%3<4&&8)(5%3<4&&8)
+2*3+(5%3<4&&8)
 
 Line at 19 : rel_expression->simple_expression
 
-2*3(5%3<4&&8)(5%3<4&&8)
+2*3+(5%3<4&&8)
 
 Line at 19 : factor->CONST_INT
 
@@ -761,23 +805,27 @@ Line at 19 : rel_expression->simple_expression
 
 Line at 19 : logic_expression->rel_expression LOGICOP rel_expression
 
-2*3(5%3<4&&8)(5%3<4&&8)||2
+2*3+(5%3<4&&8)||2
 
 Line at 19 : expression->variable ASSIGNOP logic_expression
 
-j=2*3(5%3<4&&8)(5%3<4&&8)||2
+j=2*3+(5%3<4&&8)||2
 
 Line at 19 : expression_statement->expression SEMICOLON
 
-j=2*3(5%3<4&&8)(5%3<4&&8)||2;
+j=2*3+(5%3<4&&8)||2;
 
 Line at 19 : statement -> expression_statement
 
-j=2*3(5%3<4&&8)(5%3<4&&8)||2;
+j=2*3+(5%3<4&&8)||2;
 
 Line at 19 : statements->statements statement
 
-int  a[2],c,i,j; float  d; a[0]=1; a[1]=5; i=a[0]+a[1]; j=2*3(5%3<4&&8)(5%3<4&&8)||2;
+int  a[2],c,i,j;
+float  d;
+a[0]=1;
+a[1]=5;
+i=a[0]+a[1]; j=2*3+(5%3<4&&8)||2;
 
 Line at 20 : variable->ID
 
@@ -921,7 +969,12 @@ d=var(1,2*3)+3.5*2;
 
 Line at 20 : statements->statements statement
 
-int  a[2],c,i,j; float  d; a[0]=1; a[1]=5; i=a[0]+a[1]; j=2*3(5%3<4&&8)(5%3<4&&8)||2; d=var(1,2*3)+3.5*2;
+int  a[2],c,i,j;
+float  d;
+a[0]=1;
+a[1]=5;
+i=a[0]+a[1];
+j=2*3+(5%3<4&&8)||2; d=var(1,2*3)+3.5*2;
 
 Line at 21 : factor->CONST_INT
 
@@ -957,7 +1010,13 @@ return 0;
 
 Line at 21 : statements->statements statement
 
-int  a[2],c,i,j; float  d; a[0]=1; a[1]=5; i=a[0]+a[1]; j=2*3(5%3<4&&8)(5%3<4&&8)||2; d=var(1,2*3)+3.5*2; return 0;
+int  a[2],c,i,j;
+float  d;
+a[0]=1;
+a[1]=5;
+i=a[0]+a[1];
+j=2*3+(5%3<4&&8)||2;
+d=var(1,2*3)+3.5*2; return 0;
 
  ScopeTable# 3 
 
@@ -965,20 +1024,64 @@ int  a[2],c,i,j; float  d; a[0]=1; a[1]=5; i=a[0]+a[1]; j=2*3(5%3<4&&8)(5%3<4&&8
 
 Line at 22 : compound_statement->LCURL statements RCURL
 
-{main}
+{int  a[2],c,i,j;
+float  d;
+a[0]=1;
+a[1]=5;
+i=a[0]+a[1];
+j=2*3+(5%3<4&&8)||2;
+d=var(1,2*3)+3.5*2;
+return 0;}
 
 Line at 22 : func_definition->type_specifier ID LPAREN RPAREN compound_statement
 
-int  {int  a[2],c,i,j; float  d; a[0]=1; a[1]=5; i=a[0]+a[1]; j=2*3(5%3<4&&8)(5%3<4&&8)||2; d=var(1,2*3)+3.5*2; return 0;}() {int  a[2],c,i,j; float  d; a[0]=1; a[1]=5; i=a[0]+a[1]; j=2*3(5%3<4&&8)(5%3<4&&8)||2; d=var(1,2*3)+3.5*2; return 0;}
+int  main() {
+int  a[2],c,i,j;
+float  d;
+a[0]=1;
+a[1]=5;
+i=a[0]+a[1];
+j=2*3+(5%3<4&&8)||2;
+d=var(1,2*3)+3.5*2;
+return 0;
+}
 
 Line at 22 : unit->func_definition
 
-int 
+int  main(){
+int  a[2],c,i,j;
+float  d;
+a[0]=1;
+a[1]=5;
+i=a[0]+a[1];
+j=2*3+(5%3<4&&8)||2;
+d=var(1,2*3)+3.5*2;
+return 0;
+}
 
 Line at 22 : program->program unit
 
 int  x,y,z;
-float  a;void int  int 
+float  a;
+void  foo();
+int  var(int  a,int  b){
+return a+b;
+}
+void  foo(){
+x=2;
+y=x-5;
+}
+ int  main(){
+int  a[2],c,i,j;
+float  d;
+a[0]=1;
+a[1]=5;
+i=a[0]+a[1];
+j=2*3+(5%3<4&&8)||2;
+d=var(1,2*3)+3.5*2;
+return 0;
+}
+
 
  Symbol Table : 
 

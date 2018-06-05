@@ -1326,18 +1326,20 @@ case 47:
 YY_RULE_SETUP
 #line 245 "scanner.l"
 {
-								SymbolInfo *s= table->lookup(yytext);
+								/*SymbolInfo *s= table->lookup(yytext);
 								if(s==NULL)
 								{					
 									s= new SymbolInfo(yytext,"ID");
 									yylval.symbolinfo =s;
-								}
+								}*/
+								SymbolInfo *s= new SymbolInfo(yytext,"ID");
+								yylval.symbolinfo =s;
 								return ID;
 							}
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
-#line 255 "scanner.l"
+#line 257 "scanner.l"
 {
 								fprintf(error,"Error at Line No.%d:  Invalid Identifier %s \n",line_count,yytext);
 								error_count++;
@@ -1347,7 +1349,7 @@ YY_RULE_SETUP
 case 49:
 /* rule 49 can match eol */
 YY_RULE_SETUP
-#line 261 "scanner.l"
+#line 263 "scanner.l"
 {	 pair<string,int> modify=ModifyString(yytext,line_count);
 					
 						 fprintf(error,"Line no %d: TOKEN <COMMENT> Lexeme %s found\n",line_count,yytext);
@@ -1359,7 +1361,7 @@ YY_RULE_SETUP
 case 50:
 /* rule 50 can match eol */
 YY_RULE_SETUP
-#line 268 "scanner.l"
+#line 270 "scanner.l"
 {
 						pair<string,int> modify=ModifyString(yytext,line_count);
 						fprintf(error,"Line no %d: TOKEN <COMMENT> Lexeme %s found\n",line_count,yytext);
@@ -1371,7 +1373,7 @@ YY_RULE_SETUP
 case 51:
 /* rule 51 can match eol */
 YY_RULE_SETUP
-#line 275 "scanner.l"
+#line 277 "scanner.l"
 {
 								pair<string,int> modify=ModifyString(yytext,line_count);
 								fprintf(error,"Error at Line No.%d:  Unfinished Comment %s \n",line_count,yytext);
@@ -1382,7 +1384,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 52:
 YY_RULE_SETUP
-#line 282 "scanner.l"
+#line 284 "scanner.l"
 {
 								fprintf(error,"Error at Line No.%d:  Unrecognized character %s \n",line_count,yytext);
 								error_count++;
@@ -1391,10 +1393,10 @@ YY_RULE_SETUP
 	YY_BREAK
 case 53:
 YY_RULE_SETUP
-#line 288 "scanner.l"
+#line 290 "scanner.l"
 ECHO;
 	YY_BREAK
-#line 1398 "lex.yy.c"
+#line 1400 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -2395,7 +2397,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 288 "scanner.l"
+#line 290 "scanner.l"
 
 
 
