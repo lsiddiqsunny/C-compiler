@@ -658,7 +658,7 @@ char *yytext;
 extern YYSTYPE yylval;
 extern SymbolTable *table;
 extern FILE *error;
-extern SymbolInfo *currentide;
+extern string currentid;
 void yyerror(char *);
 
 extern int line_count;
@@ -1336,16 +1336,14 @@ YY_RULE_SETUP
 									s= new SymbolInfo(yytext,"ID");
 									yylval.symbolinfo =s;
 								}*/
-
 								SymbolInfo *s= new SymbolInfo(yytext,"ID");
-								currentide=s;
 								yylval.symbolinfo =s;
 								return ID;
 							}
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
-#line 263 "scanner.l"
+#line 261 "scanner.l"
 {
 								fprintf(error,"Error at Line No.%d:  Invalid Identifier %s \n",line_count,yytext);
 								error_count++;
@@ -1355,7 +1353,7 @@ YY_RULE_SETUP
 case 49:
 /* rule 49 can match eol */
 YY_RULE_SETUP
-#line 269 "scanner.l"
+#line 267 "scanner.l"
 {	 pair<string,int> modify=ModifyString(yytext,line_count);
 					
 						 fprintf(error,"Line no %d: TOKEN <COMMENT> Lexeme %s found\n",line_count,yytext);
@@ -1367,7 +1365,7 @@ YY_RULE_SETUP
 case 50:
 /* rule 50 can match eol */
 YY_RULE_SETUP
-#line 276 "scanner.l"
+#line 274 "scanner.l"
 {
 						pair<string,int> modify=ModifyString(yytext,line_count);
 						fprintf(error,"Line no %d: TOKEN <COMMENT> Lexeme %s found\n",line_count,yytext);
@@ -1379,7 +1377,7 @@ YY_RULE_SETUP
 case 51:
 /* rule 51 can match eol */
 YY_RULE_SETUP
-#line 283 "scanner.l"
+#line 281 "scanner.l"
 {
 								pair<string,int> modify=ModifyString(yytext,line_count);
 								fprintf(error,"Error at Line No.%d:  Unfinished Comment %s \n",line_count,yytext);
@@ -1390,7 +1388,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 52:
 YY_RULE_SETUP
-#line 290 "scanner.l"
+#line 288 "scanner.l"
 {
 								fprintf(error,"Error at Line No.%d:  Unrecognized character %s \n",line_count,yytext);
 								error_count++;
@@ -1399,10 +1397,10 @@ YY_RULE_SETUP
 	YY_BREAK
 case 53:
 YY_RULE_SETUP
-#line 296 "scanner.l"
+#line 294 "scanner.l"
 ECHO;
 	YY_BREAK
-#line 1406 "lex.yy.c"
+#line 1404 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -2403,7 +2401,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 296 "scanner.l"
+#line 294 "scanner.l"
 
 
 

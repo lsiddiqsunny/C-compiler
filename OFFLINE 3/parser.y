@@ -13,7 +13,6 @@ using namespace std;
 int yyparse(void);
 int yylex(void);
 extern FILE *yyin;
-SymbolInfo *currentide;
 FILE *fp;
 FILE *error=fopen("error.txt","w");
 FILE *parsertext= fopen("parsertext.txt","w");
@@ -85,15 +84,13 @@ unit : var_declaration {fprintf(parsertext,"Line at %d : unit->var_declaration\n
 						 $<symbolinfo>$->set_name($<symbolinfo>1->get_name()+"\n");
 						 }
      ;
- subroutine:
-       %empty  { SymbolInfo *s=table->lookup(currentide->get_name());
-				if(s==0){
-					table->Insert(currentide->get_name(),"ID","Function");
-					}			
-				 }
-     ;
-func_declaration : type_specifier ID  LPAREN subroutine parameter_list RPAREN SEMICOLON {fprintf(parsertext,"Line at %d : func_declaration->type_specifier ID LPAREN parameter_list RPAREN SEMICOLON\n\n",line_count);
+
+func_declaration : type_specifier ID  LPAREN  parameter_list RPAREN SEMICOLON {fprintf(parsertext,"Line at %d : func_declaration->type_specifier ID LPAREN parameter_list RPAREN SEMICOLON\n\n",line_count);
 		fprintf(parsertext,"%s %s(%s);\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>2->get_name().c_str(),$<symbolinfo>5->get_name().c_str());
+		SymbolInfo *s=table->lookup($<symbolinfo>2->get_name());
+				if(s==0){
+					table->Insert($<symbolinfo>2->get_name(),"ID","Function");
+					} 
 		$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+" "+$<symbolinfo>2->get_name()+"("+$<symbolinfo>5->get_name()+");");
 		}
 		|type_specifier ID LPAREN RPAREN SEMICOLON {fprintf(parsertext,"Line at %d : func_declaration->type_specifier ID LPAREN RPAREN SEMICOLON\n\n",line_count);
@@ -106,7 +103,13 @@ func_declaration : type_specifier ID  LPAREN subroutine parameter_list RPAREN SE
 		}
 		;
 
-func_definition : type_specifier ID  LPAREN subroutine parameter_list RPAREN compound_statement {fprintf(parsertext,"Line at %d : func_definition->type_specifier ID LPAREN parameter_list RPAREN compound_statement \n\n",line_count);
+func_definition : type_specifier ID  LPAREN  parameter_list RPAREN {
+				SymbolInfo *s=table->lookup($<symbolinfo>2->get_name());
+				if(s==0){
+					table->InsertPrev($<symbolinfo>2->get_name(),"ID","Function");
+					} 
+				} compound_statement 
+				{fprintf(parsertext,"Line at %d : func_definition->type_specifier ID LPAREN parameter_list RPAREN compound_statement \n\n",line_count);
 				fprintf(parsertext,"%s %s(%s) %s \n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>2->get_name().c_str(),$<symbolinfo>5->get_name().c_str(),$<symbolinfo>6->get_name().c_str());
 				SymbolInfo *s=table->lookup($<symbolinfo>2->get_name());
 				if(s==0){
@@ -126,7 +129,8 @@ func_definition : type_specifier ID  LPAREN subroutine parameter_list RPAREN com
 											}
 											s=table->lookup($<symbolinfo>2->get_name());
 											s->set_isFunction();
-											$<symbolinfo>1->set_name($<symbolinfo>1->get_name()+" "+$<symbolinfo>2->get_name()+"()");} compound_statement {
+											$<symbolinfo>1->set_name($<symbolinfo>1->get_name()+" "+$<symbolinfo>2->get_name()+"()");
+											} compound_statement {
 											fprintf(parsertext,"Line at %d : func_definition->type_specifier ID LPAREN RPAREN compound_statement\n\n",line_count);
 											fprintf(parsertext,"%s %s\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>6->get_name().c_str());
 											$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+$<symbolinfo>6->get_name());

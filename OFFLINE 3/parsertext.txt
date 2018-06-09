@@ -170,24 +170,24 @@ Line at 7 : compound_statement->LCURL statements RCURL
 
 Line at 7 : func_definition->type_specifier ID LPAREN parameter_list RPAREN compound_statement 
 
-int  var(int  a,int  b) {
+int  var({
 return a+b;
-} 
+}) int  
 
 Line at 7 : unit->func_definition
 
-int  var(int  a,int  b){
+int  var({
 return a+b;
-}
+})int 
 
 Line at 7 : program->program unit
 
 int  x,y,z;
 float  a;
 void  foo();
- int  var(int  a,int  b){
+ int  var({
 return a+b;
-}
+})int 
 
 
 Line at 9 : type_specifier	: VOID
@@ -340,9 +340,9 @@ Line at 12 : program->program unit
 int  x,y,z;
 float  a;
 void  foo();
-int  var(int  a,int  b){
+int  var({
 return a+b;
-}
+})int 
  void  foo(){
 x=2;
 y=x-5;
@@ -1104,9 +1104,9 @@ Line at 22 : program->program unit
 int  x,y,z;
 float  a;
 void  foo();
-int  var(int  a,int  b){
+int  var({
 return a+b;
-}
+})int 
 void  foo(){
 x=2;
 y=x-5;
