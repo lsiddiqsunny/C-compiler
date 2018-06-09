@@ -13,6 +13,7 @@ using namespace std;
 int yyparse(void);
 int yylex(void);
 extern FILE *yyin;
+SymbolInfo *currentide;
 FILE *fp;
 FILE *error=fopen("error.txt","w");
 FILE *parsertext= fopen("parsertext.txt","w");
@@ -57,7 +58,7 @@ void yyerror(char *s)
 
 %%
 
-start : program {}
+start : program {	}
 
 	  ;
 
@@ -84,30 +85,44 @@ unit : var_declaration {fprintf(parsertext,"Line at %d : unit->var_declaration\n
 						 $<symbolinfo>$->set_name($<symbolinfo>1->get_name()+"\n");
 						 }
      ;
-
-func_declaration : type_specifier ID LPAREN parameter_list RPAREN SEMICOLON {fprintf(parsertext,"Line at %d : func_declaration->type_specifier ID LPAREN parameter_list RPAREN SEMICOLON\n\n",line_count);
-		fprintf(parsertext,"%s %s(%s);\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>2->get_name().c_str(),$<symbolinfo>4->get_name().c_str());
-		$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+" "+$<symbolinfo>2->get_name()+"("+$<symbolinfo>4->get_name()+");");
+ subroutine:
+       %empty  { SymbolInfo *s=table->lookup(currentide->get_name());
+				if(s==0){
+					table->Insert(currentide->get_name(),"ID","Function");
+					}			
+				 }
+     ;
+func_declaration : type_specifier ID  LPAREN subroutine parameter_list RPAREN SEMICOLON {fprintf(parsertext,"Line at %d : func_declaration->type_specifier ID LPAREN parameter_list RPAREN SEMICOLON\n\n",line_count);
+		fprintf(parsertext,"%s %s(%s);\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>2->get_name().c_str(),$<symbolinfo>5->get_name().c_str());
+		$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+" "+$<symbolinfo>2->get_name()+"("+$<symbolinfo>5->get_name()+");");
 		}
 		|type_specifier ID LPAREN RPAREN SEMICOLON {fprintf(parsertext,"Line at %d : func_declaration->type_specifier ID LPAREN RPAREN SEMICOLON\n\n",line_count);
 				fprintf(parsertext,"%s %s();\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>2->get_name().c_str());
+				SymbolInfo *s=table->lookup($<symbolinfo>2->get_name());
+				if(s==0){
+					table->Insert($<symbolinfo>2->get_name(),"ID","Function");
+				}
 				$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+" "+$<symbolinfo>2->get_name()+"();");
 		}
 		;
 
-func_definition : type_specifier ID LPAREN parameter_list RPAREN compound_statement {fprintf(parsertext,"Line at %d : func_definition->type_specifier ID LPAREN parameter_list RPAREN compound_statement \n\n",line_count);
-				fprintf(parsertext,"%s %s(%s) %s \n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>2->get_name().c_str(),$<symbolinfo>4->get_name().c_str(),$<symbolinfo>6->get_name().c_str());
+func_definition : type_specifier ID  LPAREN subroutine parameter_list RPAREN compound_statement {fprintf(parsertext,"Line at %d : func_definition->type_specifier ID LPAREN parameter_list RPAREN compound_statement \n\n",line_count);
+				fprintf(parsertext,"%s %s(%s) %s \n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>2->get_name().c_str(),$<symbolinfo>5->get_name().c_str(),$<symbolinfo>6->get_name().c_str());
 				SymbolInfo *s=table->lookup($<symbolinfo>2->get_name());
 				if(s==0){
-					table->Insert($<symbolinfo>2->get_name(),"function");
+					table->InsertPrev($<symbolinfo>2->get_name(),"ID","Function");
 				}
 				s=table->lookup($<symbolinfo>2->get_name());
 				s->set_isFunction();
-				$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+" "+$<symbolinfo>2->get_name()+"("+$<symbolinfo>4->get_name()+")"+$<symbolinfo>6->get_name());
+				for(int i=0;i<para_list.size();i++){
+				s->get_isFunction()->add_number_of_parameter(para_list[i]->get_name(),para_list[i]->get_type());
+				}
+				para_list.clear();
+				$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+" "+$<symbolinfo>2->get_name()+"("+$<symbolinfo>5->get_name()+")"+$<symbolinfo>6->get_name());
 				}
 		| type_specifier ID LPAREN RPAREN { SymbolInfo *s=table->lookup($<symbolinfo>2->get_name());
 											if(s==0){
-												table->Insert($<symbolinfo>2->get_name(),"function");
+												table->InsertPrev($<symbolinfo>2->get_name(),"ID","Function");
 											}
 											s=table->lookup($<symbolinfo>2->get_name());
 											s->set_isFunction();
@@ -396,7 +411,7 @@ int main(int argc,char *argv[])
 		return 0;
 	}
 	yyin=fp;
-	
+	table->Enter_Scope();
 	yyparse();
 	fprintf(parsertext," Symbol Table : \n\n");
 	table->printall();

@@ -7,6 +7,7 @@
 extern YYSTYPE yylval;
 extern SymbolTable *table;
 extern FILE *error;
+extern SymbolInfo *currentide;
 void yyerror(char *);
 
 extern int line_count;
@@ -202,7 +203,6 @@ NEWLINE [\n]
 				table->Insert(para_list[i]->get_name(),"ID",para_list[i]->get_type());
 				//table->printcurrent();
 			}
-			para_list.clear();
 			return LCURL;
 		}
 "}"		{
@@ -253,7 +253,9 @@ NEWLINE [\n]
 									s= new SymbolInfo(yytext,"ID");
 									yylval.symbolinfo =s;
 								}*/
+
 								SymbolInfo *s= new SymbolInfo(yytext,"ID");
+								currentide=s;
 								yylval.symbolinfo =s;
 								return ID;
 							}

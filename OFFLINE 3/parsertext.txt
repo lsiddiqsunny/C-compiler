@@ -159,6 +159,8 @@ Line at 7 : compound_statement->LCURL statements RCURL
  52  --> < ID : b > 
 
  ScopeTable# 1 
+ 21  --> < ID : foo > 
+ 44  --> < ID : var > 
  51  --> < ID : a > 
  74  --> < ID : x > 
  75  --> < ID : y > 
@@ -308,10 +310,10 @@ Line at 12 : compound_statement->LCURL statements RCURL
 y=x-5;}
 
  ScopeTable# 3 
- 21  --> < function : foo > 
 
  ScopeTable# 1 
- 44  --> < function : var > 
+ 21  --> < ID : foo > 
+ 44  --> < ID : var > 
  51  --> < ID : a > 
  74  --> < ID : x > 
  75  --> < ID : y > 
@@ -1059,11 +1061,12 @@ return 0;}
  54  --> < ID : d > 
  59  --> < ID : i > 
  60  --> < ID : j > 
- 64  --> < function : main > 
 
  ScopeTable# 1 
- 44  --> < function : var > 
+ 21  --> < ID : foo > 
+ 44  --> < ID : var > 
  51  --> < ID : a > 
+ 64  --> < ID : main > 
  74  --> < ID : x > 
  75  --> < ID : y > 
  76  --> < ID : z > 
@@ -1123,8 +1126,10 @@ return 0;
  Symbol Table : 
 
  ScopeTable# 1 
- 44  --> < function : var > 
+ 21  --> < ID : foo > 
+ 44  --> < ID : var > 
  51  --> < ID : a > 
+ 64  --> < ID : main > 
  74  --> < ID : x > 
  75  --> < ID : y > 
  76  --> < ID : z > 

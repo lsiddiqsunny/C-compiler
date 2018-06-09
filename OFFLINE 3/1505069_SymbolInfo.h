@@ -74,7 +74,6 @@ class SymbolInfo
             isFunction=new Function();
         }
         Function* get_isFunction(){
-            cout<<"here";
            return isFunction;
         }
         };

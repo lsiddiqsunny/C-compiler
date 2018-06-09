@@ -27,6 +27,7 @@ class Function
             void add_number_of_parameter(string newpara,string type){
                 parameter_list.push_back(newpara);
                 parameter_type.push_back(type);
+              //  cout<<newpara<<endl;
                 set_number_of_parameter();
             }
        
