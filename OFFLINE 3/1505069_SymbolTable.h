@@ -56,23 +56,23 @@ public:
             return;
         }
         if(current_id!=1)
- 	    fprintf(logout," New ScopeTable with id %d removed\n\n",current_id);
+ 	    fprintf(logout," ScopeTable with id %d removed\n\n",current_id);
        // cout<<"ScopeTable with id "<<current_id<<" removed"<<endl;
         current=Scopes.back()->get_parent();
-
+      //  cout<<current_id<<endl;
        // current_id--;
         Scopes.pop_back();
     }
-    bool Insert(string name,string type)
+    bool Insert(string name,string type,string dectype="")
     {  
         if(current!=0)
         {
-            return current->Insert(name,type);
+            return current->Insert(name,type,dectype);
         }
         else
         {
             Enter_Scope();
-            return current->Insert(name,type);
+            return current->Insert(name,type,dectype);
         }
 	
 

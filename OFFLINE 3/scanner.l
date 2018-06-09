@@ -11,6 +11,7 @@ void yyerror(char *);
 
 extern int line_count;
 extern int error_count;
+extern vector<SymbolInfo*>para_list;
 
 pair<string,int> ModifyString(string s,int line);
 char ModifyChar(string s);
@@ -197,12 +198,15 @@ NEWLINE [\n]
 "{"		{
 			
 			table->Enter_Scope();
+			for(int i=0;i<para_list.size();i++){
+				table->Insert(para_list[i]->get_name(),"ID",para_list[i]->get_type());
+				//table->printcurrent();
+			}
+			para_list.clear();
 			return LCURL;
 		}
 "}"		{
-			
-			table->printall();
-			table->Exit_Scope();
+
 			return RCURL;
 		}
 "["		{

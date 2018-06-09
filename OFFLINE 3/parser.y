@@ -21,6 +21,8 @@ int error_count=0;
 
 
 SymbolTable *table=new SymbolTable(100,parsertext);
+vector<SymbolInfo*>para_list;
+vector<SymbolInfo*>dec_list;
 
 
 void yyerror(char *s)
@@ -78,7 +80,7 @@ unit : var_declaration {fprintf(parsertext,"Line at %d : unit->var_declaration\n
 						 $<symbolinfo>$->set_name($<symbolinfo>1->get_name()+"\n");
 						}
      | func_definition { fprintf(parsertext,"Line at %d : unit->func_definition\n\n",line_count);
-	 					fprintf(parsertext,"%s\n\n",$<symbolinfo>1->get_name().c_str());
+	 					 fprintf(parsertext,"%s\n\n",$<symbolinfo>1->get_name().c_str());
 						 $<symbolinfo>$->set_name($<symbolinfo>1->get_name()+"\n");
 						 }
      ;
@@ -90,17 +92,29 @@ func_declaration : type_specifier ID LPAREN parameter_list RPAREN SEMICOLON {fpr
 		|type_specifier ID LPAREN RPAREN SEMICOLON {fprintf(parsertext,"Line at %d : func_declaration->type_specifier ID LPAREN RPAREN SEMICOLON\n\n",line_count);
 				fprintf(parsertext,"%s %s();\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>2->get_name().c_str());
 				$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+" "+$<symbolinfo>2->get_name()+"();");
-				}
+		}
 		;
 
 func_definition : type_specifier ID LPAREN parameter_list RPAREN compound_statement {fprintf(parsertext,"Line at %d : func_definition->type_specifier ID LPAREN parameter_list RPAREN compound_statement \n\n",line_count);
 				fprintf(parsertext,"%s %s(%s) %s \n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>2->get_name().c_str(),$<symbolinfo>4->get_name().c_str(),$<symbolinfo>6->get_name().c_str());
-				$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+" "+$<symbolinfo>2->get_name()+"("+$<symbolinfo>4->get_name()+")"+$<symbolinfo>6->get_name());
-
+				SymbolInfo *s=table->lookup($<symbolinfo>2->get_name());
+				if(s==0){
+					table->Insert($<symbolinfo>2->get_name(),"function");
 				}
-		| type_specifier ID LPAREN RPAREN {$<symbolinfo>1->set_name($<symbolinfo>1->get_name()+" "+$<symbolinfo>2->get_name()+"()");} compound_statement {fprintf(parsertext,"Line at %d : func_definition->type_specifier ID LPAREN RPAREN compound_statement\n\n",line_count);
-					fprintf(parsertext,"%s %s\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>6->get_name().c_str());
-					$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+$<symbolinfo>6->get_name());
+				s=table->lookup($<symbolinfo>2->get_name());
+				s->set_isFunction();
+				$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+" "+$<symbolinfo>2->get_name()+"("+$<symbolinfo>4->get_name()+")"+$<symbolinfo>6->get_name());
+				}
+		| type_specifier ID LPAREN RPAREN { SymbolInfo *s=table->lookup($<symbolinfo>2->get_name());
+											if(s==0){
+												table->Insert($<symbolinfo>2->get_name(),"function");
+											}
+											s=table->lookup($<symbolinfo>2->get_name());
+											s->set_isFunction();
+											$<symbolinfo>1->set_name($<symbolinfo>1->get_name()+" "+$<symbolinfo>2->get_name()+"()");} compound_statement {
+											fprintf(parsertext,"Line at %d : func_definition->type_specifier ID LPAREN RPAREN compound_statement\n\n",line_count);
+											fprintf(parsertext,"%s %s\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>6->get_name().c_str());
+											$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+$<symbolinfo>6->get_name());
 			
 					}
  		;
@@ -108,6 +122,7 @@ func_definition : type_specifier ID LPAREN parameter_list RPAREN compound_statem
 
 parameter_list  : parameter_list COMMA type_specifier ID {fprintf(parsertext,"Line at %d : parameter_list->parameter_list COMMA type_specifier ID\n\n",line_count);
 															fprintf(parsertext,"%s,%s %s\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>3->get_name().c_str(),$<symbolinfo>4->get_name().c_str());
+															 para_list.push_back(new SymbolInfo($<symbolinfo>4->get_name(),"ID",$<symbolinfo>3->get_name()));
 															$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+","+$<symbolinfo>3->get_name()+" "+$<symbolinfo>4->get_name());
 															}
 		| parameter_list COMMA type_specifier {fprintf(parsertext,"Line at %d : parameter_list->parameter_list COMMA type_specifier\n\n",line_count);
@@ -116,29 +131,37 @@ parameter_list  : parameter_list COMMA type_specifier ID {fprintf(parsertext,"Li
 
 											}
  		| type_specifier ID {fprintf(parsertext,"Line at %d : parameter_list->type_specifier ID\n\n",line_count);
-		 fprintf(parsertext,"%s %s\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>2->get_name().c_str());
-		 $<symbolinfo>$->set_name($<symbolinfo>1->get_name()+" "+$<symbolinfo>2->get_name());
-		 }
+		 					fprintf(parsertext,"%s %s\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>2->get_name().c_str());
+							para_list.push_back(new SymbolInfo($<symbolinfo>2->get_name(),"ID",$<symbolinfo>1->get_name()));
+		 					$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+" "+$<symbolinfo>2->get_name());
+							}
 		| type_specifier {fprintf(parsertext,"Line at %d : parameter_list->type_specifier\n\n",line_count);
 			fprintf(parsertext,"%s \n\n",$<symbolinfo>1->get_name().c_str());
 			$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+" ");
-
-			}
+		}
  		;
 
 
 compound_statement : LCURL statements RCURL {fprintf(parsertext,"Line at %d : compound_statement->LCURL statements RCURL\n\n",line_count);
 											fprintf(parsertext,"{%s}\n\n",$<symbolinfo>2->get_name().c_str());
 											$<symbolinfo>$->set_name("{\n"+$<symbolinfo>2->get_name()+"\n}");
+											table->printall();
+											table->Exit_Scope();
 											}
  		    | LCURL RCURL {fprintf(parsertext,"Line at %d : compound_statement->LCURL RCURL\n\n",line_count);
 			 				fprintf(parsertext,"{}\n\n");
 			 				$<symbolinfo>$->set_name("{}");
+							table->printall();
+							table->Exit_Scope();
 			 }
  		    ;
 
 var_declaration : type_specifier declaration_list SEMICOLON {fprintf(parsertext,"Line at %d : var_declaration->type_specifier declaration_list SEMICOLON\n\n",line_count);
 															fprintf(parsertext,"%s %s;\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>2->get_name().c_str());
+															for(int i=0;i<dec_list.size();i++){
+																table->Insert(dec_list[i]->get_name(),dec_list[i]->get_type(),$<symbolinfo>1->get_name());
+															}
+															dec_list.clear();
 															$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+" "+$<symbolinfo>2->get_name()+";");
 															}
  		 ;
@@ -156,18 +179,23 @@ type_specifier	: INT  {fprintf(parsertext,"Line at %d : type_specifier	: INT\n\n
 
 declaration_list : declaration_list COMMA ID {fprintf(parsertext,"Line at %d : declaration_list->declaration_list COMMA ID\n\n",line_count);
 											fprintf(parsertext,"%s,%s\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>3->get_name().c_str());
+												dec_list.push_back(new SymbolInfo($<symbolinfo>3->get_name(),"ID"));
 											$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+","+$<symbolinfo>3->get_name());
 											}
  		  | declaration_list COMMA ID LTHIRD CONST_INT RTHIRD {fprintf(parsertext,"Line at %d : declaration_list->declaration_list COMMA ID LTHIRD CONST_INT RTHIRD\n\n",line_count);
 		   														fprintf(parsertext,"%s,%s[%s]\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>3->get_name().c_str(),$<symbolinfo>5->get_name().c_str());
+																dec_list.push_back(new SymbolInfo($<symbolinfo>3->get_name(),"ID"));
 																$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+","+$<symbolinfo>3->get_name()+"["+$<symbolinfo>5->get_name()+"]");
 																   }
  		  | ID {fprintf(parsertext,"Line at %d : declaration_list->ID\n\n",line_count);
 		   fprintf(parsertext,"%s\n\n",$<symbolinfo>1->get_name().c_str());
+		   	dec_list.push_back(new SymbolInfo($<symbolinfo>1->get_name(),"ID"));
 			$<symbolinfo>$->set_name($<symbolinfo>1->get_name());
+		
 		   }
  		  | ID LTHIRD CONST_INT RTHIRD {fprintf(parsertext,"Line at %d : declaration_list->ID LTHIRD CONST_INT RTHIRD\n\n",line_count);
 		   fprintf(parsertext,"%s[%s]\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>3->get_name().c_str());
+		   	dec_list.push_back(new SymbolInfo($<symbolinfo>1->get_name(),"ID"));
 		   	$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+"["+$<symbolinfo>3->get_name()+"]");
 
 		   }
@@ -367,7 +395,6 @@ int main(int argc,char *argv[])
 		printf("Cannot Open Input File.\n");
 		return 0;
 	}
-
 	yyin=fp;
 	
 	yyparse();

@@ -81,7 +81,7 @@ public:
 
 
     }
-    bool Insert(string name,string type)
+    bool Insert(string name,string type,string dectype)
     {
 	
         pcon=0;
@@ -95,7 +95,7 @@ public:
 
         int hashv=Hash(name);
         temp=symbol[hashv];
-        SymbolInfo *new_symbol=new SymbolInfo(name,type);
+        SymbolInfo *new_symbol=new SymbolInfo(name,type,dectype);
         if(temp==0)
         { 
             symbol[hashv]=new_symbol;  
@@ -176,7 +176,7 @@ public:
 
         while (temp)
         {
-	        fprintf(logout,"< %s: %s > ",temp->get_type().c_str(),temp->get_name().c_str()); 
+	        fprintf(logout,"< %s : %s > ",temp->get_type().c_str(),temp->get_name().c_str()); 
                 
 
             // cout << "<" << temp->get_name() << " : " << temp->get_type()<< ">  ";

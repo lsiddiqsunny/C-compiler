@@ -88,6 +88,8 @@ Line at 5 : parameter_list->parameter_list COMMA type_specifier ID
 
 int  a,int  b
 
+ New ScopeTable with id 2 created
+
 Line at 6 : variable->ID
 
 a
@@ -148,11 +150,21 @@ Line at 6 : statements->statement
 
 return a+b;
 
- ScopeTable# 1 
-
 Line at 7 : compound_statement->LCURL statements RCURL
 
 {return a+b;}
+
+ ScopeTable# 2 
+ 51  --> < ID : a > 
+ 52  --> < ID : b > 
+
+ ScopeTable# 1 
+ 51  --> < ID : a > 
+ 74  --> < ID : x > 
+ 75  --> < ID : y > 
+ 76  --> < ID : z > 
+
+ ScopeTable with id 2 removed
 
 Line at 7 : func_definition->type_specifier ID LPAREN parameter_list RPAREN compound_statement 
 
@@ -179,6 +191,8 @@ return a+b;
 Line at 9 : type_specifier	: VOID
 
 void 
+
+ New ScopeTable with id 3 created
 
 Line at 10 : variable->ID
 
@@ -288,14 +302,22 @@ Line at 11 : statements->statements statement
 
 x=2; y=x-5;
 
- ScopeTable# 2 
-
- New ScopeTable with id 2 removed
-
 Line at 12 : compound_statement->LCURL statements RCURL
 
 {x=2;
 y=x-5;}
+
+ ScopeTable# 3 
+ 21  --> < function : foo > 
+
+ ScopeTable# 1 
+ 44  --> < function : var > 
+ 51  --> < ID : a > 
+ 74  --> < ID : x > 
+ 75  --> < ID : y > 
+ 76  --> < ID : z > 
+
+ ScopeTable with id 3 removed
 
 Line at 12 : func_definition->type_specifier ID LPAREN RPAREN compound_statement
 
@@ -328,6 +350,8 @@ y=x-5;
 Line at 14 : type_specifier	: INT
 
 int 
+
+ New ScopeTable with id 4 created
 
 Line at 15 : type_specifier	: INT
 
@@ -1018,10 +1042,6 @@ i=a[0]+a[1];
 j=2*3+(5%3<4&&8)||2;
 d=var(1,2*3)+3.5*2; return 0;
 
- ScopeTable# 3 
-
- New ScopeTable with id 3 removed
-
 Line at 22 : compound_statement->LCURL statements RCURL
 
 {int  a[2],c,i,j;
@@ -1032,6 +1052,23 @@ i=a[0]+a[1];
 j=2*3+(5%3<4&&8)||2;
 d=var(1,2*3)+3.5*2;
 return 0;}
+
+ ScopeTable# 4 
+ 51  --> < ID : a > 
+ 53  --> < ID : c > 
+ 54  --> < ID : d > 
+ 59  --> < ID : i > 
+ 60  --> < ID : j > 
+ 64  --> < function : main > 
+
+ ScopeTable# 1 
+ 44  --> < function : var > 
+ 51  --> < ID : a > 
+ 74  --> < ID : x > 
+ 75  --> < ID : y > 
+ 76  --> < ID : z > 
+
+ ScopeTable with id 4 removed
 
 Line at 22 : func_definition->type_specifier ID LPAREN RPAREN compound_statement
 
@@ -1084,6 +1121,13 @@ return 0;
 
 
  Symbol Table : 
+
+ ScopeTable# 1 
+ 44  --> < function : var > 
+ 51  --> < ID : a > 
+ 74  --> < ID : x > 
+ 75  --> < ID : y > 
+ 76  --> < ID : z > 
 
 Total Lines : 22 
 
