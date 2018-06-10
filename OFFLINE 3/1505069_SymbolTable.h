@@ -105,6 +105,15 @@ public:
             return false;
         }
     }
+     SymbolInfo *lookupcurrent(string name)
+    {
+        if(current){
+            return current->lookup(name);
+        }
+        return 0;
+
+    }
+
     SymbolInfo *lookup(string name)
     {
         ScopeTable *temp=current;

@@ -110,7 +110,7 @@ func_definition : type_specifier ID  LPAREN  parameter_list RPAREN {
 					} 
 				} compound_statement 
 				{fprintf(parsertext,"Line at %d : func_definition->type_specifier ID LPAREN parameter_list RPAREN compound_statement \n\n",line_count);
-				fprintf(parsertext,"%s %s(%s) %s \n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>2->get_name().c_str(),$<symbolinfo>5->get_name().c_str(),$<symbolinfo>6->get_name().c_str());
+				fprintf(parsertext,"%s %s(%s) %s \n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>2->get_name().c_str(),$<symbolinfo>4->get_name().c_str(),$<symbolinfo>7->get_name().c_str());
 				SymbolInfo *s=table->lookup($<symbolinfo>2->get_name());
 				if(s==0){
 					table->InsertPrev($<symbolinfo>2->get_name(),"ID","Function");
@@ -121,7 +121,7 @@ func_definition : type_specifier ID  LPAREN  parameter_list RPAREN {
 				s->get_isFunction()->add_number_of_parameter(para_list[i]->get_name(),para_list[i]->get_type());
 				}
 				para_list.clear();
-				$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+" "+$<symbolinfo>2->get_name()+"("+$<symbolinfo>5->get_name()+")"+$<symbolinfo>6->get_name());
+				$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+" "+$<symbolinfo>2->get_name()+"("+$<symbolinfo>4->get_name()+")"+$<symbolinfo>7->get_name());
 				}
 		| type_specifier ID LPAREN RPAREN { SymbolInfo *s=table->lookup($<symbolinfo>2->get_name());
 											if(s==0){
@@ -178,6 +178,11 @@ compound_statement : LCURL statements RCURL {fprintf(parsertext,"Line at %d : co
 var_declaration : type_specifier declaration_list SEMICOLON {fprintf(parsertext,"Line at %d : var_declaration->type_specifier declaration_list SEMICOLON\n\n",line_count);
 															fprintf(parsertext,"%s %s;\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>2->get_name().c_str());
 															for(int i=0;i<dec_list.size();i++){
+																if(table->lookupcurrent(dec_list[i]->get_name())){
+																	 error_count++;
+																	fprintf(error,"Error at Line No.%d:  Multiple Declaration of %s \n\n",line_count,dec_list[i]->get_name().c_str());
+																	continue;
+																}
 																table->Insert(dec_list[i]->get_name(),dec_list[i]->get_type(),$<symbolinfo>1->get_name());
 															}
 															dec_list.clear();
@@ -286,10 +291,23 @@ expression_statement 	: SEMICOLON	{fprintf(parsertext,"Line at %d : expression_s
 
 variable : ID 		{fprintf(parsertext,"Line at %d : variable->ID\n\n",line_count);
 					fprintf(parsertext,"%s\n\n",$<symbolinfo>1->get_name().c_str());
+					if(table->lookupcurrent($<symbolinfo>1->get_name())==0){
+						 error_count++;
+						fprintf(error,"Error at Line No.%d:  Undeclared Variable: %s \n\n",line_count,$<symbolinfo>1->get_name().c_str());
+					
+					}
 						$<symbolinfo>$->set_name($<symbolinfo>1->get_name()); 
 					}
 	 | ID LTHIRD expression RTHIRD  {fprintf(parsertext,"Line at %d : variable->ID LTHIRD expression RTHIRD\n\n",line_count);
 	 								fprintf(parsertext,"%s[%s]\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>3->get_name().c_str());
+									if(table->lookupcurrent($<symbolinfo>1->get_name())==0){
+										 error_count++;
+										fprintf(error,"Error at Line No.%d:  Undeclared Variable: %s \n\n",line_count,$<symbolinfo>1->get_name().c_str());
+									}
+									if($<symbolinfo>3->get_dectype()=="Float"){
+										 error_count++;
+										fprintf(error,"Error at Line No.%d:  Non-integer Array Index  \n\n",line_count);
+									}
 									$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+"["+$<symbolinfo>3->get_name()+"]");  
 									}
 	 ;
@@ -342,6 +360,13 @@ term :	unary_expression  {fprintf(parsertext,"Line at %d : term->unary_expressio
 							}
      |  term MULOP unary_expression {fprintf(parsertext,"Line at %d : term->term MULOP unary_expression\n\n",line_count);
 	 								fprintf(parsertext,"%s%s%s\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>2->get_name().c_str(),$<symbolinfo>3->get_name().c_str());
+									 if($<symbolinfo>2->get_name()=="%"){
+										 if($<symbolinfo>1->get_dectype()!="Int" ||$<symbolinfo>3->get_dectype()!="Int"  ){
+											 error_count++;
+											fprintf(error,"Error at Line No.%d:  Integer operand on modulus operator  \n\n",line_count);
+
+										 }
+									 }
 									$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+$<symbolinfo>2->get_name()+$<symbolinfo>3->get_name()); 
 									 }
      ;
@@ -375,10 +400,12 @@ factor	: variable { fprintf(parsertext,"Line at %d : factor->variable\n\n",line_
 	| CONST_INT { fprintf(parsertext,"Line at %d : factor->CONST_INT\n\n",line_count);
 				fprintf(parsertext,"%s\n\n",$<symbolinfo>1->get_name().c_str());
 				$<symbolinfo>$->set_name($<symbolinfo>1->get_name()); 
+				$<symbolinfo>$->set_dectype("Int"); 
 				}
 	| CONST_FLOAT {fprintf(parsertext,"Line at %d : factor->CONST_FLOAT\n\n",line_count);
 					fprintf(parsertext,"%s\n\n",$<symbolinfo>1->get_name().c_str()); 
 					$<symbolinfo>$->set_name($<symbolinfo>1->get_name()); 
+					$<symbolinfo>$->set_dectype("Float"); 
 					}
 	| variable INCOP {fprintf(parsertext,"Line at %d : factor->variable INCOP\n\n",line_count);
 					fprintf(parsertext,"%s++\n\n",$<symbolinfo>1->get_name().c_str()); 

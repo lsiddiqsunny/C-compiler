@@ -1,2 +1,10 @@
-Total Errors : 0 
+Error at Line No.6:  Multiple Declaration of c 
+
+Error at Line No.7:  Non-integer Array Index  
+
+Error at Line No.9:  Integer operand on modulus operator  
+
+Error at Line No.12:  Undeclared Variable: b 
+
+Total Errors : 4 
 
