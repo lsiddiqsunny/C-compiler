@@ -1820,7 +1820,7 @@ yyreduce:
 #line 292 "parser.y" /* yacc.c:1646  */
     {fprintf(parsertext,"Line at %d : variable->ID\n\n",line_count);
 					fprintf(parsertext,"%s\n\n",(yyvsp[0].symbolinfo)->get_name().c_str());
-					if(table->lookupcurrent((yyvsp[0].symbolinfo)->get_name())==0){
+					if(table->lookup((yyvsp[0].symbolinfo)->get_name())==0){
 						 error_count++;
 						fprintf(error,"Error at Line No.%d:  Undeclared Variable: %s \n\n",line_count,(yyvsp[0].symbolinfo)->get_name().c_str());
 					
@@ -1834,7 +1834,7 @@ yyreduce:
 #line 301 "parser.y" /* yacc.c:1646  */
     {fprintf(parsertext,"Line at %d : variable->ID LTHIRD expression RTHIRD\n\n",line_count);
 	 								fprintf(parsertext,"%s[%s]\n\n",(yyvsp[-3].symbolinfo)->get_name().c_str(),(yyvsp[-1].symbolinfo)->get_name().c_str());
-									if(table->lookupcurrent((yyvsp[-3].symbolinfo)->get_name())==0){
+									if(table->lookup((yyvsp[-3].symbolinfo)->get_name())==0){
 										 error_count++;
 										fprintf(error,"Error at Line No.%d:  Undeclared Variable: %s \n\n",line_count,(yyvsp[-3].symbolinfo)->get_name().c_str());
 									}

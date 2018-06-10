@@ -291,7 +291,7 @@ expression_statement 	: SEMICOLON	{fprintf(parsertext,"Line at %d : expression_s
 
 variable : ID 		{fprintf(parsertext,"Line at %d : variable->ID\n\n",line_count);
 					fprintf(parsertext,"%s\n\n",$<symbolinfo>1->get_name().c_str());
-					if(table->lookupcurrent($<symbolinfo>1->get_name())==0){
+					if(table->lookup($<symbolinfo>1->get_name())==0){
 						 error_count++;
 						fprintf(error,"Error at Line No.%d:  Undeclared Variable: %s \n\n",line_count,$<symbolinfo>1->get_name().c_str());
 					
@@ -300,7 +300,7 @@ variable : ID 		{fprintf(parsertext,"Line at %d : variable->ID\n\n",line_count);
 					}
 	 | ID LTHIRD expression RTHIRD  {fprintf(parsertext,"Line at %d : variable->ID LTHIRD expression RTHIRD\n\n",line_count);
 	 								fprintf(parsertext,"%s[%s]\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>3->get_name().c_str());
-									if(table->lookupcurrent($<symbolinfo>1->get_name())==0){
+									if(table->lookup($<symbolinfo>1->get_name())==0){
 										 error_count++;
 										fprintf(error,"Error at Line No.%d:  Undeclared Variable: %s \n\n",line_count,$<symbolinfo>1->get_name().c_str());
 									}
