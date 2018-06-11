@@ -90,7 +90,14 @@ func_declaration : type_specifier ID  LPAREN  parameter_list RPAREN SEMICOLON {f
 		SymbolInfo *s=table->lookup($<symbolinfo>2->get_name());
 				if(s==0){
 					table->Insert($<symbolinfo>2->get_name(),"ID","Function");
-					} 
+				} 
+				s=table->lookup($<symbolinfo>2->get_name());
+				s->set_isFunction();
+				for(int i=0;i<para_list.size();i++){
+					s->get_isFunction()->add_number_of_parameter(para_list[i]->get_name(),para_list[i]->get_dectype());
+					//cout<<para_list[i]->get_dectype()<<endl;
+				}
+				para_list.clear();
 		$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+" "+$<symbolinfo>2->get_name()+"("+$<symbolinfo>5->get_name()+");");
 		}
 		|type_specifier ID LPAREN RPAREN SEMICOLON {fprintf(parsertext,"Line at %d : func_declaration->type_specifier ID LPAREN RPAREN SEMICOLON\n\n",line_count);
@@ -117,11 +124,12 @@ func_definition : type_specifier ID  LPAREN  parameter_list RPAREN {
 				}
 				s=table->lookup($<symbolinfo>2->get_name());
 				s->set_isFunction();
+				//cout<<s->get_isFunction()->get_number_of_parameter()<<endl;
 				for(int i=0;i<para_list.size();i++){
 					s->get_isFunction()->add_number_of_parameter(para_list[i]->get_name(),para_list[i]->get_dectype());
 					//cout<<para_list[i]->get_dectype()<<endl;
 				}
-				para_list.clear();
+				para_list.clear();//cout<<s->get_isFunction()->get_number_of_parameter()<<endl;
 				$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+" "+$<symbolinfo>2->get_name()+"("+$<symbolinfo>4->get_name()+")"+$<symbolinfo>7->get_name());
 				}
 		| type_specifier ID LPAREN RPAREN { SymbolInfo *s=table->lookup($<symbolinfo>2->get_name());
@@ -320,19 +328,23 @@ variable : ID 		{
 										fprintf(error,"Error at Line No.%d:  Non-integer Array Index  \n\n",line_count);
 									}
 									if(table->lookup($<symbolinfo>1->get_name())!=0){
+										//cout<<line_count<<" "<<table->lookup($<symbolinfo>1->get_name())->get_dectype()<<endl;
 										if(table->lookup($<symbolinfo>1->get_name())->get_dectype()!="int array" && table->lookup($<symbolinfo>1->get_name())->get_dectype()!="float array")
 										{
-										//cout<<table->lookup($<symbolinfo>1->get_name())->get_dectype()<<endl;
+									
 											error_count++;
 											fprintf(error,"Error at Line No.%d:  Type Mismatch \n\n",line_count);	
 										}
-										if(table->lookup($<symbolinfo>1->get_name())->get_dectype()!="int array"){
+										
+										if(table->lookup($<symbolinfo>1->get_name())->get_dectype()=="int array"){
+
 											$<symbolinfo>1->set_dectype("int ");
 										}
-										if(table->lookup($<symbolinfo>1->get_name())->get_dectype()!="float array"){
+										if(table->lookup($<symbolinfo>1->get_name())->get_dectype()=="float array"){
 											$<symbolinfo>1->set_dectype("float ");
 										}
 										$<symbolinfo>$->set_dectype($<symbolinfo>1->get_dectype()); 
+										
 									}
 									$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+"["+$<symbolinfo>3->get_name()+"]");  
 									
@@ -347,7 +359,7 @@ expression : logic_expression	{fprintf(parsertext,"Line at %d : expression->logi
 	   										fprintf(parsertext,"%s=%s\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>3->get_name().c_str());
 											if(table->lookup($<symbolinfo>1->get_name())!=0) {
 												//cout<<line_count<<" "<<table->lookup($<symbolinfo>1->get_name())->get_dectype()<<endl;
-												//cout<<table->lookup($<symbolinfo>1->get_name())->get_dectype()<<""<<$<symbolinfo>3->get_dectype()<<endl;
+												//cout<<line_count<<" "<<table->lookup($<symbolinfo>1->get_name())->get_dectype()<<""<<$<symbolinfo>3->get_dectype()<<endl;
 												if(table->lookup($<symbolinfo>1->get_name())->get_dectype()!=$<symbolinfo>3->get_dectype()){
 													 error_count++;
 													fprintf(error,"Error at Line No.%d: Type Mismatch \n\n",line_count);
@@ -403,7 +415,7 @@ term :	unary_expression  {fprintf(parsertext,"Line at %d : term->unary_expressio
      |  term MULOP unary_expression {fprintf(parsertext,"Line at %d : term->term MULOP unary_expression\n\n",line_count);
 	 								fprintf(parsertext,"%s%s%s\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>2->get_name().c_str(),$<symbolinfo>3->get_name().c_str());
 									 if($<symbolinfo>2->get_name()=="%"){
-										 if($<symbolinfo>1->get_dectype()!="int" ||$<symbolinfo>3->get_dectype()!="int"){
+										 if($<symbolinfo>1->get_dectype()!="int " ||$<symbolinfo>3->get_dectype()!="int "){
 											 error_count++;
 											fprintf(error,"Error at Line No.%d:  Integer operand on modulus operator  \n\n",line_count);
 

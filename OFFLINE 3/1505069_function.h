@@ -24,6 +24,9 @@ class Function
             void set_number_of_parameter(){
                 number_of_parameter=parameter_list.size();
             }
+            int get_number_of_parameter(){
+              return  number_of_parameter;
+            }
             void add_number_of_parameter(string newpara,string type){
                 parameter_list.push_back(newpara);
                 parameter_type.push_back(type);

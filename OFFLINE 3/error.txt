@@ -1,16 +1,4 @@
-Error at Line No.6:  Multiple Declaration of c 
+Error at Line No.21: Type Mismatch 
 
-Error at Line No.7:  Non-integer Array Index  
-
-Error at Line No.8: Type Mismatch 
-
-Error at Line No.9:  Integer operand on modulus operator  
-
-Error at Line No.10: Type Mismatch 
-
-Error at Line No.12:  Undeclared Variable: b 
-
-Error at Line No.14:  Type Mismatch 
-
-Total Errors : 7 
+Total Errors : 1 
 
