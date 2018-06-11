@@ -1253,7 +1253,7 @@ YY_RULE_SETUP
 			
 			table->Enter_Scope();
 			for(int i=0;i<para_list.size();i++){
-				table->Insert(para_list[i]->get_name(),"ID",para_list[i]->get_type());
+				table->Insert(para_list[i]->get_name(),"ID",para_list[i]->get_dectype());
 				//table->printcurrent();
 			}
 			return LCURL;

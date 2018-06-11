@@ -541,7 +541,87 @@ a=4;
 func(a);
 b=8; return 0;
 
-Line at 14 : compound_statement->LCURL statements RCURL
+Line at 14 : factor->CONST_INT
+
+2
+
+Line at 14 : unary_expression->factor
+
+2
+
+Line at 14 : term->unary_expression
+
+2
+
+Line at 14 : simple_expression->term
+
+2
+
+Line at 14 : rel_expression->simple_expression
+
+2
+
+Line at 14 : logic_expression->rel_expression
+
+2
+
+Line at 14 : expression->logic_expression
+
+2
+
+Line at 14 : variable->ID LTHIRD expression RTHIRD
+
+i[2]
+
+Line at 14 : factor->CONST_INT
+
+3
+
+Line at 14 : unary_expression->factor
+
+3
+
+Line at 14 : term->unary_expression
+
+3
+
+Line at 14 : simple_expression->term
+
+3
+
+Line at 14 : rel_expression->simple_expression
+
+3
+
+Line at 14 : logic_expression->rel_expression
+
+3
+
+Line at 14 : expression->variable ASSIGNOP logic_expression
+
+i[2]=3
+
+Line at 14 : expression_statement->expression SEMICOLON
+
+i[2]=3;
+
+Line at 14 : statement -> expression_statement
+
+i[2]=3;
+
+Line at 14 : statements->statements statement
+
+int  a[2],c,i,j;
+float  c;
+a[2.5]=1;
+i=2.3;
+j=2%3.7;
+a=4;
+func(a);
+b=8;
+return 0; i[2]=3;
+
+Line at 15 : compound_statement->LCURL statements RCURL
 
 {int  a[2],c,i,j;
 float  c;
@@ -551,7 +631,8 @@ j=2%3.7;
 a=4;
 func(a);
 b=8;
-return 0;}
+return 0;
+i[2]=3;}
 
  ScopeTable# 3 
  51  --> < ID : a > 
@@ -565,7 +646,7 @@ return 0;}
 
  ScopeTable with id 3 removed
 
-Line at 14 : func_definition->type_specifier ID LPAREN RPAREN compound_statement
+Line at 15 : func_definition->type_specifier ID LPAREN RPAREN compound_statement
 
 int  main() {
 int  a[2],c,i,j;
@@ -577,9 +658,10 @@ a=4;
 func(a);
 b=8;
 return 0;
+i[2]=3;
 }
 
-Line at 14 : unit->func_definition
+Line at 15 : unit->func_definition
 
 int  main(){
 int  a[2],c,i,j;
@@ -591,9 +673,10 @@ a=4;
 func(a);
 b=8;
 return 0;
+i[2]=3;
 }
 
-Line at 14 : program->program unit
+Line at 15 : program->program unit
 
 int  func(int  a){
 return a;
@@ -608,6 +691,7 @@ a=4;
 func(a);
 b=8;
 return 0;
+i[2]=3;
 }
 
 
@@ -617,7 +701,7 @@ return 0;
  15  --> < ID : func > 
  64  --> < ID : main > 
 
-Total Lines : 14 
+Total Lines : 15 
 
-Total Errors : 4 
+Total Errors : 7 
 
