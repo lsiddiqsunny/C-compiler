@@ -33,6 +33,12 @@ class Function
               //  cout<<newpara<<endl;
                 set_number_of_parameter();
             }
+            vector<string> get_paralist(){
+                return parameter_list;
+            }
+            vector<string> get_paratype(){
+                return parameter_type;
+            }
        
 
         };

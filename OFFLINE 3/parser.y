@@ -23,6 +23,7 @@ int error_count=0;
 SymbolTable *table=new SymbolTable(100,parsertext);
 vector<SymbolInfo*>para_list;
 vector<SymbolInfo*>dec_list;
+vector<SymbolInfo*>arg_list;
 
 
 void yyerror(char *s)
@@ -86,7 +87,7 @@ unit : var_declaration {fprintf(parsertext,"Line at %d : unit->var_declaration\n
      ;
 
 func_declaration : type_specifier ID  LPAREN  parameter_list RPAREN SEMICOLON {fprintf(parsertext,"Line at %d : func_declaration->type_specifier ID LPAREN parameter_list RPAREN SEMICOLON\n\n",line_count);
-		fprintf(parsertext,"%s %s(%s);\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>2->get_name().c_str(),$<symbolinfo>5->get_name().c_str());
+		fprintf(parsertext,"%s %s(%s);\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>2->get_name().c_str(),$<symbolinfo>4->get_name().c_str());
 		SymbolInfo *s=table->lookup($<symbolinfo>2->get_name());
 				if(s==0){
 					table->Insert($<symbolinfo>2->get_name(),"ID","Function");
@@ -98,7 +99,7 @@ func_declaration : type_specifier ID  LPAREN  parameter_list RPAREN SEMICOLON {f
 					//cout<<para_list[i]->get_dectype()<<endl;
 				}
 				para_list.clear();
-		$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+" "+$<symbolinfo>2->get_name()+"("+$<symbolinfo>5->get_name()+");");
+		$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+" "+$<symbolinfo>2->get_name()+"("+$<symbolinfo>4->get_name()+");");
 		}
 		|type_specifier ID LPAREN RPAREN SEMICOLON {fprintf(parsertext,"Line at %d : func_declaration->type_specifier ID LPAREN RPAREN SEMICOLON\n\n",line_count);
 				fprintf(parsertext,"%s %s();\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>2->get_name().c_str());
@@ -377,6 +378,13 @@ logic_expression : rel_expression 	{fprintf(parsertext,"Line at %d : logic_expre
 										}
 		 | rel_expression LOGICOP rel_expression {fprintf(parsertext,"Line at %d : logic_expression->rel_expression LOGICOP rel_expression\n\n",line_count);
 		 											fprintf(parsertext,"%s%s%s\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>2->get_name().c_str(),$<symbolinfo>3->get_name().c_str());
+													 if($<symbolinfo>1->get_dectype()=="float " ||$<symbolinfo>3->get_dectype()=="float "){
+											 			error_count++;
+														// cout<<$<symbolinfo>1->get_name()<<" "<<$<symbolinfo>3->get_name()<<endl;
+														fprintf(error,"Error at Line No.%d:  Type Mismatch \n\n",line_count);
+
+										 			} 
+										 			$<symbolinfo>$->set_dectype("int "); 
 		 											$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+$<symbolinfo>2->get_name()+$<symbolinfo>3->get_name());  
 
 												}
@@ -390,6 +398,14 @@ rel_expression	: simple_expression {fprintf(parsertext,"Line at %d : rel_express
 									}
 		| simple_expression RELOP simple_expression	 {fprintf(parsertext,"Line at %d : rel_expression->simple_expression RELOP simple_expression\n\n",line_count);
 													fprintf(parsertext,"%s%s%s\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>2->get_name().c_str(),$<symbolinfo>3->get_name().c_str());
+													if($<symbolinfo>1->get_dectype()=="float " ||$<symbolinfo>3->get_dectype()=="float "){
+											 			error_count++;
+														// cout<<$<symbolinfo>1->get_name()<<" "<<$<symbolinfo>3->get_name()<<endl;
+														fprintf(error,"Error at Line No.%d:  Type Mismatch \n\n",line_count);
+
+										 				} 
+										 			$<symbolinfo>$->set_dectype("int "); 
+													
 													$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+$<symbolinfo>2->get_name()+$<symbolinfo>3->get_name());  
 
 													}
@@ -397,20 +413,26 @@ rel_expression	: simple_expression {fprintf(parsertext,"Line at %d : rel_express
 
 simple_expression : term {fprintf(parsertext,"Line at %d : simple_expression->term\n\n",line_count);
 							fprintf(parsertext,"%s\n\n",$<symbolinfo>1->get_name().c_str());
+							$<symbolinfo>$->set_dectype($<symbolinfo>1->get_dectype()); 
 							$<symbolinfo>$->set_name($<symbolinfo>1->get_name());  
-							 $<symbolinfo>$->set_dectype($<symbolinfo>1->get_dectype()); 
+							 
 
 							}
 		  | simple_expression ADDOP{ $<symbolinfo>1->set_name($<symbolinfo>1->get_name()+$<symbolinfo>2->get_name());} term { fprintf(parsertext,"Line at %d : simple_expression->simple_expression ADDOP term\n\n",line_count);
 		  								fprintf(parsertext,"%s%s\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>4->get_name().c_str());
+										//cout<<$<symbolinfo>4->get_dectype()<<endl;
+										if($<symbolinfo>1->get_dectype()=="float " ||$<symbolinfo>4->get_dectype()=="float ")
+											$<symbolinfo>$->set_dectype("float ");
+										else  $<symbolinfo>$->set_dectype("int ");
 										 $<symbolinfo>$->set_name($<symbolinfo>1->get_name()+$<symbolinfo>4->get_name());  
 										  }
 		  ;
 
 term :	unary_expression  {fprintf(parsertext,"Line at %d : term->unary_expression\n\n",line_count);
 							fprintf(parsertext,"%s\n\n",$<symbolinfo>1->get_name().c_str()); 
-							$<symbolinfo>$->set_name($<symbolinfo>1->get_name()); 
 							$<symbolinfo>$->set_dectype($<symbolinfo>1->get_dectype()); 
+							$<symbolinfo>$->set_name($<symbolinfo>1->get_name()); 
+							
 							}
      |  term MULOP unary_expression {fprintf(parsertext,"Line at %d : term->term MULOP unary_expression\n\n",line_count);
 	 								fprintf(parsertext,"%s%s%s\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>2->get_name().c_str(),$<symbolinfo>3->get_name().c_str());
@@ -423,6 +445,17 @@ term :	unary_expression  {fprintf(parsertext,"Line at %d : term->unary_expressio
 										 $<symbolinfo>$->set_dectype("int "); 
 										
 									 }
+									else if($<symbolinfo>2->get_name()=="/"){
+										 if($<symbolinfo>1->get_dectype()=="int " && $<symbolinfo>3->get_dectype()=="int ")
+										 $<symbolinfo>$->set_dectype("int "); 
+										 else $<symbolinfo>$->set_dectype("float "); 
+										
+									 }
+									 else{
+										  if($<symbolinfo>1->get_dectype()=="float " || $<symbolinfo>3->get_dectype()=="float ")
+										 $<symbolinfo>$->set_dectype("float "); 
+										 else $<symbolinfo>$->set_dectype("int "); 
+									 }
 									$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+$<symbolinfo>2->get_name()+$<symbolinfo>3->get_name()); 
 								
 									 }
@@ -430,53 +463,89 @@ term :	unary_expression  {fprintf(parsertext,"Line at %d : term->unary_expressio
 
 unary_expression : ADDOP unary_expression  { fprintf(parsertext,"Line at %d : unary_expression->ADDOP unary_expression\n\n",line_count);
 											fprintf(parsertext,"%s%s\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>2->get_name().c_str());
-											$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+$<symbolinfo>2->get_name()); 
-											 $<symbolinfo>$->set_dectype($<symbolinfo>2->get_dectype()); 
+											 $<symbolinfo>$->set_dectype($<symbolinfo>2->get_dectype()); 	
+											 $<symbolinfo>$->set_name($<symbolinfo>1->get_name()+$<symbolinfo>2->get_name()); 
+										
 										}
 		 | NOT unary_expression {fprintf(parsertext,"Line at %d : unary_expression->NOT unary_expression\n\n",line_count);
 		 fprintf(parsertext,"!%s\n\n",$<symbolinfo>2->get_name().c_str()); 
+		 $<symbolinfo>$->set_dectype($<symbolinfo>2->get_dectype());  
 		 $<symbolinfo>$->set_name("!"+$<symbolinfo>2->get_name()); 
-		  $<symbolinfo>$->set_dectype($<symbolinfo>2->get_dectype()); 
+		 
 		 }
 		 | factor {fprintf(parsertext,"Line at %d : unary_expression->factor\n\n",line_count);
 		 		fprintf(parsertext,"%s\n\n",$<symbolinfo>1->get_name().c_str()); 
-				 $<symbolinfo>$->set_name($<symbolinfo>1->get_name()); 
-				  $<symbolinfo>$->set_dectype($<symbolinfo>1->get_dectype()); 
+				$<symbolinfo>$->set_dectype($<symbolinfo>1->get_dectype()); 
+				$<symbolinfo>$->set_name($<symbolinfo>1->get_name()); 
+				
 		 }
 		 ;
 
 factor	: variable { fprintf(parsertext,"Line at %d : factor->variable\n\n",line_count);
 					fprintf(parsertext,"%s\n\n",$<symbolinfo>1->get_name().c_str());
+					$<symbolinfo>$->set_dectype($<symbolinfo>1->get_dectype()); 
 					$<symbolinfo>$->set_name($<symbolinfo>1->get_name()); 
-					 $<symbolinfo>$->set_dectype($<symbolinfo>1->get_dectype()); 
+					
 					}
 	| ID LPAREN argument_list RPAREN { fprintf(parsertext,"Line at %d : factor->ID LPAREN argument_list RPAREN\n\n",line_count);
 									fprintf(parsertext,"%s(%s)\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>3->get_name().c_str());
+									SymbolInfo* s=table->lookup($<symbolinfo>1->get_name());
+									if(s==0){
+										error_count++;
+										fprintf(error,"Error at Line No.%d:  Undeclared Function \n\n",line_count);
+
+									}
+									else{
+										int num=s->get_isFunction()->get_number_of_parameter();
+										if(num!=arg_list.size()){
+											error_count++;
+											fprintf(error,"Error at Line No.%d:  Invalid number of arguments \n\n",line_count);
+
+										}
+										else{
+											vector<string>para_list=s->get_isFunction()->get_paralist();
+											vector<string>para_type=s->get_isFunction()->get_paratype();
+											for(int i=0;i<arg_list.size();i++){
+												if(arg_list[i]->get_dectype()!=para_type[i]){
+													error_count++;
+													fprintf(error,"Error at Line No.%d: Type MIsmatch \n\n",line_count);
+													break;
+												}
+											}
+
+										}
+									}
+
 									$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+"("+$<symbolinfo>3->get_name()+")"); 
 									}
 	| LPAREN expression RPAREN {fprintf(parsertext,"Line at %d : factor->LPAREN expression RPAREN\n\n",line_count);
 								fprintf(parsertext,"(%s)\n\n",$<symbolinfo>2->get_name().c_str()); 
+								$<symbolinfo>$->set_dectype($<symbolinfo>2->get_dectype()); 
 								$<symbolinfo>$->set_name("("+$<symbolinfo>2->get_name()+")"); 
 								}
 	| CONST_INT { fprintf(parsertext,"Line at %d : factor->CONST_INT\n\n",line_count);
 				fprintf(parsertext,"%s\n\n",$<symbolinfo>1->get_name().c_str());
+				$<symbolinfo>$->set_dectype("int "); 	
 				$<symbolinfo>$->set_name($<symbolinfo>1->get_name()); 
-				$<symbolinfo>$->set_dectype("int "); 
+			
 				}
 	| CONST_FLOAT {fprintf(parsertext,"Line at %d : factor->CONST_FLOAT\n\n",line_count);
 					fprintf(parsertext,"%s\n\n",$<symbolinfo>1->get_name().c_str()); 
+					$<symbolinfo>$->set_dectype("float "); 	
 					$<symbolinfo>$->set_name($<symbolinfo>1->get_name()); 
-					$<symbolinfo>$->set_dectype("float "); 
+				
 					}
 	| variable INCOP {fprintf(parsertext,"Line at %d : factor->variable INCOP\n\n",line_count);
 					fprintf(parsertext,"%s++\n\n",$<symbolinfo>1->get_name().c_str()); 
-					 $<symbolinfo>$->set_name($<symbolinfo>1->get_name()+"++"); 
-					  $<symbolinfo>$->set_dectype($<symbolinfo>1->get_dectype()); 
+					$<symbolinfo>$->set_dectype($<symbolinfo>1->get_dectype());
+					$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+"++"); 
+					 
 					 }
 	| variable DECOP {fprintf(parsertext,"Line at %d : factor->variable DECOP\n\n",line_count);
 					fprintf(parsertext,"%s--\n\n",$<symbolinfo>1->get_name().c_str());
-					 $<symbolinfo>$->set_name($<symbolinfo>1->get_name()+"--"); 
 					  $<symbolinfo>$->set_dectype($<symbolinfo>1->get_dectype()); 
+					  $<symbolinfo>$->set_name($<symbolinfo>1->get_name()+"--"); 
+					 
 					 }
 	;
 
@@ -488,11 +557,15 @@ argument_list : arguments  { fprintf(parsertext,"Line at %d : argument_list->arg
 
 arguments : arguments COMMA logic_expression { fprintf(parsertext,"Line at %d : arguments->arguments COMMA logic_expression \n\n",line_count);
 											fprintf(parsertext,"%s,%s\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>3->get_name().c_str());
+											arg_list.push_back($<symbolinfo>3);
 											$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+","+$<symbolinfo>3->get_name());
 											}
 	      | logic_expression {fprintf(parsertext,"Line at %d : arguments->logic_expression\n\n",line_count);
-		  fprintf(parsertext,"%s\n\n",$<symbolinfo>1->get_name().c_str()); 
-		  $<symbolinfo>$->set_name($<symbolinfo>1->get_name());
+		  					fprintf(parsertext,"%s\n\n",$<symbolinfo>1->get_name().c_str()); 
+							arg_list.push_back(new SymbolInfo($<symbolinfo>1->get_name(),$<symbolinfo>1->get_type(),$<symbolinfo>1->get_dectype()));
+							// cout<<$<symbolinfo>1->get_dectype()<<endl;
+		  					$<symbolinfo>$->set_name($<symbolinfo>1->get_name());
+							
 		  }
 	      ;
  %%
