@@ -98,7 +98,7 @@ func_declaration : type_specifier ID  LPAREN  parameter_list RPAREN SEMICOLON {f
 					s->get_isFunction()->add_number_of_parameter(para_list[i]->get_name(),para_list[i]->get_dectype());
 					//cout<<para_list[i]->get_dectype()<<endl;
 				}
-				para_list.clear();
+				para_list.clear();s->get_isFunction()->set_return_type($<symbolinfo>1->get_name());
 		$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+" "+$<symbolinfo>2->get_name()+"("+$<symbolinfo>4->get_name()+");");
 		}
 		|type_specifier ID LPAREN RPAREN SEMICOLON {fprintf(parsertext,"Line at %d : func_declaration->type_specifier ID LPAREN RPAREN SEMICOLON\n\n",line_count);
@@ -130,7 +130,7 @@ func_definition : type_specifier ID  LPAREN  parameter_list RPAREN {
 					s->get_isFunction()->add_number_of_parameter(para_list[i]->get_name(),para_list[i]->get_dectype());
 					//cout<<para_list[i]->get_dectype()<<endl;
 				}
-				para_list.clear();//cout<<s->get_isFunction()->get_number_of_parameter()<<endl;
+				para_list.clear();s->get_isFunction()->set_return_type($<symbolinfo>1->get_name());
 				$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+" "+$<symbolinfo>2->get_name()+"("+$<symbolinfo>4->get_name()+")"+$<symbolinfo>7->get_name());
 				}
 		| type_specifier ID LPAREN RPAREN { SymbolInfo *s=table->lookup($<symbolinfo>2->get_name());
@@ -358,7 +358,11 @@ expression : logic_expression	{fprintf(parsertext,"Line at %d : expression->logi
 								 }
 	   | variable ASSIGNOP logic_expression {fprintf(parsertext,"Line at %d : expression->variable ASSIGNOP logic_expression\n\n",line_count);
 	   										fprintf(parsertext,"%s=%s\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>3->get_name().c_str());
-											if(table->lookup($<symbolinfo>1->get_name())!=0) {
+											   if($<symbolinfo>3->get_dectype()=="void "){
+												error_count++;
+												fprintf(error,"Error at Line No.%d:  Type MIsmatch \n\n",line_count);
+												$<symbolinfo>$->set_dectype("int "); 
+											}else if(table->lookup($<symbolinfo>1->get_name())!=0) {
 												//cout<<line_count<<" "<<table->lookup($<symbolinfo>1->get_name())->get_dectype()<<endl;
 												//cout<<line_count<<" "<<table->lookup($<symbolinfo>1->get_name())->get_dectype()<<""<<$<symbolinfo>3->get_dectype()<<endl;
 												if(table->lookup($<symbolinfo>1->get_name())->get_dectype()!=$<symbolinfo>3->get_dectype()){
@@ -378,7 +382,11 @@ logic_expression : rel_expression 	{fprintf(parsertext,"Line at %d : logic_expre
 										}
 		 | rel_expression LOGICOP rel_expression {fprintf(parsertext,"Line at %d : logic_expression->rel_expression LOGICOP rel_expression\n\n",line_count);
 		 											fprintf(parsertext,"%s%s%s\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>2->get_name().c_str(),$<symbolinfo>3->get_name().c_str());
-													 if($<symbolinfo>1->get_dectype()=="float " ||$<symbolinfo>3->get_dectype()=="float "){
+													 if($<symbolinfo>1->get_dectype()=="void "||$<symbolinfo>3->get_dectype()=="void "){
+														error_count++;
+														fprintf(error,"Error at Line No.%d:  Type MIsmatch \n\n",line_count);
+														$<symbolinfo>$->set_dectype("int "); 
+													}else  if($<symbolinfo>1->get_dectype()=="float " ||$<symbolinfo>3->get_dectype()=="float "){
 											 			error_count++;
 														// cout<<$<symbolinfo>1->get_name()<<" "<<$<symbolinfo>3->get_name()<<endl;
 														fprintf(error,"Error at Line No.%d:  Type Mismatch \n\n",line_count);
@@ -398,7 +406,11 @@ rel_expression	: simple_expression {fprintf(parsertext,"Line at %d : rel_express
 									}
 		| simple_expression RELOP simple_expression	 {fprintf(parsertext,"Line at %d : rel_expression->simple_expression RELOP simple_expression\n\n",line_count);
 													fprintf(parsertext,"%s%s%s\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>2->get_name().c_str(),$<symbolinfo>3->get_name().c_str());
-													if($<symbolinfo>1->get_dectype()=="float " ||$<symbolinfo>3->get_dectype()=="float "){
+													if($<symbolinfo>1->get_dectype()=="void "||$<symbolinfo>3->get_dectype()=="void "){
+														error_count++;
+														fprintf(error,"Error at Line No.%d:  Type MIsmatch \n\n",line_count);
+														$<symbolinfo>$->set_dectype("int "); 
+												}else if($<symbolinfo>1->get_dectype()=="float " ||$<symbolinfo>3->get_dectype()=="float "){
 											 			error_count++;
 														// cout<<$<symbolinfo>1->get_name()<<" "<<$<symbolinfo>3->get_name()<<endl;
 														fprintf(error,"Error at Line No.%d:  Type Mismatch \n\n",line_count);
@@ -413,7 +425,7 @@ rel_expression	: simple_expression {fprintf(parsertext,"Line at %d : rel_express
 
 simple_expression : term {fprintf(parsertext,"Line at %d : simple_expression->term\n\n",line_count);
 							fprintf(parsertext,"%s\n\n",$<symbolinfo>1->get_name().c_str());
-							$<symbolinfo>$->set_dectype($<symbolinfo>1->get_dectype()); 
+							$<symbolinfo>$->set_dectype($<symbolinfo>1->get_dectype());
 							$<symbolinfo>$->set_name($<symbolinfo>1->get_name());  
 							 
 
@@ -421,22 +433,31 @@ simple_expression : term {fprintf(parsertext,"Line at %d : simple_expression->te
 		  | simple_expression ADDOP{ $<symbolinfo>1->set_name($<symbolinfo>1->get_name()+$<symbolinfo>2->get_name());} term { fprintf(parsertext,"Line at %d : simple_expression->simple_expression ADDOP term\n\n",line_count);
 		  								fprintf(parsertext,"%s%s\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>4->get_name().c_str());
 										//cout<<$<symbolinfo>4->get_dectype()<<endl;
-										if($<symbolinfo>1->get_dectype()=="float " ||$<symbolinfo>4->get_dectype()=="float ")
+										if($<symbolinfo>1->get_dectype()=="void "||$<symbolinfo>4->get_dectype()=="void "){
+												error_count++;
+												fprintf(error,"Error at Line No.%d:  Type MIsmatch \n\n",line_count);
+												$<symbolinfo>$->set_dectype("int "); 
+										}else if($<symbolinfo>1->get_dectype()=="float " ||$<symbolinfo>4->get_dectype()=="float ")
 											$<symbolinfo>$->set_dectype("float ");
 										else  $<symbolinfo>$->set_dectype("int ");
-										 $<symbolinfo>$->set_name($<symbolinfo>1->get_name()+$<symbolinfo>4->get_name());  
+										 	$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+$<symbolinfo>4->get_name());  
 										  }
 		  ;
 
 term :	unary_expression  {fprintf(parsertext,"Line at %d : term->unary_expression\n\n",line_count);
 							fprintf(parsertext,"%s\n\n",$<symbolinfo>1->get_name().c_str()); 
 							$<symbolinfo>$->set_dectype($<symbolinfo>1->get_dectype()); 
+							
 							$<symbolinfo>$->set_name($<symbolinfo>1->get_name()); 
 							
 							}
      |  term MULOP unary_expression {fprintf(parsertext,"Line at %d : term->term MULOP unary_expression\n\n",line_count);
 	 								fprintf(parsertext,"%s%s%s\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>2->get_name().c_str(),$<symbolinfo>3->get_name().c_str());
-									 if($<symbolinfo>2->get_name()=="%"){
+									 if($<symbolinfo>1->get_dectype()=="void "||$<symbolinfo>3->get_dectype()=="void "){
+											error_count++;
+											fprintf(error,"Error at Line No.%d:  Type MIsmatch \n\n",line_count);
+											$<symbolinfo>$->set_dectype("int "); 
+									}else if($<symbolinfo>2->get_name()=="%"){
 										 if($<symbolinfo>1->get_dectype()!="int " ||$<symbolinfo>3->get_dectype()!="int "){
 											 error_count++;
 											fprintf(error,"Error at Line No.%d:  Integer operand on modulus operator  \n\n",line_count);
@@ -463,19 +484,30 @@ term :	unary_expression  {fprintf(parsertext,"Line at %d : term->unary_expressio
 
 unary_expression : ADDOP unary_expression  { fprintf(parsertext,"Line at %d : unary_expression->ADDOP unary_expression\n\n",line_count);
 											fprintf(parsertext,"%s%s\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>2->get_name().c_str());
+											if($<symbolinfo>2->get_dectype()=="void "||$<symbolinfo>2->get_dectype()=="float "){
+												error_count++;
+												fprintf(error,"Error at Line No.%d:  Type MIsmatch \n\n",line_count);
+												$<symbolinfo>$->set_dectype("int "); 
+											}else 
 											 $<symbolinfo>$->set_dectype($<symbolinfo>2->get_dectype()); 	
 											 $<symbolinfo>$->set_name($<symbolinfo>1->get_name()+$<symbolinfo>2->get_name()); 
 										
 										}
 		 | NOT unary_expression {fprintf(parsertext,"Line at %d : unary_expression->NOT unary_expression\n\n",line_count);
-		 fprintf(parsertext,"!%s\n\n",$<symbolinfo>2->get_name().c_str()); 
-		 $<symbolinfo>$->set_dectype($<symbolinfo>2->get_dectype());  
-		 $<symbolinfo>$->set_name("!"+$<symbolinfo>2->get_name()); 
+				fprintf(parsertext,"!%s\n\n",$<symbolinfo>2->get_name().c_str()); 
+				if($<symbolinfo>2->get_dectype()=="void "||$<symbolinfo>2->get_dectype()=="float "){
+					error_count++;
+					fprintf(error,"Error at Line No.%d:  Type MIsmatch \n\n",line_count);
+					$<symbolinfo>$->set_dectype("int "); 
+				}else 
+				$<symbolinfo>$->set_dectype($<symbolinfo>2->get_dectype());  
+		 		$<symbolinfo>$->set_name("!"+$<symbolinfo>2->get_name()); 
 		 
 		 }
 		 | factor {fprintf(parsertext,"Line at %d : unary_expression->factor\n\n",line_count);
 		 		fprintf(parsertext,"%s\n\n",$<symbolinfo>1->get_name().c_str()); 
-				$<symbolinfo>$->set_dectype($<symbolinfo>1->get_dectype()); 
+				// cout<<$<symbolinfo>1->get_dectype()<<endl;
+				
 				$<symbolinfo>$->set_name($<symbolinfo>1->get_name()); 
 				
 		 }
@@ -493,16 +525,19 @@ factor	: variable { fprintf(parsertext,"Line at %d : factor->variable\n\n",line_
 									if(s==0){
 										error_count++;
 										fprintf(error,"Error at Line No.%d:  Undeclared Function \n\n",line_count);
-
+										$<symbolinfo>$->set_dectype("int "); 
 									}
 									else{
 										int num=s->get_isFunction()->get_number_of_parameter();
+									//	cout<<num<<endl;
+										$<symbolinfo>$->set_dectype(s->get_isFunction()->get_return_type());
 										if(num!=arg_list.size()){
 											error_count++;
 											fprintf(error,"Error at Line No.%d:  Invalid number of arguments \n\n",line_count);
 
 										}
 										else{
+											//cout<<s->get_isFunction()->get_return_type()<<endl;
 											vector<string>para_list=s->get_isFunction()->get_paralist();
 											vector<string>para_type=s->get_isFunction()->get_paratype();
 											for(int i=0;i<arg_list.size();i++){
@@ -553,6 +588,7 @@ argument_list : arguments  { fprintf(parsertext,"Line at %d : argument_list->arg
 							fprintf(parsertext,"%s\n\n",$<symbolinfo>1->get_name().c_str());
 							 $<symbolinfo>$->set_name($<symbolinfo>1->get_name());
 							}
+				| 		%empty	{ $<symbolinfo>$->set_name("");}
 			  ;
 
 arguments : arguments COMMA logic_expression { fprintf(parsertext,"Line at %d : arguments->arguments COMMA logic_expression \n\n",line_count);

@@ -16,10 +16,14 @@ class Function
 
         public:
             Function(){
+                number_of_parameter=0;
 
             }
             void set_return_type(string type){
                 this->return_type=type;
+            }
+            string get_return_type(){
+                return return_type;
             }
             void set_number_of_parameter(){
                 number_of_parameter=parameter_list.size();
