@@ -45,6 +45,10 @@ void yyerror(char *s)
 %token LPAREN RPAREN LCURL RCURL LTHIRD RTHIRD COMMA SEMICOLON
 %token STRING ID PRINTLN
 
+%left RELOP LOGICOP BITOP 
+%left ADDOP 
+%left MULOP
+
 %nonassoc LOWER_THAN_ELSE
 %nonassoc ELSE
 
