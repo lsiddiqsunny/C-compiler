@@ -13,10 +13,12 @@ class Function
         int number_of_parameter;
         vector<string> parameter_list;
         vector<string> parameter_type;
+        bool isdefined;
 
         public:
             Function(){
                 number_of_parameter=0;
+                isdefined=false;
 
             }
             void set_return_type(string type){
@@ -42,6 +44,12 @@ class Function
             }
             vector<string> get_paratype(){
                 return parameter_type;
+            }
+            void set_isdefined(){
+                isdefined=true;
+            }
+            bool get_isdefined(){
+                return isdefined;
             }
        
 

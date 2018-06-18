@@ -16,6 +16,7 @@ class SymbolInfo
         public:
         SymbolInfo()
         {
+            this->isFunction=0;
             this->next=0;
 
         }

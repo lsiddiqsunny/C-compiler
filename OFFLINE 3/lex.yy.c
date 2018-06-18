@@ -1356,7 +1356,7 @@ YY_RULE_SETUP
 #line 267 "scanner.l"
 {	 pair<string,int> modify=ModifyString(yytext,line_count);
 					
-						 fprintf(error,"Line no %d: TOKEN <COMMENT> Lexeme %s found\n",line_count,yytext);
+						/// fprintf(error,"Line no %d: TOKEN <COMMENT> Lexeme %s found\n",line_count,yytext);
 						 line_count=modify.second;
 						
 
@@ -1368,7 +1368,7 @@ YY_RULE_SETUP
 #line 274 "scanner.l"
 {
 						pair<string,int> modify=ModifyString(yytext,line_count);
-						fprintf(error,"Line no %d: TOKEN <COMMENT> Lexeme %s found\n",line_count,yytext);
+						//fprintf(error,"Line no %d: TOKEN <COMMENT> Lexeme %s found\n",line_count,yytext);
 						line_count=modify.second;
 						
 						

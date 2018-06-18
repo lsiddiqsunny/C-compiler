@@ -126,12 +126,31 @@ func_declaration : type_specifier ID  LPAREN  parameter_list RPAREN SEMICOLON {f
 
 func_definition : type_specifier ID  LPAREN  parameter_list RPAREN {
 				SymbolInfo *s=table->lookup($<symbolinfo>2->get_name());
-				if(s==0){
-					table->InsertPrev($<symbolinfo>2->get_name(),"ID","Function");
-				}else{
-					 error_count++;
-					fprintf(error,"Error at Line No.%d: Multiple Declaration of %s \n\n",line_count,$<symbolinfo>2->get_name().c_str());
-				} 
+				if(s!=0){ 
+					int num=s->get_isFunction()->get_number_of_parameter();
+				//	cout<<line_count<<" "<<para_list.size()<<endl;
+				//	$<symbolinfo>$->set_dectype(s->get_isFunction()->get_return_type());
+					if(num!=para_list.size()){
+						error_count++;
+						fprintf(error,"Error at Line No.%d:  Invalid number of arguments \n\n",line_count);
+
+					} else{
+					
+					vector<string>para_type=s->get_isFunction()->get_paratype();
+					for(int i=0;i<para_list.size();i++){
+					if(para_list[i]->get_dectype()!=para_type[i]){
+								error_count++;
+								fprintf(error,"Error at Line No.%d: Type Mismatch \n\n",line_count);
+								break;
+							}
+						}
+						if(s->get_isFunction()->get_return_type()!=$<symbolinfo>1->get_dectype()){
+								error_count++;
+								fprintf(error,"Error at Line No.%d: Return Type Mismatch \n\n",line_count);
+						}
+						para_list.clear();
+					}
+				}
 
 				} compound_statement 
 				{fprintf(parsertext,"Line at %d : func_definition->type_specifier ID LPAREN parameter_list RPAREN compound_statement \n\n",line_count);
@@ -139,26 +158,28 @@ func_definition : type_specifier ID  LPAREN  parameter_list RPAREN {
 				SymbolInfo *s=table->lookup($<symbolinfo>2->get_name());
 				if(s==0){
 					table->InsertPrev($<symbolinfo>2->get_name(),"ID","Function");
+						s=table->lookup($<symbolinfo>2->get_name());
+						s->set_isFunction();
+						//cout<<s->get_isFunction()->get_number_of_parameter()<<endl;
+						s->get_isFunction()->set_isdefined();
+						for(int i=0;i<para_list.size();i++){
+							s->get_isFunction()->add_number_of_parameter(para_list[i]->get_name(),para_list[i]->get_dectype());
+						//cout<<para_list[i]->get_dectype()<<endl;
+					}
+					para_list.clear();s->get_isFunction()->set_return_type($<symbolinfo>1->get_name());
+					//cout<<line_count<<" "<<s->get_isFunction()->get_return_type()<<endl;
 				}
-				s=table->lookup($<symbolinfo>2->get_name());
-				s->set_isFunction();
-				//cout<<s->get_isFunction()->get_number_of_parameter()<<endl;
-				for(int i=0;i<para_list.size();i++){
-					s->get_isFunction()->add_number_of_parameter(para_list[i]->get_name(),para_list[i]->get_dectype());
-					//cout<<para_list[i]->get_dectype()<<endl;
-				}
-				para_list.clear();s->get_isFunction()->set_return_type($<symbolinfo>1->get_name());
+			
 				$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+" "+$<symbolinfo>2->get_name()+"("+$<symbolinfo>4->get_name()+")"+$<symbolinfo>7->get_name());
 				}
 		| type_specifier ID LPAREN RPAREN { SymbolInfo *s=table->lookup($<symbolinfo>2->get_name());
 											if(s==0){
 												table->InsertPrev($<symbolinfo>2->get_name(),"ID","Function");
-											}else{
-											error_count++;
-											fprintf(error,"Error at Line No.%d: Multiple Declaration of %s \n\n",line_count,$<symbolinfo>2->get_name().c_str());
-											} 
+											}
 											s=table->lookup($<symbolinfo>2->get_name());
-											s->set_isFunction();
+											s->set_isFunction();s->get_isFunction()->set_isdefined();
+											s->get_isFunction()->set_return_type($<symbolinfo>1->get_name());
+										//	cout<<line_count<<" "<<s->get_isFunction()->get_return_type()<<endl;
 											$<symbolinfo>1->set_name($<symbolinfo>1->get_name()+" "+$<symbolinfo>2->get_name()+"()");
 											} compound_statement {
 											fprintf(parsertext,"Line at %d : func_definition->type_specifier ID LPAREN RPAREN compound_statement\n\n",line_count);
@@ -337,6 +358,7 @@ variable : ID 		{
 					}
 						$<symbolinfo>$->set_name($<symbolinfo>1->get_name()); 
 						
+						
 					}
 	 | ID LTHIRD expression RTHIRD  {fprintf(parsertext,"Line at %d : variable->ID LTHIRD expression RTHIRD\n\n",line_count);
 	 								fprintf(parsertext,"%s[%s]\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>3->get_name().c_str());
@@ -344,7 +366,8 @@ variable : ID 		{
 										error_count++;
 										fprintf(error,"Error at Line No.%d:  Undeclared Variable: %s \n\n",line_count,$<symbolinfo>1->get_name().c_str());
 									}
-									if($<symbolinfo>3->get_dectype()=="float "){
+									//cout<<line_count<<" "<<$<symbolinfo>3->get_dectype()<<endl;
+									if($<symbolinfo>3->get_dectype()=="float "||$<symbolinfo>3->get_dectype()=="void "){
 										 error_count++;
 										fprintf(error,"Error at Line No.%d:  Non-integer Array Index  \n\n",line_count);
 									}
@@ -544,12 +567,22 @@ factor	: variable { fprintf(parsertext,"Line at %d : factor->variable\n\n",line_
 									SymbolInfo* s=table->lookup($<symbolinfo>1->get_name());
 									if(s==0){
 										error_count++;
-										fprintf(error,"Error at Line No.%d:  Undeclared Function \n\n",line_count);
+										fprintf(error,"Error at Line No.%d:  Undefined Function \n\n",line_count);
 										$<symbolinfo>$->set_dectype("int "); 
 									}
-									else{
+									else if(s->get_isFunction()==0){
+										error_count++;
+										fprintf(error,"Error at Line No.%d:  Not A Function \n\n",line_count);
+										$<symbolinfo>$->set_dectype("int "); 
+									}
+									else {
+										if(s->get_isFunction()->get_isdefined()==0){
+										error_count++;
+										fprintf(error,"Error at Line No.%d:  Undeclared Function \n\n",line_count);
+										}
+
 										int num=s->get_isFunction()->get_number_of_parameter();
-									//	cout<<num<<endl;
+										//cout<<line_count<<" "<<arg_list.size()<<endl;
 										$<symbolinfo>$->set_dectype(s->get_isFunction()->get_return_type());
 										if(num!=arg_list.size()){
 											error_count++;
@@ -570,7 +603,8 @@ factor	: variable { fprintf(parsertext,"Line at %d : factor->variable\n\n",line_
 
 										}
 									}
-
+									arg_list.clear();
+									//cout<<line_count<<" "<<$<symbolinfo>$->get_dectype()<<endl;
 									$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+"("+$<symbolinfo>3->get_name()+")"); 
 									}
 	| LPAREN expression RPAREN {fprintf(parsertext,"Line at %d : factor->LPAREN expression RPAREN\n\n",line_count);
