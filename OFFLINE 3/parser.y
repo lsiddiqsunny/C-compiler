@@ -95,14 +95,19 @@ func_declaration : type_specifier ID  LPAREN  parameter_list RPAREN SEMICOLON {f
 		SymbolInfo *s=table->lookup($<symbolinfo>2->get_name());
 				if(s==0){
 					table->Insert($<symbolinfo>2->get_name(),"ID","Function");
-				} 
-				s=table->lookup($<symbolinfo>2->get_name());
-				s->set_isFunction();
-				for(int i=0;i<para_list.size();i++){
-					s->get_isFunction()->add_number_of_parameter(para_list[i]->get_name(),para_list[i]->get_dectype());
+					s=table->lookup($<symbolinfo>2->get_name());
+					s->set_isFunction();
+					for(int i=0;i<para_list.size();i++){
+						s->get_isFunction()->add_number_of_parameter(para_list[i]->get_name(),para_list[i]->get_dectype());
 					//cout<<para_list[i]->get_dectype()<<endl;
+					}
+					para_list.clear();s->get_isFunction()->set_return_type($<symbolinfo>1->get_name());
+				} 
+				else{
+					 error_count++;
+					fprintf(error,"Error at Line No.%d: Multiple Declaration of %s \n\n",line_count,$<symbolinfo>2->get_name().c_str());
 				}
-				para_list.clear();s->get_isFunction()->set_return_type($<symbolinfo>1->get_name());
+				
 		$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+" "+$<symbolinfo>2->get_name()+"("+$<symbolinfo>4->get_name()+");");
 		}
 		|type_specifier ID LPAREN RPAREN SEMICOLON {fprintf(parsertext,"Line at %d : func_declaration->type_specifier ID LPAREN RPAREN SEMICOLON\n\n",line_count);
@@ -110,6 +115,10 @@ func_declaration : type_specifier ID  LPAREN  parameter_list RPAREN SEMICOLON {f
 				SymbolInfo *s=table->lookup($<symbolinfo>2->get_name());
 				if(s==0){
 					table->Insert($<symbolinfo>2->get_name(),"ID","Function");
+				}
+				else{
+					 error_count++;
+					fprintf(error,"Error at Line No.%d: Multiple Declaration of %s \n\n",line_count,$<symbolinfo>2->get_name().c_str());
 				}
 				$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+" "+$<symbolinfo>2->get_name()+"();");
 		}
@@ -119,7 +128,11 @@ func_definition : type_specifier ID  LPAREN  parameter_list RPAREN {
 				SymbolInfo *s=table->lookup($<symbolinfo>2->get_name());
 				if(s==0){
 					table->InsertPrev($<symbolinfo>2->get_name(),"ID","Function");
-					} 
+				}else{
+					 error_count++;
+					fprintf(error,"Error at Line No.%d: Multiple Declaration of %s \n\n",line_count,$<symbolinfo>2->get_name().c_str());
+				} 
+
 				} compound_statement 
 				{fprintf(parsertext,"Line at %d : func_definition->type_specifier ID LPAREN parameter_list RPAREN compound_statement \n\n",line_count);
 				fprintf(parsertext,"%s %s(%s) %s \n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>2->get_name().c_str(),$<symbolinfo>4->get_name().c_str(),$<symbolinfo>7->get_name().c_str());
@@ -140,7 +153,10 @@ func_definition : type_specifier ID  LPAREN  parameter_list RPAREN {
 		| type_specifier ID LPAREN RPAREN { SymbolInfo *s=table->lookup($<symbolinfo>2->get_name());
 											if(s==0){
 												table->InsertPrev($<symbolinfo>2->get_name(),"ID","Function");
-											}
+											}else{
+											error_count++;
+											fprintf(error,"Error at Line No.%d: Multiple Declaration of %s \n\n",line_count,$<symbolinfo>2->get_name().c_str());
+											} 
 											s=table->lookup($<symbolinfo>2->get_name());
 											s->set_isFunction();
 											$<symbolinfo>1->set_name($<symbolinfo>1->get_name()+" "+$<symbolinfo>2->get_name()+"()");
