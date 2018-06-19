@@ -1096,15 +1096,15 @@ Line at 24 : logic_expression->rel_expression
 
 Line at 24 : expression->variable ASSIGNOP logic_expression
 
-(2%3*4+5)=(2%3*4+5)
+b=(2%3*4+5)
 
 Line at 24 : expression_statement->expression SEMICOLON
 
-(2%3*4+5)=(2%3*4+5);
+b=(2%3*4+5);
 
 Line at 24 : statement -> expression_statement
 
-(2%3*4+5)=(2%3*4+5);
+b=(2%3*4+5);
 
 Line at 24 : statements->statements statement
 
@@ -1116,23 +1116,55 @@ a[1]=2;
 a[2]=3;
 a[4+5]=6;
 a[7<8]=9;
-a[b%c]=x; (2%3*4+5)=(2%3*4+5);
+a[b%c]=x; b=(2%3*4+5);
 
 Line at 25 : variable->ID
 
-d
+b
 
-Line at 25 : factor->CONST_FLOAT
+Line at 25 : variable->ID
 
-2.3
+b
+
+Line at 25 : factor->variable
+
+b
 
 Line at 25 : unary_expression->factor
 
-2.3
+b
 
 Line at 25 : term->unary_expression
 
-2.3
+b
+
+Line at 25 : simple_expression->term
+
+b
+
+Line at 25 : factor->CONST_INT
+
+2
+
+Line at 25 : unary_expression->factor
+
+2
+
+Line at 25 : term->unary_expression
+
+2
+
+Line at 25 : factor->CONST_INT
+
+3
+
+Line at 25 : unary_expression->factor
+
+3
+
+Line at 25 : term->term MULOP unary_expression
+
+2%3
 
 Line at 25 : factor->CONST_INT
 
@@ -1144,31 +1176,75 @@ Line at 25 : unary_expression->factor
 
 Line at 25 : term->term MULOP unary_expression
 
-2.3*4
+2%3*4
 
 Line at 25 : simple_expression->term
 
-2.3*4
+2%3*4
+
+Line at 25 : factor->CONST_INT
+
+5
+
+Line at 25 : unary_expression->factor
+
+5
+
+Line at 25 : term->unary_expression
+
+5
+
+Line at 25 : simple_expression->simple_expression ADDOP term
+
+2%3*4+5
 
 Line at 25 : rel_expression->simple_expression
 
-2.3*4
+2%3*4+5
 
 Line at 25 : logic_expression->rel_expression
 
-2.3*4
+2%3*4+5
+
+Line at 25 : expression->logic_expression
+
+2%3*4+5
+
+Line at 25 : factor->LPAREN expression RPAREN
+
+(2%3*4+5)
+
+Line at 25 : unary_expression->factor
+
+(2%3*4+5)
+
+Line at 25 : term->unary_expression
+
+(2%3*4+5)
+
+Line at 25 : simple_expression->simple_expression ADDOP term
+
+b+(2%3*4+5)
+
+Line at 25 : rel_expression->simple_expression
+
+b+(2%3*4+5)
+
+Line at 25 : logic_expression->rel_expression
+
+b+(2%3*4+5)
 
 Line at 25 : expression->variable ASSIGNOP logic_expression
 
-d=2.3*4
+b=b+(2%3*4+5)
 
 Line at 25 : expression_statement->expression SEMICOLON
 
-d=2.3*4;
+b=b+(2%3*4+5);
 
 Line at 25 : statement -> expression_statement
 
-d=2.3*4;
+b=b+(2%3*4+5);
 
 Line at 25 : statements->statements statement
 
@@ -1181,107 +1257,59 @@ a[2]=3;
 a[4+5]=6;
 a[7<8]=9;
 a[b%c]=x;
-(2%3*4+5)=(2%3*4+5); d=2.3*4;
+b=(2%3*4+5); b=b+(2%3*4+5);
 
 Line at 26 : variable->ID
 
-b
+d
+
+Line at 26 : factor->CONST_FLOAT
+
+2.3
+
+Line at 26 : unary_expression->factor
+
+2.3
+
+Line at 26 : term->unary_expression
+
+2.3
 
 Line at 26 : factor->CONST_INT
 
-2
+4
 
 Line at 26 : unary_expression->factor
 
-2
+4
 
-Line at 26 : term->unary_expression
+Line at 26 : term->term MULOP unary_expression
 
-2
-
-Line at 26 : simple_expression->term
-
-2
-
-Line at 26 : rel_expression->simple_expression
-
-2
-
-Line at 26 : logic_expression->rel_expression
-
-2
-
-Line at 26 : arguments->logic_expression
-
-2
-
-Line at 26 : factor->CONST_INT
-
-3
-
-Line at 26 : unary_expression->factor
-
-3
-
-Line at 26 : term->unary_expression
-
-3
+2.3*4
 
 Line at 26 : simple_expression->term
 
-3
+2.3*4
 
 Line at 26 : rel_expression->simple_expression
 
-3
+2.3*4
 
 Line at 26 : logic_expression->rel_expression
 
-3
-
-Line at 26 : arguments->arguments COMMA logic_expression 
-
-2,3
-
-Line at 26 : argument_list->arguments
-
-2,3
-
-Line at 26 : factor->ID LPAREN argument_list RPAREN
-
-var(2,3)
-
-Line at 26 : unary_expression->factor
-
-var(2,3)
-
-Line at 26 : term->unary_expression
-
-var(2,3)
-
-Line at 26 : simple_expression->term
-
-var(2,3)
-
-Line at 26 : rel_expression->simple_expression
-
-var(2,3)
-
-Line at 26 : logic_expression->rel_expression
-
-var(2,3)
+2.3*4
 
 Line at 26 : expression->variable ASSIGNOP logic_expression
 
-b=var(2,3)
+d=2.3*4
 
 Line at 26 : expression_statement->expression SEMICOLON
 
-b=var(2,3);
+d=2.3*4;
 
 Line at 26 : statement -> expression_statement
 
-b=var(2,3);
+d=2.3*4;
 
 Line at 26 : statements->statements statement
 
@@ -1294,40 +1322,108 @@ a[2]=3;
 a[4+5]=6;
 a[7<8]=9;
 a[b%c]=x;
-(2%3*4+5)=(2%3*4+5);
-d=2.3*4; b=var(2,3);
+b=(2%3*4+5);
+b=b+(2%3*4+5); d=2.3*4;
+
+Line at 27 : variable->ID
+
+b
 
 Line at 27 : factor->CONST_INT
 
-0
+2
 
 Line at 27 : unary_expression->factor
 
-0
+2
 
 Line at 27 : term->unary_expression
 
-0
+2
 
 Line at 27 : simple_expression->term
 
-0
+2
 
 Line at 27 : rel_expression->simple_expression
 
-0
+2
 
 Line at 27 : logic_expression->rel_expression
 
-0
+2
 
-Line at 27 : expression->logic_expression
+Line at 27 : arguments->logic_expression
 
-0
+2
 
-Line at 27 : statement->RETURN expression SEMICOLON
+Line at 27 : factor->CONST_INT
 
-return 0;
+3
+
+Line at 27 : unary_expression->factor
+
+3
+
+Line at 27 : term->unary_expression
+
+3
+
+Line at 27 : simple_expression->term
+
+3
+
+Line at 27 : rel_expression->simple_expression
+
+3
+
+Line at 27 : logic_expression->rel_expression
+
+3
+
+Line at 27 : arguments->arguments COMMA logic_expression 
+
+2,3
+
+Line at 27 : argument_list->arguments
+
+2,3
+
+Line at 27 : factor->ID LPAREN argument_list RPAREN
+
+var(2,3)
+
+Line at 27 : unary_expression->factor
+
+var(2,3)
+
+Line at 27 : term->unary_expression
+
+var(2,3)
+
+Line at 27 : simple_expression->term
+
+var(2,3)
+
+Line at 27 : rel_expression->simple_expression
+
+var(2,3)
+
+Line at 27 : logic_expression->rel_expression
+
+var(2,3)
+
+Line at 27 : expression->variable ASSIGNOP logic_expression
+
+b=var(2,3)
+
+Line at 27 : expression_statement->expression SEMICOLON
+
+b=var(2,3);
+
+Line at 27 : statement -> expression_statement
+
+b=var(2,3);
 
 Line at 27 : statements->statements statement
 
@@ -1340,11 +1436,59 @@ a[2]=3;
 a[4+5]=6;
 a[7<8]=9;
 a[b%c]=x;
-(2%3*4+5)=(2%3*4+5);
+b=(2%3*4+5);
+b=b+(2%3*4+5);
+d=2.3*4; b=var(2,3);
+
+Line at 28 : factor->CONST_INT
+
+0
+
+Line at 28 : unary_expression->factor
+
+0
+
+Line at 28 : term->unary_expression
+
+0
+
+Line at 28 : simple_expression->term
+
+0
+
+Line at 28 : rel_expression->simple_expression
+
+0
+
+Line at 28 : logic_expression->rel_expression
+
+0
+
+Line at 28 : expression->logic_expression
+
+0
+
+Line at 28 : statement->RETURN expression SEMICOLON
+
+return 0;
+
+Line at 28 : statements->statements statement
+
+int  a[2],b,c;
+float  d;
+foo();
+a[var(2,3)]=4;
+a[1]=2;
+a[2]=3;
+a[4+5]=6;
+a[7<8]=9;
+a[b%c]=x;
+b=(2%3*4+5);
+b=b+(2%3*4+5);
 d=2.3*4;
 b=var(2,3); return 0;
 
-Line at 29 : compound_statement->LCURL statements RCURL
+Line at 30 : compound_statement->LCURL statements RCURL
 
 {int  a[2],b,c;
 float  d;
@@ -1355,7 +1499,8 @@ a[2]=3;
 a[4+5]=6;
 a[7<8]=9;
 a[b%c]=x;
-(2%3*4+5)=(2%3*4+5);
+b=(2%3*4+5);
+b=b+(2%3*4+5);
 d=2.3*4;
 b=var(2,3);
 return 0;}
@@ -1377,7 +1522,7 @@ return 0;}
 
  ScopeTable with id 4 removed
 
-Line at 29 : func_definition->type_specifier ID LPAREN RPAREN compound_statement
+Line at 30 : func_definition->type_specifier ID LPAREN RPAREN compound_statement
 
 int  main() {
 int  a[2],b,c;
@@ -1389,13 +1534,14 @@ a[2]=3;
 a[4+5]=6;
 a[7<8]=9;
 a[b%c]=x;
-(2%3*4+5)=(2%3*4+5);
+b=(2%3*4+5);
+b=b+(2%3*4+5);
 d=2.3*4;
 b=var(2,3);
 return 0;
 }
 
-Line at 29 : unit->func_definition
+Line at 30 : unit->func_definition
 
 int  main(){
 int  a[2],b,c;
@@ -1407,13 +1553,14 @@ a[2]=3;
 a[4+5]=6;
 a[7<8]=9;
 a[b%c]=x;
-(2%3*4+5)=(2%3*4+5);
+b=(2%3*4+5);
+b=b+(2%3*4+5);
 d=2.3*4;
 b=var(2,3);
 return 0;
 }
 
-Line at 29 : program->program unit
+Line at 30 : program->program unit
 
 int  x,y,z;
 float  a;
@@ -1435,7 +1582,8 @@ a[2]=3;
 a[4+5]=6;
 a[7<8]=9;
 a[b%c]=x;
-(2%3*4+5)=(2%3*4+5);
+b=(2%3*4+5);
+b=b+(2%3*4+5);
 d=2.3*4;
 b=var(2,3);
 return 0;
@@ -1453,7 +1601,7 @@ return 0;
  75  --> < ID : y > 
  76  --> < ID : z > 
 
-Total Lines : 29 
+Total Lines : 30 
 
-Total Errors : 0 
+Total Errors : 10 
 

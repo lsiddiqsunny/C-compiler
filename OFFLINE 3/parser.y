@@ -66,31 +66,31 @@ start : program {	}
 
 	  ;
 
-program : program unit {fprintf(parsertext,"Line at %d : program->program unit\n\n",line_count);
+program : program unit {$<symbolinfo>$=new SymbolInfo(); fprintf(parsertext,"Line at %d : program->program unit\n\n",line_count);
 						fprintf(parsertext,"%s %s\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>2->get_name().c_str()); 
 						$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+$<symbolinfo>2->get_name());
 						}
 
-	| unit {fprintf(parsertext,"Line at %d : program->unit\n\n",line_count);
+	| unit {$<symbolinfo>$=new SymbolInfo(); fprintf(parsertext,"Line at %d : program->unit\n\n",line_count);
 	fprintf(parsertext,"%s\n\n",$<symbolinfo>1->get_name().c_str());
 	$<symbolinfo>$->set_name($<symbolinfo>1->get_name());
 	}
 	;
 
-unit : var_declaration {fprintf(parsertext,"Line at %d : unit->var_declaration\n\n",line_count);
+unit : var_declaration {$<symbolinfo>$=new SymbolInfo(); fprintf(parsertext,"Line at %d : unit->var_declaration\n\n",line_count);
 						fprintf(parsertext,"%s\n\n",$<symbolinfo>1->get_name().c_str()); 
 						$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+"\n");}
-     | func_declaration {fprintf(parsertext,"Line at %d : unit->func_declaration\n\n",line_count);
+     | func_declaration {$<symbolinfo>$=new SymbolInfo(); fprintf(parsertext,"Line at %d : unit->func_declaration\n\n",line_count);
 	 					fprintf(parsertext,"%s\n\n",$<symbolinfo>1->get_name().c_str()); 
 						 $<symbolinfo>$->set_name($<symbolinfo>1->get_name()+"\n");
 						}
-     | func_definition { fprintf(parsertext,"Line at %d : unit->func_definition\n\n",line_count);
+     | func_definition { $<symbolinfo>$=new SymbolInfo(); fprintf(parsertext,"Line at %d : unit->func_definition\n\n",line_count);
 	 					 fprintf(parsertext,"%s\n\n",$<symbolinfo>1->get_name().c_str());
 						 $<symbolinfo>$->set_name($<symbolinfo>1->get_name()+"\n");
 						 }
      ;
 
-func_declaration : type_specifier ID  LPAREN  parameter_list RPAREN SEMICOLON {fprintf(parsertext,"Line at %d : func_declaration->type_specifier ID LPAREN parameter_list RPAREN SEMICOLON\n\n",line_count);
+func_declaration : type_specifier ID  LPAREN  parameter_list RPAREN SEMICOLON {$<symbolinfo>$=new SymbolInfo(); fprintf(parsertext,"Line at %d : func_declaration->type_specifier ID LPAREN parameter_list RPAREN SEMICOLON\n\n",line_count);
 		fprintf(parsertext,"%s %s(%s);\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>2->get_name().c_str(),$<symbolinfo>4->get_name().c_str());
 		SymbolInfo *s=table->lookup($<symbolinfo>2->get_name());
 				if(s==0){
@@ -110,7 +110,7 @@ func_declaration : type_specifier ID  LPAREN  parameter_list RPAREN SEMICOLON {f
 				
 		$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+" "+$<symbolinfo>2->get_name()+"("+$<symbolinfo>4->get_name()+");");
 		}
-		|type_specifier ID LPAREN RPAREN SEMICOLON {fprintf(parsertext,"Line at %d : func_declaration->type_specifier ID LPAREN RPAREN SEMICOLON\n\n",line_count);
+		|type_specifier ID LPAREN RPAREN SEMICOLON {$<symbolinfo>$=new SymbolInfo(); fprintf(parsertext,"Line at %d : func_declaration->type_specifier ID LPAREN RPAREN SEMICOLON\n\n",line_count);
 				fprintf(parsertext,"%s %s();\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>2->get_name().c_str());
 				SymbolInfo *s=table->lookup($<symbolinfo>2->get_name());
 				if(s==0){
@@ -124,7 +124,7 @@ func_declaration : type_specifier ID  LPAREN  parameter_list RPAREN SEMICOLON {f
 		}
 		;
 
-func_definition : type_specifier ID  LPAREN  parameter_list RPAREN {
+func_definition : type_specifier ID  LPAREN  parameter_list RPAREN {$<symbolinfo>$=new SymbolInfo(); 
 				SymbolInfo *s=table->lookup($<symbolinfo>2->get_name());
 				if(s!=0){ 
 					int num=s->get_isFunction()->get_number_of_parameter();
@@ -172,7 +172,7 @@ func_definition : type_specifier ID  LPAREN  parameter_list RPAREN {
 			
 				$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+" "+$<symbolinfo>2->get_name()+"("+$<symbolinfo>4->get_name()+")"+$<symbolinfo>7->get_name());
 				}
-		| type_specifier ID LPAREN RPAREN { SymbolInfo *s=table->lookup($<symbolinfo>2->get_name());
+		| type_specifier ID LPAREN RPAREN { $<symbolinfo>$=new SymbolInfo(); SymbolInfo *s=table->lookup($<symbolinfo>2->get_name());
 											if(s==0){
 												table->InsertPrev($<symbolinfo>2->get_name(),"ID","Function");
 											}
@@ -190,35 +190,35 @@ func_definition : type_specifier ID  LPAREN  parameter_list RPAREN {
  		;
 
 
-parameter_list  : parameter_list COMMA type_specifier ID {fprintf(parsertext,"Line at %d : parameter_list->parameter_list COMMA type_specifier ID\n\n",line_count);
+parameter_list  : parameter_list COMMA type_specifier ID {$<symbolinfo>$=new SymbolInfo(); fprintf(parsertext,"Line at %d : parameter_list->parameter_list COMMA type_specifier ID\n\n",line_count);
 															fprintf(parsertext,"%s,%s %s\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>3->get_name().c_str(),$<symbolinfo>4->get_name().c_str());
 															 para_list.push_back(new SymbolInfo($<symbolinfo>4->get_name(),"ID",$<symbolinfo>3->get_name()));
 															$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+","+$<symbolinfo>3->get_name()+" "+$<symbolinfo>4->get_name());
 															}
-		| parameter_list COMMA type_specifier {fprintf(parsertext,"Line at %d : parameter_list->parameter_list COMMA type_specifier\n\n",line_count);
+		| parameter_list COMMA type_specifier {$<symbolinfo>$=new SymbolInfo(); fprintf(parsertext,"Line at %d : parameter_list->parameter_list COMMA type_specifier\n\n",line_count);
 											fprintf(parsertext,"%s,%s\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>3->get_name().c_str());
 											$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+","+$<symbolinfo>3->get_name());
 
 											}
- 		| type_specifier ID {fprintf(parsertext,"Line at %d : parameter_list->type_specifier ID\n\n",line_count);
+ 		| type_specifier ID {$<symbolinfo>$=new SymbolInfo(); fprintf(parsertext,"Line at %d : parameter_list->type_specifier ID\n\n",line_count);
 		 					fprintf(parsertext,"%s %s\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>2->get_name().c_str());
 							para_list.push_back(new SymbolInfo($<symbolinfo>2->get_name(),"ID",$<symbolinfo>1->get_name()));
 		 					$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+" "+$<symbolinfo>2->get_name());
 							}
-		| type_specifier {fprintf(parsertext,"Line at %d : parameter_list->type_specifier\n\n",line_count);
+		| type_specifier {$<symbolinfo>$=new SymbolInfo(); fprintf(parsertext,"Line at %d : parameter_list->type_specifier\n\n",line_count);
 			fprintf(parsertext,"%s \n\n",$<symbolinfo>1->get_name().c_str());
 			$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+" ");
 		}
  		;
 
 
-compound_statement : LCURL statements RCURL {fprintf(parsertext,"Line at %d : compound_statement->LCURL statements RCURL\n\n",line_count);
+compound_statement : LCURL statements RCURL {$<symbolinfo>$=new SymbolInfo(); fprintf(parsertext,"Line at %d : compound_statement->LCURL statements RCURL\n\n",line_count);
 											fprintf(parsertext,"{%s}\n\n",$<symbolinfo>2->get_name().c_str());
 											$<symbolinfo>$->set_name("{\n"+$<symbolinfo>2->get_name()+"\n}");
 											table->printall();
 											table->Exit_Scope();
 											}
- 		    | LCURL RCURL {fprintf(parsertext,"Line at %d : compound_statement->LCURL RCURL\n\n",line_count);
+ 		    | LCURL RCURL {$<symbolinfo>$=new SymbolInfo(); fprintf(parsertext,"Line at %d : compound_statement->LCURL RCURL\n\n",line_count);
 			 				fprintf(parsertext,"{}\n\n");
 			 				$<symbolinfo>$->set_name("{}");
 							table->printall();
@@ -226,7 +226,7 @@ compound_statement : LCURL statements RCURL {fprintf(parsertext,"Line at %d : co
 			 }
  		    ;
 
-var_declaration : type_specifier declaration_list SEMICOLON {fprintf(parsertext,"Line at %d : var_declaration->type_specifier declaration_list SEMICOLON\n\n",line_count);
+var_declaration : type_specifier declaration_list SEMICOLON {$<symbolinfo>$=new SymbolInfo(); fprintf(parsertext,"Line at %d : var_declaration->type_specifier declaration_list SEMICOLON\n\n",line_count);
 															fprintf(parsertext,"%s %s;\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>2->get_name().c_str());
 															for(int i=0;i<dec_list.size();i++){
 																if(table->lookupcurrent(dec_list[i]->get_name())){
@@ -245,34 +245,34 @@ var_declaration : type_specifier declaration_list SEMICOLON {fprintf(parsertext,
 															}
  		 ;
 
-type_specifier	: INT  {fprintf(parsertext,"Line at %d : type_specifier	: INT\n\n",line_count);fprintf(parsertext,"int \n\n");
+type_specifier	: INT  {$<symbolinfo>$=new SymbolInfo(); fprintf(parsertext,"Line at %d : type_specifier	: INT\n\n",line_count);fprintf(parsertext,"int \n\n");
 				$<symbolinfo>$->set_name("int ");
 				}
- 		| FLOAT  {fprintf(parsertext,"Line at %d : type_specifier	: FLOAT\n\n",line_count);fprintf(parsertext,"float \n\n");
+ 		| FLOAT  {$<symbolinfo>$=new SymbolInfo(); fprintf(parsertext,"Line at %d : type_specifier	: FLOAT\n\n",line_count);fprintf(parsertext,"float \n\n");
 		 $<symbolinfo>$->set_name("float ");
 		 }
- 		| VOID  {fprintf(parsertext,"Line at %d : type_specifier	: VOID\n\n",line_count);fprintf(parsertext,"void \n\n");
+ 		| VOID  {$<symbolinfo>$=new SymbolInfo(); fprintf(parsertext,"Line at %d : type_specifier	: VOID\n\n",line_count);fprintf(parsertext,"void \n\n");
 		 $<symbolinfo>$->set_name("void ");
 		 }
  		;
 
-declaration_list : declaration_list COMMA ID {fprintf(parsertext,"Line at %d : declaration_list->declaration_list COMMA ID\n\n",line_count);
+declaration_list : declaration_list COMMA ID {$<symbolinfo>$=new SymbolInfo(); fprintf(parsertext,"Line at %d : declaration_list->declaration_list COMMA ID\n\n",line_count);
 											fprintf(parsertext,"%s,%s\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>3->get_name().c_str());
 												dec_list.push_back(new SymbolInfo($<symbolinfo>3->get_name(),"ID"));
 											$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+","+$<symbolinfo>3->get_name());
 											}
- 		  | declaration_list COMMA ID LTHIRD CONST_INT RTHIRD {fprintf(parsertext,"Line at %d : declaration_list->declaration_list COMMA ID LTHIRD CONST_INT RTHIRD\n\n",line_count);
+ 		  | declaration_list COMMA ID LTHIRD CONST_INT RTHIRD {$<symbolinfo>$=new SymbolInfo(); fprintf(parsertext,"Line at %d : declaration_list->declaration_list COMMA ID LTHIRD CONST_INT RTHIRD\n\n",line_count);
 		   														fprintf(parsertext,"%s,%s[%s]\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>3->get_name().c_str(),$<symbolinfo>5->get_name().c_str());
 																dec_list.push_back(new SymbolInfo($<symbolinfo>3->get_name(),"IDa"));
 																$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+","+$<symbolinfo>3->get_name()+"["+$<symbolinfo>5->get_name()+"]");
 																   }
- 		  | ID {fprintf(parsertext,"Line at %d : declaration_list->ID\n\n",line_count);
+ 		  | ID {$<symbolinfo>$=new SymbolInfo(); fprintf(parsertext,"Line at %d : declaration_list->ID\n\n",line_count);
 		   fprintf(parsertext,"%s\n\n",$<symbolinfo>1->get_name().c_str());
 		   	dec_list.push_back(new SymbolInfo($<symbolinfo>1->get_name(),"ID"));
 			$<symbolinfo>$->set_name($<symbolinfo>1->get_name());
 		
 		   }
- 		  | ID LTHIRD CONST_INT RTHIRD {fprintf(parsertext,"Line at %d : declaration_list->ID LTHIRD CONST_INT RTHIRD\n\n",line_count);
+ 		  | ID LTHIRD CONST_INT RTHIRD {$<symbolinfo>$=new SymbolInfo(); fprintf(parsertext,"Line at %d : declaration_list->ID LTHIRD CONST_INT RTHIRD\n\n",line_count);
 		   fprintf(parsertext,"%s[%s]\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>3->get_name().c_str());
 		   	dec_list.push_back(new SymbolInfo($<symbolinfo>1->get_name(),"IDa"));
 		   	$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+"["+$<symbolinfo>3->get_name()+"]");
@@ -280,71 +280,71 @@ declaration_list : declaration_list COMMA ID {fprintf(parsertext,"Line at %d : d
 		   }
  		  ;
 
-statements : statement {fprintf(parsertext,"Line at %d : statements->statement\n\n",line_count);
+statements : statement {$<symbolinfo>$=new SymbolInfo(); fprintf(parsertext,"Line at %d : statements->statement\n\n",line_count);
 						fprintf(parsertext,"%s\n\n",$<symbolinfo>1->get_name().c_str()); 
 						$<symbolinfo>$->set_name($<symbolinfo>1->get_name());
 						}
-	   | statements statement {fprintf(parsertext,"Line at %d : statements->statements statement\n\n",line_count);
+	   | statements statement {$<symbolinfo>$=new SymbolInfo(); fprintf(parsertext,"Line at %d : statements->statements statement\n\n",line_count);
 	   						fprintf(parsertext,"%s %s\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>2->get_name().c_str()); 
 							   $<symbolinfo>$->set_name($<symbolinfo>1->get_name()+"\n"+$<symbolinfo>2->get_name()); 
 							   }
 	   ;
 
-statement : var_declaration { fprintf(parsertext,"Line at %d : statement -> var_declaration\n\n",line_count);
+statement : var_declaration { $<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Line at %d : statement -> var_declaration\n\n",line_count);
 							fprintf(parsertext,"%s\n\n",$<symbolinfo>1->get_name().c_str());
 							$<symbolinfo>$->set_name($<symbolinfo>1->get_name()); 
 
 							}
-	  | expression_statement {fprintf(parsertext,"Line at %d : statement -> expression_statement\n\n",line_count);
+	  | expression_statement {$<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Line at %d : statement -> expression_statement\n\n",line_count);
 	  						fprintf(parsertext,"%s\n\n",$<symbolinfo>1->get_name().c_str()); 
 							$<symbolinfo>$->set_name($<symbolinfo>1->get_name()); 
 
 							  }
-	  | compound_statement {fprintf(parsertext,"Line at %d : statement->compound_statement\n\n",line_count);
+	  | compound_statement {$<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Line at %d : statement->compound_statement\n\n",line_count);
 	  						fprintf(parsertext,"%s\n\n",$<symbolinfo>1->get_name().c_str()); 
 							 $<symbolinfo>$->set_name($<symbolinfo>1->get_name()); 
  
 							  }
-	  | FOR LPAREN expression_statement expression_statement expression RPAREN statement {fprintf(parsertext,"Line at %d : statement ->FOR LPAREN expression_statement expression_statement expression RPAREN statement\n\n",line_count);
+	  | FOR LPAREN expression_statement expression_statement expression RPAREN statement {$<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Line at %d : statement ->FOR LPAREN expression_statement expression_statement expression RPAREN statement\n\n",line_count);
 	  																					fprintf(parsertext,"for(%s %s %s)\n%s \n\n",$<symbolinfo>3->get_name().c_str(),$<symbolinfo>4->get_name().c_str(),$<symbolinfo>5->get_name().c_str(),$<symbolinfo>7->get_name().c_str());
 																						  $<symbolinfo>$->set_name("for("+$<symbolinfo>3->get_name()+$<symbolinfo>4->get_name()+$<symbolinfo>5->get_name()+")\n"+$<symbolinfo>5->get_name()); 
 
 																						  }
-	  | IF LPAREN expression RPAREN statement %prec LOWER_THAN_ELSE {fprintf(parsertext,"Line at %d : statement->IF LPAREN expression RPAREN statement\n\n",line_count);
+	  | IF LPAREN expression RPAREN statement %prec LOWER_THAN_ELSE {$<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Line at %d : statement->IF LPAREN expression RPAREN statement\n\n",line_count);
 	  																fprintf(parsertext,"if(%s)\n%s\n\n",$<symbolinfo>3->get_name().c_str(),$<symbolinfo>5->get_name().c_str());
 																	$<symbolinfo>$->set_name("if("+$<symbolinfo>3->get_name()+")\n"+$<symbolinfo>5->get_name()); 
 
 																	  }
-	  | IF LPAREN expression RPAREN statement ELSE statement {fprintf(parsertext,"Line at %d : statement->IF LPAREN expression RPAREN statement ELSE statement\n\n",line_count);
+	  | IF LPAREN expression RPAREN statement ELSE statement {$<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Line at %d : statement->IF LPAREN expression RPAREN statement ELSE statement\n\n",line_count);
 	  														fprintf(parsertext,"if(%s)\n%s\n else \n %s\n\n",$<symbolinfo>3->get_name().c_str(),$<symbolinfo>5->get_name().c_str(),$<symbolinfo>7->get_name().c_str());
 															$<symbolinfo>$->set_name("if("+$<symbolinfo>3->get_name()+")\n"+$<symbolinfo>5->get_name()+" else \n"+$<symbolinfo>7->get_name()); 
 															}
 
-	  | WHILE LPAREN expression RPAREN statement {fprintf(parsertext,"Line at %d : statement->WHILE LPAREN expression RPAREN statement\n\n",line_count);
+	  | WHILE LPAREN expression RPAREN statement {$<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Line at %d : statement->WHILE LPAREN expression RPAREN statement\n\n",line_count);
 	  											fprintf(parsertext,"while(%s)\n%s\n\n",$<symbolinfo>3->get_name().c_str(),$<symbolinfo>5->get_name().c_str());
 												  $<symbolinfo>$->set_name("while("+$<symbolinfo>3->get_name()+")\n"+$<symbolinfo>5->get_name()); 
 												  }
-	  | PRINTLN LPAREN ID RPAREN SEMICOLON {fprintf(parsertext,"Line at %d : statement->PRINTLN LPAREN ID RPAREN SEMICOLON\n\n",line_count);
+	  | PRINTLN LPAREN ID RPAREN SEMICOLON {$<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Line at %d : statement->PRINTLN LPAREN ID RPAREN SEMICOLON\n\n",line_count);
 	  										fprintf(parsertext,"\n (%s);\n\n",$<symbolinfo>3->get_name().c_str());
 											  $<symbolinfo>$->set_name("\n("+$<symbolinfo>3->get_name()+")"); 
 											  }
-	  | RETURN expression SEMICOLON {fprintf(parsertext,"Line at %d : statement->RETURN expression SEMICOLON\n\n",line_count);
+	  | RETURN expression SEMICOLON {$<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Line at %d : statement->RETURN expression SEMICOLON\n\n",line_count);
 	  								fprintf(parsertext,"return %s;\n\n",$<symbolinfo>2->get_name().c_str());
 									$<symbolinfo>$->set_name("return "+$<symbolinfo>2->get_name()+";"); 
 									}
 	  ;
 
-expression_statement 	: SEMICOLON	{fprintf(parsertext,"Line at %d : expression_statement->SEMICOLON\n\n",line_count);
+expression_statement 	: SEMICOLON	{$<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Line at %d : expression_statement->SEMICOLON\n\n",line_count);
 									fprintf(parsertext,";\n\n"); 
 									$<symbolinfo>$->set_name(";"); 
 									}
-			| expression SEMICOLON {fprintf(parsertext,"Line at %d : expression_statement->expression SEMICOLON\n\n",line_count);
+			| expression SEMICOLON {$<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Line at %d : expression_statement->expression SEMICOLON\n\n",line_count);
 									fprintf(parsertext,"%s;\n\n",$<symbolinfo>1->get_name().c_str());
 										$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+";"); 
 									}
 			;
 
-variable : ID 		{
+variable : ID 		{$<symbolinfo>$=new SymbolInfo();
 					fprintf(parsertext,"Line at %d : variable->ID\n\n",line_count);
 					fprintf(parsertext,"%s\n\n",$<symbolinfo>1->get_name().c_str());
 					if(table->lookup($<symbolinfo>1->get_name())==0){
@@ -360,7 +360,7 @@ variable : ID 		{
 						
 						
 					}
-	 | ID LTHIRD expression RTHIRD  {fprintf(parsertext,"Line at %d : variable->ID LTHIRD expression RTHIRD\n\n",line_count);
+	 | ID LTHIRD expression RTHIRD  {$<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Line at %d : variable->ID LTHIRD expression RTHIRD\n\n",line_count);
 	 								fprintf(parsertext,"%s[%s]\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>3->get_name().c_str());
 									if(table->lookup($<symbolinfo>1->get_name())==0){
 										error_count++;
@@ -394,12 +394,12 @@ variable : ID 		{
 									
 									}
 	 ;
-expression : logic_expression	{fprintf(parsertext,"Line at %d : expression->logic_expression\n\n",line_count);
+expression : logic_expression	{$<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Line at %d : expression->logic_expression\n\n",line_count);
  								fprintf(parsertext,"%s\n\n",$<symbolinfo>1->get_name().c_str());
 								 	$<symbolinfo>$->set_name($<symbolinfo>1->get_name()); 
 									$<symbolinfo>$->set_dectype($<symbolinfo>1->get_dectype()); 
 								 }
-	   | variable ASSIGNOP logic_expression {fprintf(parsertext,"Line at %d : expression->variable ASSIGNOP logic_expression\n\n",line_count);
+	   | variable ASSIGNOP logic_expression {$<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Line at %d : expression->variable ASSIGNOP logic_expression\n\n",line_count);
 	   										fprintf(parsertext,"%s=%s\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>3->get_name().c_str());
 											   if($<symbolinfo>3->get_dectype()=="void "){
 												error_count++;
@@ -417,13 +417,13 @@ expression : logic_expression	{fprintf(parsertext,"Line at %d : expression->logi
 
 											}
 	   ;
-logic_expression : rel_expression 	{fprintf(parsertext,"Line at %d : logic_expression->rel_expression\n\n",line_count);
+logic_expression : rel_expression 	{$<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Line at %d : logic_expression->rel_expression\n\n",line_count);
 										fprintf(parsertext,"%s\n\n",$<symbolinfo>1->get_name().c_str());
 										$<symbolinfo>$->set_name($<symbolinfo>1->get_name()); 
 										$<symbolinfo>$->set_dectype($<symbolinfo>1->get_dectype()); 
 
 										}
-		 | rel_expression LOGICOP rel_expression {fprintf(parsertext,"Line at %d : logic_expression->rel_expression LOGICOP rel_expression\n\n",line_count);
+		 | rel_expression LOGICOP rel_expression {$<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Line at %d : logic_expression->rel_expression LOGICOP rel_expression\n\n",line_count);
 		 											fprintf(parsertext,"%s%s%s\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>2->get_name().c_str(),$<symbolinfo>3->get_name().c_str());
 													 if($<symbolinfo>1->get_dectype()=="void "||$<symbolinfo>3->get_dectype()=="void "){
 														error_count++;
@@ -441,13 +441,13 @@ logic_expression : rel_expression 	{fprintf(parsertext,"Line at %d : logic_expre
 												}
 		 ;
 
-rel_expression	: simple_expression {fprintf(parsertext,"Line at %d : rel_expression->simple_expression\n\n",line_count);
+rel_expression	: simple_expression {$<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Line at %d : rel_expression->simple_expression\n\n",line_count);
 									fprintf(parsertext,"%s\n\n",$<symbolinfo>1->get_name().c_str());
 									$<symbolinfo>$->set_name($<symbolinfo>1->get_name()); 
 									 $<symbolinfo>$->set_dectype($<symbolinfo>1->get_dectype()); 
 									 
 									}
-		| simple_expression RELOP simple_expression	 {fprintf(parsertext,"Line at %d : rel_expression->simple_expression RELOP simple_expression\n\n",line_count);
+		| simple_expression RELOP simple_expression	 {$<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Line at %d : rel_expression->simple_expression RELOP simple_expression\n\n",line_count);
 													fprintf(parsertext,"%s%s%s\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>2->get_name().c_str(),$<symbolinfo>3->get_name().c_str());
 													if($<symbolinfo>1->get_dectype()=="void "||$<symbolinfo>3->get_dectype()=="void "){
 														error_count++;
@@ -466,35 +466,36 @@ rel_expression	: simple_expression {fprintf(parsertext,"Line at %d : rel_express
 													}
 		;
 
-simple_expression : term {fprintf(parsertext,"Line at %d : simple_expression->term\n\n",line_count);
+simple_expression : term {$<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Line at %d : simple_expression->term\n\n",line_count);
 							fprintf(parsertext,"%s\n\n",$<symbolinfo>1->get_name().c_str());
 							$<symbolinfo>$->set_dectype($<symbolinfo>1->get_dectype());
 							$<symbolinfo>$->set_name($<symbolinfo>1->get_name());  
 							 
 
 							}
-		  | simple_expression ADDOP{ $<symbolinfo>1->set_name($<symbolinfo>1->get_name()+$<symbolinfo>2->get_name());} term { fprintf(parsertext,"Line at %d : simple_expression->simple_expression ADDOP term\n\n",line_count);
-		  								fprintf(parsertext,"%s%s\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>4->get_name().c_str());
-										//cout<<$<symbolinfo>4->get_dectype()<<endl;
-										if($<symbolinfo>1->get_dectype()=="void "||$<symbolinfo>4->get_dectype()=="void "){
+		  | simple_expression ADDOP term {$<symbolinfo>$=new SymbolInfo(); 
+		  								fprintf(parsertext,"Line at %d : simple_expression->simple_expression ADDOP term\n\n",line_count);
+		  								fprintf(parsertext,"%s%s%s\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>2->get_name().c_str(),$<symbolinfo>3->get_name().c_str());
+										//cout<<$<symbolinfo>3->get_dectype()<<endl;
+										if($<symbolinfo>1->get_dectype()=="void "||$<symbolinfo>3->get_dectype()=="void "){
 												error_count++;
 												fprintf(error,"Error at Line No.%d:  Type MIsmatch \n\n",line_count);
 												$<symbolinfo>$->set_dectype("int "); 
-										}else if($<symbolinfo>1->get_dectype()=="float " ||$<symbolinfo>4->get_dectype()=="float ")
+										}else if($<symbolinfo>1->get_dectype()=="float " ||$<symbolinfo>3->get_dectype()=="float ")
 											$<symbolinfo>$->set_dectype("float ");
 										else  $<symbolinfo>$->set_dectype("int ");
-										 	$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+$<symbolinfo>4->get_name());  
+										 	$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+$<symbolinfo>2->get_name()+$<symbolinfo>3->get_name());  
 										  }
 		  ;
 
-term :	unary_expression  {fprintf(parsertext,"Line at %d : term->unary_expression\n\n",line_count);
+term :	unary_expression  {$<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Line at %d : term->unary_expression\n\n",line_count);
 							fprintf(parsertext,"%s\n\n",$<symbolinfo>1->get_name().c_str()); 
 							$<symbolinfo>$->set_dectype($<symbolinfo>1->get_dectype()); 
 							
 							$<symbolinfo>$->set_name($<symbolinfo>1->get_name()); 
 							
 							}
-     |  term MULOP unary_expression {fprintf(parsertext,"Line at %d : term->term MULOP unary_expression\n\n",line_count);
+     |  term MULOP unary_expression {$<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Line at %d : term->term MULOP unary_expression\n\n",line_count);
 	 								fprintf(parsertext,"%s%s%s\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>2->get_name().c_str(),$<symbolinfo>3->get_name().c_str());
 									 if($<symbolinfo>1->get_dectype()=="void "||$<symbolinfo>3->get_dectype()=="void "){
 											error_count++;
@@ -525,7 +526,7 @@ term :	unary_expression  {fprintf(parsertext,"Line at %d : term->unary_expressio
 									 }
      ;
 
-unary_expression : ADDOP unary_expression  { fprintf(parsertext,"Line at %d : unary_expression->ADDOP unary_expression\n\n",line_count);
+unary_expression : ADDOP unary_expression  {$<symbolinfo>$=new SymbolInfo(); fprintf(parsertext,"Line at %d : unary_expression->ADDOP unary_expression\n\n",line_count);
 											fprintf(parsertext,"%s%s\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>2->get_name().c_str());
 											if($<symbolinfo>2->get_dectype()=="void "||$<symbolinfo>2->get_dectype()=="float "){
 												error_count++;
@@ -536,7 +537,7 @@ unary_expression : ADDOP unary_expression  { fprintf(parsertext,"Line at %d : un
 											 $<symbolinfo>$->set_name($<symbolinfo>1->get_name()+$<symbolinfo>2->get_name()); 
 										
 										}
-		 | NOT unary_expression {fprintf(parsertext,"Line at %d : unary_expression->NOT unary_expression\n\n",line_count);
+		 | NOT unary_expression {$<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Line at %d : unary_expression->NOT unary_expression\n\n",line_count);
 				fprintf(parsertext,"!%s\n\n",$<symbolinfo>2->get_name().c_str()); 
 				if($<symbolinfo>2->get_dectype()=="void "||$<symbolinfo>2->get_dectype()=="float "){
 					error_count++;
@@ -547,7 +548,7 @@ unary_expression : ADDOP unary_expression  { fprintf(parsertext,"Line at %d : un
 		 		$<symbolinfo>$->set_name("!"+$<symbolinfo>2->get_name()); 
 		 
 		 }
-		 | factor {fprintf(parsertext,"Line at %d : unary_expression->factor\n\n",line_count);
+		 | factor {$<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Line at %d : unary_expression->factor\n\n",line_count);
 		 		fprintf(parsertext,"%s\n\n",$<symbolinfo>1->get_name().c_str()); 
 				// cout<<$<symbolinfo>1->get_dectype()<<endl;
 				
@@ -556,13 +557,13 @@ unary_expression : ADDOP unary_expression  { fprintf(parsertext,"Line at %d : un
 		 }
 		 ;
 
-factor	: variable { fprintf(parsertext,"Line at %d : factor->variable\n\n",line_count);
+factor	: variable { $<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Line at %d : factor->variable\n\n",line_count);
 					fprintf(parsertext,"%s\n\n",$<symbolinfo>1->get_name().c_str());
 					$<symbolinfo>$->set_dectype($<symbolinfo>1->get_dectype()); 
 					$<symbolinfo>$->set_name($<symbolinfo>1->get_name()); 
 					
 					}
-	| ID LPAREN argument_list RPAREN { fprintf(parsertext,"Line at %d : factor->ID LPAREN argument_list RPAREN\n\n",line_count);
+	| ID LPAREN argument_list RPAREN {$<symbolinfo>$=new SymbolInfo(); fprintf(parsertext,"Line at %d : factor->ID LPAREN argument_list RPAREN\n\n",line_count);
 									fprintf(parsertext,"%s(%s)\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>3->get_name().c_str());
 									SymbolInfo* s=table->lookup($<symbolinfo>1->get_name());
 									if(s==0){
@@ -607,30 +608,30 @@ factor	: variable { fprintf(parsertext,"Line at %d : factor->variable\n\n",line_
 									//cout<<line_count<<" "<<$<symbolinfo>$->get_dectype()<<endl;
 									$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+"("+$<symbolinfo>3->get_name()+")"); 
 									}
-	| LPAREN expression RPAREN {fprintf(parsertext,"Line at %d : factor->LPAREN expression RPAREN\n\n",line_count);
+	| LPAREN expression RPAREN {$<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Line at %d : factor->LPAREN expression RPAREN\n\n",line_count);
 								fprintf(parsertext,"(%s)\n\n",$<symbolinfo>2->get_name().c_str()); 
 								$<symbolinfo>$->set_dectype($<symbolinfo>2->get_dectype()); 
 								$<symbolinfo>$->set_name("("+$<symbolinfo>2->get_name()+")"); 
 								}
-	| CONST_INT { fprintf(parsertext,"Line at %d : factor->CONST_INT\n\n",line_count);
+	| CONST_INT { $<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Line at %d : factor->CONST_INT\n\n",line_count);
 				fprintf(parsertext,"%s\n\n",$<symbolinfo>1->get_name().c_str());
 				$<symbolinfo>$->set_dectype("int "); 	
 				$<symbolinfo>$->set_name($<symbolinfo>1->get_name()); 
 			
 				}
-	| CONST_FLOAT {fprintf(parsertext,"Line at %d : factor->CONST_FLOAT\n\n",line_count);
+	| CONST_FLOAT {$<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Line at %d : factor->CONST_FLOAT\n\n",line_count);
 					fprintf(parsertext,"%s\n\n",$<symbolinfo>1->get_name().c_str()); 
 					$<symbolinfo>$->set_dectype("float "); 	
 					$<symbolinfo>$->set_name($<symbolinfo>1->get_name()); 
 				
 					}
-	| variable INCOP {fprintf(parsertext,"Line at %d : factor->variable INCOP\n\n",line_count);
+	| variable INCOP {$<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Line at %d : factor->variable INCOP\n\n",line_count);
 					fprintf(parsertext,"%s++\n\n",$<symbolinfo>1->get_name().c_str()); 
 					$<symbolinfo>$->set_dectype($<symbolinfo>1->get_dectype());
 					$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+"++"); 
 					 
 					 }
-	| variable DECOP {fprintf(parsertext,"Line at %d : factor->variable DECOP\n\n",line_count);
+	| variable DECOP {$<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Line at %d : factor->variable DECOP\n\n",line_count);
 					fprintf(parsertext,"%s--\n\n",$<symbolinfo>1->get_name().c_str());
 					  $<symbolinfo>$->set_dectype($<symbolinfo>1->get_dectype()); 
 					  $<symbolinfo>$->set_name($<symbolinfo>1->get_name()+"--"); 
@@ -638,19 +639,20 @@ factor	: variable { fprintf(parsertext,"Line at %d : factor->variable\n\n",line_
 					 }
 	;
 
-argument_list : arguments  { fprintf(parsertext,"Line at %d : argument_list->arguments\n\n",line_count);
+argument_list : arguments  {$<symbolinfo>$=new SymbolInfo(); fprintf(parsertext,"Line at %d : argument_list->arguments\n\n",line_count);
 							fprintf(parsertext,"%s\n\n",$<symbolinfo>1->get_name().c_str());
 							 $<symbolinfo>$->set_name($<symbolinfo>1->get_name());
 							}
-				| 		%empty	{ $<symbolinfo>$->set_name("");}
+				| 		%empty	{ $<symbolinfo>$=new SymbolInfo();$<symbolinfo>$->set_name("");}
 			  ;
 
-arguments : arguments COMMA logic_expression { fprintf(parsertext,"Line at %d : arguments->arguments COMMA logic_expression \n\n",line_count);
+arguments : arguments COMMA logic_expression { $<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Line at %d : arguments->arguments COMMA logic_expression \n\n",line_count);
 											fprintf(parsertext,"%s,%s\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>3->get_name().c_str());
 											arg_list.push_back($<symbolinfo>3);
 											$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+","+$<symbolinfo>3->get_name());
 											}
-	      | logic_expression {fprintf(parsertext,"Line at %d : arguments->logic_expression\n\n",line_count);
+	      | logic_expression {$<symbolinfo>$=new SymbolInfo();
+		  					fprintf(parsertext,"Line at %d : arguments->logic_expression\n\n",line_count);
 		  					fprintf(parsertext,"%s\n\n",$<symbolinfo>1->get_name().c_str()); 
 							arg_list.push_back(new SymbolInfo($<symbolinfo>1->get_name(),$<symbolinfo>1->get_type(),$<symbolinfo>1->get_dectype()));
 							// cout<<$<symbolinfo>1->get_dectype()<<endl;

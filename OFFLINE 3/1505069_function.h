@@ -46,7 +46,7 @@ class Function
                 return parameter_type;
             }
             void set_isdefined(){
-                isdefined=true;
+                this->isdefined=true;
             }
             bool get_isdefined(){
                 return isdefined;
