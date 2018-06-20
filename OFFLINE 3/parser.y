@@ -104,8 +104,30 @@ func_declaration : type_specifier ID  LPAREN  parameter_list RPAREN SEMICOLON {$
 					para_list.clear();s->get_isFunction()->set_return_type($<symbolinfo>1->get_name());
 				} 
 				else{
-					 error_count++;
-					fprintf(error,"Error at Line No.%d: Multiple Declaration of %s \n\n",line_count,$<symbolinfo>2->get_name().c_str());
+					int num=s->get_isFunction()->get_number_of_parameter();
+				//	cout<<line_count<<" "<<para_list.size()<<endl;
+				//	$<symbolinfo>$->set_dectype(s->get_isFunction()->get_return_type());
+					if(num!=para_list.size()){
+						error_count++;
+						fprintf(error,"Error at Line No.%d:  Invalid number of parameters \n\n",line_count);
+
+					} else{
+					
+					vector<string>para_type=s->get_isFunction()->get_paratype();
+					for(int i=0;i<para_list.size();i++){
+					if(para_list[i]->get_dectype()!=para_type[i]){
+								error_count++;
+								fprintf(error,"Error at Line No.%d: Type Mismatch \n\n",line_count);
+								break;
+							}
+						}
+						if(s->get_isFunction()->get_return_type()!=$<symbolinfo>1->get_dectype()){
+								error_count++;
+								fprintf(error,"Error at Line No.%d: Return Type Mismatch \n\n",line_count);
+						}
+						para_list.clear();
+					}
+					
 				}
 				
 		$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+" "+$<symbolinfo>2->get_name()+"("+$<symbolinfo>4->get_name()+");");
@@ -119,8 +141,15 @@ func_declaration : type_specifier ID  LPAREN  parameter_list RPAREN SEMICOLON {$
 					s->set_isFunction();s->get_isFunction()->set_return_type($<symbolinfo>1->get_name());
 				}
 				else{
-					 error_count++;
-					fprintf(error,"Error at Line No.%d: Multiple Declaration of %s \n\n",line_count,$<symbolinfo>2->get_name().c_str());
+					if(s->get_isFunction()->get_number_of_parameter()!=0){
+						error_count++;
+						fprintf(error,"Error at Line No.%d:  Invalid number of parameters \n\n",line_count);
+					}
+					if(s->get_isFunction()->get_return_type()!=$<symbolinfo>1->get_name()){
+						error_count++;
+						fprintf(error,"Error at Line No.%d: Return Type Mismatch \n\n",line_count);
+					}
+
 				}
 				$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+" "+$<symbolinfo>2->get_name()+"();");
 		}
