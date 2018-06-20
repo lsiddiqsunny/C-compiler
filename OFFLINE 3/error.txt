@@ -1,22 +1,6 @@
-Error at Line No.10: Type Mismatch 
+Error at Line No.17: TYpe specifier can not be void 
 
-Error at Line No.11: Type Mismatch 
+Error at Line No.18:  Undeclared Variable: l 
 
-Error at Line No.18: Type MIsmatch 
-
-Error at Line No.23:  Integer operand on modulus operator  
-
-Error at Line No.24:  Integer operand on modulus operator  
-
-Error at Line No.24: Type Mismatch 
-
-Error at Line No.25:  Integer operand on modulus operator  
-
-Error at Line No.26: Type Mismatch 
-
-Error at Line No.27: Type MIsmatch 
-
-Error at Line No.27: Type Mismatch 
-
-Total Errors : 10 
+Total Errors : 2 
 

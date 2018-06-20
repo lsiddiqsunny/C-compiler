@@ -19,6 +19,9 @@ class Function
             Function(){
                 number_of_parameter=0;
                 isdefined=false;
+                parameter_list.clear();
+                parameter_type.clear();
+                return_type="";
 
             }
             void set_return_type(string type){

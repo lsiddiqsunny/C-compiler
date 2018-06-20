@@ -92,67 +92,214 @@ int  a,int  b
 
 Line at 6 : variable->ID
 
-a
+b
 
-Line at 6 : factor->variable
+Line at 6 : factor->CONST_INT
 
-a
+2
 
 Line at 6 : unary_expression->factor
 
-a
+2
 
 Line at 6 : term->unary_expression
 
-a
+2
 
 Line at 6 : simple_expression->term
 
-a
-
-Line at 6 : variable->ID
-
-b
-
-Line at 6 : factor->variable
-
-b
-
-Line at 6 : unary_expression->factor
-
-b
-
-Line at 6 : term->unary_expression
-
-b
-
-Line at 6 : simple_expression->simple_expression ADDOP term
-
-a+b
+2
 
 Line at 6 : rel_expression->simple_expression
 
-a+b
+2
 
 Line at 6 : logic_expression->rel_expression
 
-a+b
+2
 
-Line at 6 : expression->logic_expression
+Line at 6 : expression->variable ASSIGNOP logic_expression
 
-a+b
+b=2
 
-Line at 6 : statement->RETURN expression SEMICOLON
+Line at 6 : expression_statement->expression SEMICOLON
 
-return a+b;
+b=2;
+
+Line at 6 : statement -> expression_statement
+
+b=2;
 
 Line at 6 : statements->statement
 
+b=2;
+
+Line at 7 : factor->CONST_INT
+
+2
+
+Line at 7 : unary_expression->factor
+
+2
+
+Line at 7 : term->unary_expression
+
+2
+
+Line at 7 : simple_expression->term
+
+2
+
+Line at 7 : rel_expression->simple_expression
+
+2
+
+Line at 7 : logic_expression->rel_expression
+
+2
+
+Line at 7 : arguments->logic_expression
+
+2
+
+Line at 7 : factor->CONST_INT
+
+3
+
+Line at 7 : unary_expression->factor
+
+3
+
+Line at 7 : term->unary_expression
+
+3
+
+Line at 7 : simple_expression->term
+
+3
+
+Line at 7 : rel_expression->simple_expression
+
+3
+
+Line at 7 : logic_expression->rel_expression
+
+3
+
+Line at 7 : arguments->arguments COMMA logic_expression 
+
+2,3
+
+Line at 7 : argument_list->arguments
+
+2,3
+
+Line at 7 : factor->ID LPAREN argument_list RPAREN
+
+var(2,3)
+
+Line at 7 : unary_expression->factor
+
+var(2,3)
+
+Line at 7 : term->unary_expression
+
+var(2,3)
+
+Line at 7 : simple_expression->term
+
+var(2,3)
+
+Line at 7 : rel_expression->simple_expression
+
+var(2,3)
+
+Line at 7 : logic_expression->rel_expression
+
+var(2,3)
+
+Line at 7 : expression->logic_expression
+
+var(2,3)
+
+Line at 7 : expression_statement->expression SEMICOLON
+
+var(2,3);
+
+Line at 7 : statement -> expression_statement
+
+var(2,3);
+
+Line at 7 : statements->statements statement
+
+b=2; var(2,3);
+
+Line at 8 : variable->ID
+
+a
+
+Line at 8 : factor->variable
+
+a
+
+Line at 8 : unary_expression->factor
+
+a
+
+Line at 8 : term->unary_expression
+
+a
+
+Line at 8 : simple_expression->term
+
+a
+
+Line at 8 : variable->ID
+
+b
+
+Line at 8 : factor->variable
+
+b
+
+Line at 8 : unary_expression->factor
+
+b
+
+Line at 8 : term->unary_expression
+
+b
+
+Line at 8 : simple_expression->simple_expression ADDOP term
+
+a+b
+
+Line at 8 : rel_expression->simple_expression
+
+a+b
+
+Line at 8 : logic_expression->rel_expression
+
+a+b
+
+Line at 8 : expression->logic_expression
+
+a+b
+
+Line at 8 : statement->RETURN expression SEMICOLON
+
 return a+b;
 
-Line at 7 : compound_statement->LCURL statements RCURL
+Line at 8 : statements->statements statement
 
-{return a+b;}
+b=2;
+var(2,3); return a+b;
+
+Line at 9 : compound_statement->LCURL statements RCURL
+
+{b=2;
+var(2,3);
+return a+b;}
 
  ScopeTable# 2 
  51  --> < ID : a > 
@@ -160,6 +307,7 @@ Line at 7 : compound_statement->LCURL statements RCURL
 
  ScopeTable# 1 
  21  --> < ID : foo > 
+ 44  --> < ID : var > 
  51  --> < ID : a > 
  74  --> < ID : x > 
  75  --> < ID : y > 
@@ -167,123 +315,129 @@ Line at 7 : compound_statement->LCURL statements RCURL
 
  ScopeTable with id 2 removed
 
-Line at 7 : func_definition->type_specifier ID LPAREN parameter_list RPAREN compound_statement 
+Line at 9 : func_definition->type_specifier ID LPAREN parameter_list RPAREN compound_statement 
 
 int  var(int  a,int  b) {
+b=2;
+var(2,3);
 return a+b;
 } 
 
-Line at 7 : unit->func_definition
+Line at 9 : unit->func_definition
 
 int  var(int  a,int  b){
+b=2;
+var(2,3);
 return a+b;
 }
 
-Line at 7 : program->program unit
+Line at 9 : program->program unit
 
 int  x,y,z;
 float  a;
 void  foo();
  int  var(int  a,int  b){
+b=2;
+var(2,3);
 return a+b;
 }
 
 
-Line at 9 : type_specifier	: VOID
+Line at 11 : type_specifier	: VOID
 
 void 
 
  New ScopeTable with id 3 created
 
-Line at 10 : variable->ID
+Line at 12 : variable->ID
 
 x
 
-Line at 10 : factor->CONST_INT
+Line at 12 : factor->CONST_INT
 
 2
 
-Line at 10 : unary_expression->factor
+Line at 12 : unary_expression->factor
 
 2
 
-Line at 10 : term->unary_expression
+Line at 12 : term->unary_expression
 
 2
 
-Line at 10 : simple_expression->term
+Line at 12 : simple_expression->term
 
 2
 
-Line at 10 : rel_expression->simple_expression
+Line at 12 : rel_expression->simple_expression
 
 2
 
-Line at 10 : logic_expression->rel_expression
+Line at 12 : logic_expression->rel_expression
 
 2
 
-Line at 10 : expression->variable ASSIGNOP logic_expression
+Line at 12 : expression->variable ASSIGNOP logic_expression
 
 x=2
 
-Line at 10 : expression_statement->expression SEMICOLON
+Line at 12 : expression_statement->expression SEMICOLON
 
 x=2;
 
-Line at 10 : statement -> expression_statement
+Line at 12 : statement -> expression_statement
 
 x=2;
 
-Line at 10 : statements->statement
+Line at 12 : statements->statement
 
 x=2;
 
-Line at 11 : variable->ID
+Line at 13 : variable->ID
 
 y
 
-Line at 11 : factor->CONST_INT
+Line at 13 : factor->CONST_INT
 
 4
 
-Line at 11 : unary_expression->factor
+Line at 13 : unary_expression->factor
 
 4
 
-Line at 11 : term->unary_expression
+Line at 13 : term->unary_expression
 
 4
 
-Line at 11 : simple_expression->term
+Line at 13 : simple_expression->term
 
 4
 
-Line at 11 : rel_expression->simple_expression
+Line at 13 : rel_expression->simple_expression
 
 4
 
-Line at 11 : logic_expression->rel_expression
+Line at 13 : logic_expression->rel_expression
 
 4
 
-Line at 11 : expression->variable ASSIGNOP logic_expression
+Line at 13 : expression->variable ASSIGNOP logic_expression
 
 y=4
 
-Line at 11 : expression_statement->expression SEMICOLON
+Line at 13 : expression_statement->expression SEMICOLON
 
 y=4;
 
-Line at 11 : statement -> expression_statement
+Line at 13 : statement -> expression_statement
 
 y=4;
 
-Line at 11 : statements->statements statement
+Line at 13 : statements->statements statement
 
 x=2; y=4;
 
-Line at 12 : compound_statement->LCURL statements RCURL
+Line at 14 : compound_statement->LCURL statements RCURL
 
 {x=2;
 y=4;}
@@ -300,26 +454,28 @@ y=4;}
 
  ScopeTable with id 3 removed
 
-Line at 12 : func_definition->type_specifier ID LPAREN RPAREN compound_statement
+Line at 14 : func_definition->type_specifier ID LPAREN RPAREN compound_statement
 
 void  foo() {
 x=2;
 y=4;
 }
 
-Line at 12 : unit->func_definition
+Line at 14 : unit->func_definition
 
 void  foo(){
 x=2;
 y=4;
 }
 
-Line at 12 : program->program unit
+Line at 14 : program->program unit
 
 int  x,y,z;
 float  a;
 void  foo();
 int  var(int  a,int  b){
+b=2;
+var(2,3);
 return a+b;
 }
  void  foo(){
@@ -328,100 +484,35 @@ y=4;
 }
 
 
-Line at 14 : type_specifier	: INT
+Line at 16 : type_specifier	: INT
 
 int 
 
  New ScopeTable with id 4 created
 
-Line at 16 : type_specifier	: INT
+Line at 17 : type_specifier	: VOID
 
-int 
+void 
 
-Line at 16 : declaration_list->ID LTHIRD CONST_INT RTHIRD
+Line at 17 : declaration_list->ID
 
-a[2]
+l
 
-Line at 16 : declaration_list->declaration_list COMMA ID
+Line at 17 : var_declaration->type_specifier declaration_list SEMICOLON
 
-a[2],b
+void  l;
 
-Line at 16 : declaration_list->declaration_list COMMA ID
+Line at 17 : statement -> var_declaration
 
-a[2],b,c
+void  l;
 
-Line at 16 : var_declaration->type_specifier declaration_list SEMICOLON
+Line at 17 : statements->statement
 
-int  a[2],b,c;
+void  l;
 
-Line at 16 : statement -> var_declaration
+Line at 18 : variable->ID
 
-int  a[2],b,c;
-
-Line at 16 : statements->statement
-
-int  a[2],b,c;
-
-Line at 16 : type_specifier	: FLOAT
-
-float 
-
-Line at 16 : declaration_list->ID
-
-d
-
-Line at 16 : var_declaration->type_specifier declaration_list SEMICOLON
-
-float  d;
-
-Line at 16 : statement -> var_declaration
-
-float  d;
-
-Line at 16 : statements->statements statement
-
-int  a[2],b,c; float  d;
-
-Line at 17 : factor->ID LPAREN argument_list RPAREN
-
-foo()
-
-Line at 17 : unary_expression->factor
-
-foo()
-
-Line at 17 : term->unary_expression
-
-foo()
-
-Line at 17 : simple_expression->term
-
-foo()
-
-Line at 17 : rel_expression->simple_expression
-
-foo()
-
-Line at 17 : logic_expression->rel_expression
-
-foo()
-
-Line at 17 : expression->logic_expression
-
-foo()
-
-Line at 17 : expression_statement->expression SEMICOLON
-
-foo();
-
-Line at 17 : statement -> expression_statement
-
-foo();
-
-Line at 17 : statements->statements statement
-
-int  a[2],b,c;
-float  d; foo();
+l
 
 Line at 18 : factor->CONST_INT
 
@@ -446,601 +537,423 @@ Line at 18 : rel_expression->simple_expression
 Line at 18 : logic_expression->rel_expression
 
 2
-
-Line at 18 : arguments->logic_expression
-
-2
-
-Line at 18 : factor->CONST_INT
-
-3
-
-Line at 18 : unary_expression->factor
-
-3
-
-Line at 18 : term->unary_expression
-
-3
-
-Line at 18 : simple_expression->term
-
-3
-
-Line at 18 : rel_expression->simple_expression
-
-3
-
-Line at 18 : logic_expression->rel_expression
-
-3
-
-Line at 18 : arguments->arguments COMMA logic_expression 
-
-2,3
-
-Line at 18 : argument_list->arguments
-
-2,3
-
-Line at 18 : factor->ID LPAREN argument_list RPAREN
-
-var(2,3)
-
-Line at 18 : unary_expression->factor
-
-var(2,3)
-
-Line at 18 : term->unary_expression
-
-var(2,3)
-
-Line at 18 : simple_expression->term
-
-var(2,3)
-
-Line at 18 : rel_expression->simple_expression
-
-var(2,3)
-
-Line at 18 : logic_expression->rel_expression
-
-var(2,3)
-
-Line at 18 : expression->logic_expression
-
-var(2,3)
-
-Line at 18 : variable->ID LTHIRD expression RTHIRD
-
-a[var(2,3)]
-
-Line at 18 : factor->CONST_INT
-
-4
-
-Line at 18 : unary_expression->factor
-
-4
-
-Line at 18 : term->unary_expression
-
-4
-
-Line at 18 : simple_expression->term
-
-4
-
-Line at 18 : rel_expression->simple_expression
-
-4
-
-Line at 18 : logic_expression->rel_expression
-
-4
 
 Line at 18 : expression->variable ASSIGNOP logic_expression
 
-a[var(2,3)]=4
+l=2
 
 Line at 18 : expression_statement->expression SEMICOLON
 
-a[var(2,3)]=4;
+l=2;
 
 Line at 18 : statement -> expression_statement
 
-a[var(2,3)]=4;
+l=2;
 
 Line at 18 : statements->statements statement
 
+void  l; l=2;
+
+Line at 19 : type_specifier	: INT
+
+int 
+
+Line at 19 : declaration_list->ID LTHIRD CONST_INT RTHIRD
+
+a[2]
+
+Line at 19 : declaration_list->declaration_list COMMA ID
+
+a[2],b
+
+Line at 19 : declaration_list->declaration_list COMMA ID
+
+a[2],b,c
+
+Line at 19 : var_declaration->type_specifier declaration_list SEMICOLON
+
+int  a[2],b,c;
+
+Line at 19 : statement -> var_declaration
+
+int  a[2],b,c;
+
+Line at 19 : statements->statements statement
+
+void  l;
+l=2; int  a[2],b,c;
+
+Line at 19 : type_specifier	: FLOAT
+
+float 
+
+Line at 19 : declaration_list->ID
+
+d
+
+Line at 19 : var_declaration->type_specifier declaration_list SEMICOLON
+
+float  d;
+
+Line at 19 : statement -> var_declaration
+
+float  d;
+
+Line at 19 : statements->statements statement
+
+void  l;
+l=2;
+int  a[2],b,c; float  d;
+
+Line at 20 : factor->ID LPAREN argument_list RPAREN
+
+foo()
+
+Line at 20 : unary_expression->factor
+
+foo()
+
+Line at 20 : term->unary_expression
+
+foo()
+
+Line at 20 : simple_expression->term
+
+foo()
+
+Line at 20 : rel_expression->simple_expression
+
+foo()
+
+Line at 20 : logic_expression->rel_expression
+
+foo()
+
+Line at 20 : expression->logic_expression
+
+foo()
+
+Line at 20 : expression_statement->expression SEMICOLON
+
+foo();
+
+Line at 20 : statement -> expression_statement
+
+foo();
+
+Line at 20 : statements->statements statement
+
+void  l;
+l=2;
+int  a[2],b,c;
+float  d; foo();
+
+Line at 21 : factor->CONST_INT
+
+2
+
+Line at 21 : unary_expression->factor
+
+2
+
+Line at 21 : term->unary_expression
+
+2
+
+Line at 21 : simple_expression->term
+
+2
+
+Line at 21 : rel_expression->simple_expression
+
+2
+
+Line at 21 : logic_expression->rel_expression
+
+2
+
+Line at 21 : arguments->logic_expression
+
+2
+
+Line at 21 : factor->CONST_INT
+
+3
+
+Line at 21 : unary_expression->factor
+
+3
+
+Line at 21 : term->unary_expression
+
+3
+
+Line at 21 : simple_expression->term
+
+3
+
+Line at 21 : rel_expression->simple_expression
+
+3
+
+Line at 21 : logic_expression->rel_expression
+
+3
+
+Line at 21 : arguments->arguments COMMA logic_expression 
+
+2,3
+
+Line at 21 : argument_list->arguments
+
+2,3
+
+Line at 21 : factor->ID LPAREN argument_list RPAREN
+
+var(2,3)
+
+Line at 21 : unary_expression->factor
+
+var(2,3)
+
+Line at 21 : term->unary_expression
+
+var(2,3)
+
+Line at 21 : simple_expression->term
+
+var(2,3)
+
+Line at 21 : rel_expression->simple_expression
+
+var(2,3)
+
+Line at 21 : logic_expression->rel_expression
+
+var(2,3)
+
+Line at 21 : expression->logic_expression
+
+var(2,3)
+
+Line at 21 : variable->ID LTHIRD expression RTHIRD
+
+a[var(2,3)]
+
+Line at 21 : factor->CONST_INT
+
+4
+
+Line at 21 : unary_expression->factor
+
+4
+
+Line at 21 : term->unary_expression
+
+4
+
+Line at 21 : simple_expression->term
+
+4
+
+Line at 21 : rel_expression->simple_expression
+
+4
+
+Line at 21 : logic_expression->rel_expression
+
+4
+
+Line at 21 : expression->variable ASSIGNOP logic_expression
+
+a[var(2,3)]=4
+
+Line at 21 : expression_statement->expression SEMICOLON
+
+a[var(2,3)]=4;
+
+Line at 21 : statement -> expression_statement
+
+a[var(2,3)]=4;
+
+Line at 21 : statements->statements statement
+
+void  l;
+l=2;
 int  a[2],b,c;
 float  d;
 foo(); a[var(2,3)]=4;
 
-Line at 19 : factor->CONST_INT
+Line at 22 : factor->CONST_INT
 
 1
 
-Line at 19 : unary_expression->factor
+Line at 22 : unary_expression->factor
 
 1
 
-Line at 19 : term->unary_expression
+Line at 22 : term->unary_expression
 
 1
 
-Line at 19 : simple_expression->term
+Line at 22 : simple_expression->term
 
 1
 
-Line at 19 : rel_expression->simple_expression
+Line at 22 : rel_expression->simple_expression
 
 1
 
-Line at 19 : logic_expression->rel_expression
+Line at 22 : logic_expression->rel_expression
 
 1
 
-Line at 19 : expression->logic_expression
+Line at 22 : expression->logic_expression
 
 1
 
-Line at 19 : variable->ID LTHIRD expression RTHIRD
+Line at 22 : variable->ID LTHIRD expression RTHIRD
 
 a[1]
 
-Line at 19 : factor->CONST_INT
+Line at 22 : factor->CONST_INT
 
 2
 
-Line at 19 : unary_expression->factor
+Line at 22 : unary_expression->factor
 
 2
 
-Line at 19 : term->unary_expression
+Line at 22 : term->unary_expression
 
 2
 
-Line at 19 : simple_expression->term
+Line at 22 : simple_expression->term
 
 2
 
-Line at 19 : rel_expression->simple_expression
+Line at 22 : rel_expression->simple_expression
 
 2
 
-Line at 19 : logic_expression->rel_expression
+Line at 22 : logic_expression->rel_expression
 
 2
 
-Line at 19 : expression->variable ASSIGNOP logic_expression
+Line at 22 : expression->variable ASSIGNOP logic_expression
 
 a[1]=2
 
-Line at 19 : expression_statement->expression SEMICOLON
+Line at 22 : expression_statement->expression SEMICOLON
 
 a[1]=2;
 
-Line at 19 : statement -> expression_statement
+Line at 22 : statement -> expression_statement
 
 a[1]=2;
 
-Line at 19 : statements->statements statement
+Line at 22 : statements->statements statement
 
+void  l;
+l=2;
 int  a[2],b,c;
 float  d;
 foo();
 a[var(2,3)]=4; a[1]=2;
 
-Line at 20 : factor->CONST_INT
+Line at 23 : factor->CONST_INT
 
 2
 
-Line at 20 : unary_expression->factor
+Line at 23 : unary_expression->factor
 
 2
 
-Line at 20 : term->unary_expression
+Line at 23 : term->unary_expression
 
 2
 
-Line at 20 : simple_expression->term
+Line at 23 : simple_expression->term
 
 2
 
-Line at 20 : rel_expression->simple_expression
+Line at 23 : rel_expression->simple_expression
 
 2
 
-Line at 20 : logic_expression->rel_expression
+Line at 23 : logic_expression->rel_expression
 
 2
 
-Line at 20 : expression->logic_expression
+Line at 23 : expression->logic_expression
 
 2
 
-Line at 20 : variable->ID LTHIRD expression RTHIRD
+Line at 23 : variable->ID LTHIRD expression RTHIRD
 
 a[2]
 
-Line at 20 : factor->CONST_INT
+Line at 23 : factor->CONST_INT
 
 3
 
-Line at 20 : unary_expression->factor
+Line at 23 : unary_expression->factor
 
 3
 
-Line at 20 : term->unary_expression
+Line at 23 : term->unary_expression
 
 3
 
-Line at 20 : simple_expression->term
+Line at 23 : simple_expression->term
 
 3
 
-Line at 20 : rel_expression->simple_expression
+Line at 23 : rel_expression->simple_expression
 
 3
 
-Line at 20 : logic_expression->rel_expression
+Line at 23 : logic_expression->rel_expression
 
 3
 
-Line at 20 : expression->variable ASSIGNOP logic_expression
+Line at 23 : expression->variable ASSIGNOP logic_expression
 
 a[2]=3
 
-Line at 20 : expression_statement->expression SEMICOLON
+Line at 23 : expression_statement->expression SEMICOLON
 
 a[2]=3;
 
-Line at 20 : statement -> expression_statement
+Line at 23 : statement -> expression_statement
 
 a[2]=3;
 
-Line at 20 : statements->statements statement
+Line at 23 : statements->statements statement
 
+void  l;
+l=2;
 int  a[2],b,c;
 float  d;
 foo();
 a[var(2,3)]=4;
 a[1]=2; a[2]=3;
 
-Line at 21 : factor->CONST_INT
-
-4
-
-Line at 21 : unary_expression->factor
-
-4
-
-Line at 21 : term->unary_expression
-
-4
-
-Line at 21 : simple_expression->term
-
-4
-
-Line at 21 : factor->CONST_INT
-
-5
-
-Line at 21 : unary_expression->factor
-
-5
-
-Line at 21 : term->unary_expression
-
-5
-
-Line at 21 : simple_expression->simple_expression ADDOP term
-
-4+5
-
-Line at 21 : rel_expression->simple_expression
-
-4+5
-
-Line at 21 : logic_expression->rel_expression
-
-4+5
-
-Line at 21 : expression->logic_expression
-
-4+5
-
-Line at 21 : variable->ID LTHIRD expression RTHIRD
-
-a[4+5]
-
-Line at 21 : factor->CONST_INT
-
-6
-
-Line at 21 : unary_expression->factor
-
-6
-
-Line at 21 : term->unary_expression
-
-6
-
-Line at 21 : simple_expression->term
-
-6
-
-Line at 21 : rel_expression->simple_expression
-
-6
-
-Line at 21 : logic_expression->rel_expression
-
-6
-
-Line at 21 : expression->variable ASSIGNOP logic_expression
-
-a[4+5]=6
-
-Line at 21 : expression_statement->expression SEMICOLON
-
-a[4+5]=6;
-
-Line at 21 : statement -> expression_statement
-
-a[4+5]=6;
-
-Line at 21 : statements->statements statement
-
-int  a[2],b,c;
-float  d;
-foo();
-a[var(2,3)]=4;
-a[1]=2;
-a[2]=3; a[4+5]=6;
-
-Line at 22 : factor->CONST_INT
-
-7
-
-Line at 22 : unary_expression->factor
-
-7
-
-Line at 22 : term->unary_expression
-
-7
-
-Line at 22 : simple_expression->term
-
-7
-
-Line at 22 : factor->CONST_INT
-
-8
-
-Line at 22 : unary_expression->factor
-
-8
-
-Line at 22 : term->unary_expression
-
-8
-
-Line at 22 : simple_expression->term
-
-8
-
-Line at 22 : rel_expression->simple_expression RELOP simple_expression
-
-7<8
-
-Line at 22 : logic_expression->rel_expression
-
-7<8
-
-Line at 22 : expression->logic_expression
-
-7<8
-
-Line at 22 : variable->ID LTHIRD expression RTHIRD
-
-a[7<8]
-
-Line at 22 : factor->CONST_INT
-
-9
-
-Line at 22 : unary_expression->factor
-
-9
-
-Line at 22 : term->unary_expression
-
-9
-
-Line at 22 : simple_expression->term
-
-9
-
-Line at 22 : rel_expression->simple_expression
-
-9
-
-Line at 22 : logic_expression->rel_expression
-
-9
-
-Line at 22 : expression->variable ASSIGNOP logic_expression
-
-a[7<8]=9
-
-Line at 22 : expression_statement->expression SEMICOLON
-
-a[7<8]=9;
-
-Line at 22 : statement -> expression_statement
-
-a[7<8]=9;
-
-Line at 22 : statements->statements statement
-
-int  a[2],b,c;
-float  d;
-foo();
-a[var(2,3)]=4;
-a[1]=2;
-a[2]=3;
-a[4+5]=6; a[7<8]=9;
-
-Line at 23 : variable->ID
-
-b
-
-Line at 23 : factor->variable
-
-b
-
-Line at 23 : unary_expression->factor
-
-b
-
-Line at 23 : term->unary_expression
-
-b
-
-Line at 23 : variable->ID
-
-c
-
-Line at 23 : factor->variable
-
-c
-
-Line at 23 : unary_expression->factor
-
-c
-
-Line at 23 : term->term MULOP unary_expression
-
-b%c
-
-Line at 23 : simple_expression->term
-
-b%c
-
-Line at 23 : rel_expression->simple_expression
-
-b%c
-
-Line at 23 : logic_expression->rel_expression
-
-b%c
-
-Line at 23 : expression->logic_expression
-
-b%c
-
-Line at 23 : variable->ID LTHIRD expression RTHIRD
-
-a[b%c]
-
-Line at 23 : variable->ID
-
-x
-
-Line at 23 : factor->variable
-
-x
-
-Line at 23 : unary_expression->factor
-
-x
-
-Line at 23 : term->unary_expression
-
-x
-
-Line at 23 : simple_expression->term
-
-x
-
-Line at 23 : rel_expression->simple_expression
-
-x
-
-Line at 23 : logic_expression->rel_expression
-
-x
-
-Line at 23 : expression->variable ASSIGNOP logic_expression
-
-a[b%c]=x
-
-Line at 23 : expression_statement->expression SEMICOLON
-
-a[b%c]=x;
-
-Line at 23 : statement -> expression_statement
-
-a[b%c]=x;
-
-Line at 23 : statements->statements statement
-
-int  a[2],b,c;
-float  d;
-foo();
-a[var(2,3)]=4;
-a[1]=2;
-a[2]=3;
-a[4+5]=6;
-a[7<8]=9; a[b%c]=x;
-
-Line at 24 : variable->ID
-
-b
-
 Line at 24 : factor->CONST_INT
 
-2
+4
 
 Line at 24 : unary_expression->factor
 
-2
+4
 
 Line at 24 : term->unary_expression
 
-2
-
-Line at 24 : factor->CONST_INT
-
-3
-
-Line at 24 : unary_expression->factor
-
-3
-
-Line at 24 : term->term MULOP unary_expression
-
-2%3
-
-Line at 24 : factor->CONST_INT
-
 4
-
-Line at 24 : unary_expression->factor
-
-4
-
-Line at 24 : term->term MULOP unary_expression
-
-2%3*4
 
 Line at 24 : simple_expression->term
 
-2%3*4
+4
 
 Line at 24 : factor->CONST_INT
 
@@ -1056,263 +969,263 @@ Line at 24 : term->unary_expression
 
 Line at 24 : simple_expression->simple_expression ADDOP term
 
-2%3*4+5
+4+5
 
 Line at 24 : rel_expression->simple_expression
 
-2%3*4+5
+4+5
 
 Line at 24 : logic_expression->rel_expression
 
-2%3*4+5
+4+5
 
 Line at 24 : expression->logic_expression
 
-2%3*4+5
+4+5
 
-Line at 24 : factor->LPAREN expression RPAREN
+Line at 24 : variable->ID LTHIRD expression RTHIRD
 
-(2%3*4+5)
+a[4+5]
+
+Line at 24 : factor->CONST_INT
+
+6
 
 Line at 24 : unary_expression->factor
 
-(2%3*4+5)
+6
 
 Line at 24 : term->unary_expression
 
-(2%3*4+5)
+6
 
 Line at 24 : simple_expression->term
 
-(2%3*4+5)
+6
 
 Line at 24 : rel_expression->simple_expression
 
-(2%3*4+5)
+6
 
 Line at 24 : logic_expression->rel_expression
 
-(2%3*4+5)
+6
 
 Line at 24 : expression->variable ASSIGNOP logic_expression
 
-b=(2%3*4+5)
+a[4+5]=6
 
 Line at 24 : expression_statement->expression SEMICOLON
 
-b=(2%3*4+5);
+a[4+5]=6;
 
 Line at 24 : statement -> expression_statement
 
-b=(2%3*4+5);
+a[4+5]=6;
 
 Line at 24 : statements->statements statement
 
+void  l;
+l=2;
 int  a[2],b,c;
 float  d;
 foo();
 a[var(2,3)]=4;
 a[1]=2;
-a[2]=3;
-a[4+5]=6;
-a[7<8]=9;
-a[b%c]=x; b=(2%3*4+5);
+a[2]=3; a[4+5]=6;
 
-Line at 25 : variable->ID
+Line at 25 : factor->CONST_INT
 
-b
-
-Line at 25 : variable->ID
-
-b
-
-Line at 25 : factor->variable
-
-b
+7
 
 Line at 25 : unary_expression->factor
 
-b
+7
 
 Line at 25 : term->unary_expression
 
-b
+7
 
 Line at 25 : simple_expression->term
 
-b
+7
 
 Line at 25 : factor->CONST_INT
 
-2
+8
 
 Line at 25 : unary_expression->factor
 
-2
+8
 
 Line at 25 : term->unary_expression
 
-2
-
-Line at 25 : factor->CONST_INT
-
-3
-
-Line at 25 : unary_expression->factor
-
-3
-
-Line at 25 : term->term MULOP unary_expression
-
-2%3
-
-Line at 25 : factor->CONST_INT
-
-4
-
-Line at 25 : unary_expression->factor
-
-4
-
-Line at 25 : term->term MULOP unary_expression
-
-2%3*4
+8
 
 Line at 25 : simple_expression->term
 
-2%3*4
+8
 
-Line at 25 : factor->CONST_INT
+Line at 25 : rel_expression->simple_expression RELOP simple_expression
 
-5
-
-Line at 25 : unary_expression->factor
-
-5
-
-Line at 25 : term->unary_expression
-
-5
-
-Line at 25 : simple_expression->simple_expression ADDOP term
-
-2%3*4+5
-
-Line at 25 : rel_expression->simple_expression
-
-2%3*4+5
+7<8
 
 Line at 25 : logic_expression->rel_expression
 
-2%3*4+5
+7<8
 
 Line at 25 : expression->logic_expression
 
-2%3*4+5
+7<8
 
-Line at 25 : factor->LPAREN expression RPAREN
+Line at 25 : variable->ID LTHIRD expression RTHIRD
 
-(2%3*4+5)
+a[7<8]
+
+Line at 25 : factor->CONST_INT
+
+9
 
 Line at 25 : unary_expression->factor
 
-(2%3*4+5)
+9
 
 Line at 25 : term->unary_expression
 
-(2%3*4+5)
+9
 
-Line at 25 : simple_expression->simple_expression ADDOP term
+Line at 25 : simple_expression->term
 
-b+(2%3*4+5)
+9
 
 Line at 25 : rel_expression->simple_expression
 
-b+(2%3*4+5)
+9
 
 Line at 25 : logic_expression->rel_expression
 
-b+(2%3*4+5)
+9
 
 Line at 25 : expression->variable ASSIGNOP logic_expression
 
-b=b+(2%3*4+5)
+a[7<8]=9
 
 Line at 25 : expression_statement->expression SEMICOLON
 
-b=b+(2%3*4+5);
+a[7<8]=9;
 
 Line at 25 : statement -> expression_statement
 
-b=b+(2%3*4+5);
+a[7<8]=9;
 
 Line at 25 : statements->statements statement
 
+void  l;
+l=2;
 int  a[2],b,c;
 float  d;
 foo();
 a[var(2,3)]=4;
 a[1]=2;
 a[2]=3;
-a[4+5]=6;
-a[7<8]=9;
-a[b%c]=x;
-b=(2%3*4+5); b=b+(2%3*4+5);
+a[4+5]=6; a[7<8]=9;
 
 Line at 26 : variable->ID
 
-d
+b
 
-Line at 26 : factor->CONST_FLOAT
+Line at 26 : factor->variable
 
-2.3
+b
 
 Line at 26 : unary_expression->factor
 
-2.3
+b
 
 Line at 26 : term->unary_expression
 
-2.3
+b
 
-Line at 26 : factor->CONST_INT
+Line at 26 : variable->ID
 
-4
+c
+
+Line at 26 : factor->variable
+
+c
 
 Line at 26 : unary_expression->factor
 
-4
+c
 
 Line at 26 : term->term MULOP unary_expression
 
-2.3*4
+b%c
 
 Line at 26 : simple_expression->term
 
-2.3*4
+b%c
 
 Line at 26 : rel_expression->simple_expression
 
-2.3*4
+b%c
 
 Line at 26 : logic_expression->rel_expression
 
-2.3*4
+b%c
+
+Line at 26 : expression->logic_expression
+
+b%c
+
+Line at 26 : variable->ID LTHIRD expression RTHIRD
+
+a[b%c]
+
+Line at 26 : variable->ID
+
+x
+
+Line at 26 : factor->variable
+
+x
+
+Line at 26 : unary_expression->factor
+
+x
+
+Line at 26 : term->unary_expression
+
+x
+
+Line at 26 : simple_expression->term
+
+x
+
+Line at 26 : rel_expression->simple_expression
+
+x
+
+Line at 26 : logic_expression->rel_expression
+
+x
 
 Line at 26 : expression->variable ASSIGNOP logic_expression
 
-d=2.3*4
+a[b%c]=x
 
 Line at 26 : expression_statement->expression SEMICOLON
 
-d=2.3*4;
+a[b%c]=x;
 
 Line at 26 : statement -> expression_statement
 
-d=2.3*4;
+a[b%c]=x;
 
 Line at 26 : statements->statements statement
 
+void  l;
+l=2;
 int  a[2],b,c;
 float  d;
 foo();
@@ -1320,10 +1233,7 @@ a[var(2,3)]=4;
 a[1]=2;
 a[2]=3;
 a[4+5]=6;
-a[7<8]=9;
-a[b%c]=x;
-b=(2%3*4+5);
-b=b+(2%3*4+5); d=2.3*4;
+a[7<8]=9; a[b%c]=x;
 
 Line at 27 : variable->ID
 
@@ -1341,22 +1251,6 @@ Line at 27 : term->unary_expression
 
 2
 
-Line at 27 : simple_expression->term
-
-2
-
-Line at 27 : rel_expression->simple_expression
-
-2
-
-Line at 27 : logic_expression->rel_expression
-
-2
-
-Line at 27 : arguments->logic_expression
-
-2
-
 Line at 27 : factor->CONST_INT
 
 3
@@ -1365,68 +1259,419 @@ Line at 27 : unary_expression->factor
 
 3
 
-Line at 27 : term->unary_expression
+Line at 27 : term->term MULOP unary_expression
 
-3
+2%3
 
-Line at 27 : simple_expression->term
+Line at 27 : factor->CONST_INT
 
-3
-
-Line at 27 : rel_expression->simple_expression
-
-3
-
-Line at 27 : logic_expression->rel_expression
-
-3
-
-Line at 27 : arguments->arguments COMMA logic_expression 
-
-2,3
-
-Line at 27 : argument_list->arguments
-
-2,3
-
-Line at 27 : factor->ID LPAREN argument_list RPAREN
-
-var(2,3)
+4
 
 Line at 27 : unary_expression->factor
 
-var(2,3)
+4
 
-Line at 27 : term->unary_expression
+Line at 27 : term->term MULOP unary_expression
 
-var(2,3)
+2%3*4
 
 Line at 27 : simple_expression->term
 
-var(2,3)
+2%3*4
+
+Line at 27 : factor->CONST_INT
+
+5
+
+Line at 27 : unary_expression->factor
+
+5
+
+Line at 27 : term->unary_expression
+
+5
+
+Line at 27 : simple_expression->simple_expression ADDOP term
+
+2%3*4+5
 
 Line at 27 : rel_expression->simple_expression
 
-var(2,3)
+2%3*4+5
 
 Line at 27 : logic_expression->rel_expression
 
-var(2,3)
+2%3*4+5
+
+Line at 27 : expression->logic_expression
+
+2%3*4+5
+
+Line at 27 : factor->LPAREN expression RPAREN
+
+(2%3*4+5)
+
+Line at 27 : unary_expression->factor
+
+(2%3*4+5)
+
+Line at 27 : term->unary_expression
+
+(2%3*4+5)
+
+Line at 27 : simple_expression->term
+
+(2%3*4+5)
+
+Line at 27 : rel_expression->simple_expression
+
+(2%3*4+5)
+
+Line at 27 : logic_expression->rel_expression
+
+(2%3*4+5)
 
 Line at 27 : expression->variable ASSIGNOP logic_expression
 
-b=var(2,3)
+b=(2%3*4+5)
 
 Line at 27 : expression_statement->expression SEMICOLON
 
-b=var(2,3);
+b=(2%3*4+5);
 
 Line at 27 : statement -> expression_statement
 
-b=var(2,3);
+b=(2%3*4+5);
 
 Line at 27 : statements->statements statement
 
+void  l;
+l=2;
+int  a[2],b,c;
+float  d;
+foo();
+a[var(2,3)]=4;
+a[1]=2;
+a[2]=3;
+a[4+5]=6;
+a[7<8]=9;
+a[b%c]=x; b=(2%3*4+5);
+
+Line at 28 : variable->ID
+
+b
+
+Line at 28 : variable->ID
+
+b
+
+Line at 28 : factor->variable
+
+b
+
+Line at 28 : unary_expression->factor
+
+b
+
+Line at 28 : term->unary_expression
+
+b
+
+Line at 28 : simple_expression->term
+
+b
+
+Line at 28 : factor->CONST_INT
+
+2
+
+Line at 28 : unary_expression->factor
+
+2
+
+Line at 28 : term->unary_expression
+
+2
+
+Line at 28 : factor->CONST_INT
+
+3
+
+Line at 28 : unary_expression->factor
+
+3
+
+Line at 28 : term->term MULOP unary_expression
+
+2%3
+
+Line at 28 : factor->CONST_INT
+
+4
+
+Line at 28 : unary_expression->factor
+
+4
+
+Line at 28 : term->term MULOP unary_expression
+
+2%3*4
+
+Line at 28 : simple_expression->term
+
+2%3*4
+
+Line at 28 : factor->CONST_INT
+
+5
+
+Line at 28 : unary_expression->factor
+
+5
+
+Line at 28 : term->unary_expression
+
+5
+
+Line at 28 : simple_expression->simple_expression ADDOP term
+
+2%3*4+5
+
+Line at 28 : rel_expression->simple_expression
+
+2%3*4+5
+
+Line at 28 : logic_expression->rel_expression
+
+2%3*4+5
+
+Line at 28 : expression->logic_expression
+
+2%3*4+5
+
+Line at 28 : factor->LPAREN expression RPAREN
+
+(2%3*4+5)
+
+Line at 28 : unary_expression->factor
+
+(2%3*4+5)
+
+Line at 28 : term->unary_expression
+
+(2%3*4+5)
+
+Line at 28 : simple_expression->simple_expression ADDOP term
+
+b+(2%3*4+5)
+
+Line at 28 : rel_expression->simple_expression
+
+b+(2%3*4+5)
+
+Line at 28 : logic_expression->rel_expression
+
+b+(2%3*4+5)
+
+Line at 28 : expression->variable ASSIGNOP logic_expression
+
+b=b+(2%3*4+5)
+
+Line at 28 : expression_statement->expression SEMICOLON
+
+b=b+(2%3*4+5);
+
+Line at 28 : statement -> expression_statement
+
+b=b+(2%3*4+5);
+
+Line at 28 : statements->statements statement
+
+void  l;
+l=2;
+int  a[2],b,c;
+float  d;
+foo();
+a[var(2,3)]=4;
+a[1]=2;
+a[2]=3;
+a[4+5]=6;
+a[7<8]=9;
+a[b%c]=x;
+b=(2%3*4+5); b=b+(2%3*4+5);
+
+Line at 29 : variable->ID
+
+d
+
+Line at 29 : factor->CONST_FLOAT
+
+2.3
+
+Line at 29 : unary_expression->factor
+
+2.3
+
+Line at 29 : term->unary_expression
+
+2.3
+
+Line at 29 : factor->CONST_INT
+
+4
+
+Line at 29 : unary_expression->factor
+
+4
+
+Line at 29 : term->term MULOP unary_expression
+
+2.3*4
+
+Line at 29 : simple_expression->term
+
+2.3*4
+
+Line at 29 : rel_expression->simple_expression
+
+2.3*4
+
+Line at 29 : logic_expression->rel_expression
+
+2.3*4
+
+Line at 29 : expression->variable ASSIGNOP logic_expression
+
+d=2.3*4
+
+Line at 29 : expression_statement->expression SEMICOLON
+
+d=2.3*4;
+
+Line at 29 : statement -> expression_statement
+
+d=2.3*4;
+
+Line at 29 : statements->statements statement
+
+void  l;
+l=2;
+int  a[2],b,c;
+float  d;
+foo();
+a[var(2,3)]=4;
+a[1]=2;
+a[2]=3;
+a[4+5]=6;
+a[7<8]=9;
+a[b%c]=x;
+b=(2%3*4+5);
+b=b+(2%3*4+5); d=2.3*4;
+
+Line at 30 : variable->ID
+
+b
+
+Line at 30 : factor->CONST_INT
+
+2
+
+Line at 30 : unary_expression->factor
+
+2
+
+Line at 30 : term->unary_expression
+
+2
+
+Line at 30 : simple_expression->term
+
+2
+
+Line at 30 : rel_expression->simple_expression
+
+2
+
+Line at 30 : logic_expression->rel_expression
+
+2
+
+Line at 30 : arguments->logic_expression
+
+2
+
+Line at 30 : factor->CONST_INT
+
+3
+
+Line at 30 : unary_expression->factor
+
+3
+
+Line at 30 : term->unary_expression
+
+3
+
+Line at 30 : simple_expression->term
+
+3
+
+Line at 30 : rel_expression->simple_expression
+
+3
+
+Line at 30 : logic_expression->rel_expression
+
+3
+
+Line at 30 : arguments->arguments COMMA logic_expression 
+
+2,3
+
+Line at 30 : argument_list->arguments
+
+2,3
+
+Line at 30 : factor->ID LPAREN argument_list RPAREN
+
+var(2,3)
+
+Line at 30 : unary_expression->factor
+
+var(2,3)
+
+Line at 30 : term->unary_expression
+
+var(2,3)
+
+Line at 30 : simple_expression->term
+
+var(2,3)
+
+Line at 30 : rel_expression->simple_expression
+
+var(2,3)
+
+Line at 30 : logic_expression->rel_expression
+
+var(2,3)
+
+Line at 30 : expression->variable ASSIGNOP logic_expression
+
+b=var(2,3)
+
+Line at 30 : expression_statement->expression SEMICOLON
+
+b=var(2,3);
+
+Line at 30 : statement -> expression_statement
+
+b=var(2,3);
+
+Line at 30 : statements->statements statement
+
+void  l;
+l=2;
 int  a[2],b,c;
 float  d;
 foo();
@@ -1440,40 +1685,42 @@ b=(2%3*4+5);
 b=b+(2%3*4+5);
 d=2.3*4; b=var(2,3);
 
-Line at 28 : factor->CONST_INT
+Line at 31 : factor->CONST_INT
 
 0
 
-Line at 28 : unary_expression->factor
+Line at 31 : unary_expression->factor
 
 0
 
-Line at 28 : term->unary_expression
+Line at 31 : term->unary_expression
 
 0
 
-Line at 28 : simple_expression->term
+Line at 31 : simple_expression->term
 
 0
 
-Line at 28 : rel_expression->simple_expression
+Line at 31 : rel_expression->simple_expression
 
 0
 
-Line at 28 : logic_expression->rel_expression
+Line at 31 : logic_expression->rel_expression
 
 0
 
-Line at 28 : expression->logic_expression
+Line at 31 : expression->logic_expression
 
 0
 
-Line at 28 : statement->RETURN expression SEMICOLON
+Line at 31 : statement->RETURN expression SEMICOLON
 
 return 0;
 
-Line at 28 : statements->statements statement
+Line at 31 : statements->statements statement
 
+void  l;
+l=2;
 int  a[2],b,c;
 float  d;
 foo();
@@ -1488,9 +1735,11 @@ b=b+(2%3*4+5);
 d=2.3*4;
 b=var(2,3); return 0;
 
-Line at 30 : compound_statement->LCURL statements RCURL
+Line at 33 : compound_statement->LCURL statements RCURL
 
-{int  a[2],b,c;
+{void  l;
+l=2;
+int  a[2],b,c;
 float  d;
 foo();
 a[var(2,3)]=4;
@@ -1522,9 +1771,11 @@ return 0;}
 
  ScopeTable with id 4 removed
 
-Line at 30 : func_definition->type_specifier ID LPAREN RPAREN compound_statement
+Line at 33 : func_definition->type_specifier ID LPAREN RPAREN compound_statement
 
 int  main() {
+void  l;
+l=2;
 int  a[2],b,c;
 float  d;
 foo();
@@ -1541,9 +1792,11 @@ b=var(2,3);
 return 0;
 }
 
-Line at 30 : unit->func_definition
+Line at 33 : unit->func_definition
 
 int  main(){
+void  l;
+l=2;
 int  a[2],b,c;
 float  d;
 foo();
@@ -1560,12 +1813,14 @@ b=var(2,3);
 return 0;
 }
 
-Line at 30 : program->program unit
+Line at 33 : program->program unit
 
 int  x,y,z;
 float  a;
 void  foo();
 int  var(int  a,int  b){
+b=2;
+var(2,3);
 return a+b;
 }
 void  foo(){
@@ -1573,6 +1828,8 @@ x=2;
 y=4;
 }
  int  main(){
+void  l;
+l=2;
 int  a[2],b,c;
 float  d;
 foo();
@@ -1601,7 +1858,7 @@ return 0;
  75  --> < ID : y > 
  76  --> < ID : z > 
 
-Total Lines : 30 
+Total Lines : 33 
 
-Total Errors : 10 
+Total Errors : 2 
 

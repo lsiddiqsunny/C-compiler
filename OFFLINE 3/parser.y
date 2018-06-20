@@ -115,6 +115,8 @@ func_declaration : type_specifier ID  LPAREN  parameter_list RPAREN SEMICOLON {$
 				SymbolInfo *s=table->lookup($<symbolinfo>2->get_name());
 				if(s==0){
 					table->Insert($<symbolinfo>2->get_name(),"ID","Function");
+					s=table->lookup($<symbolinfo>2->get_name());
+					s->set_isFunction();s->get_isFunction()->set_return_type($<symbolinfo>1->get_name());
 				}
 				else{
 					 error_count++;
@@ -125,14 +127,14 @@ func_declaration : type_specifier ID  LPAREN  parameter_list RPAREN SEMICOLON {$
 		;
 
 func_definition : type_specifier ID  LPAREN  parameter_list RPAREN {$<symbolinfo>$=new SymbolInfo(); 
-				SymbolInfo *s=table->lookup($<symbolinfo>2->get_name());
+				SymbolInfo *s=table->lookup($<symbolinfo>2->get_name()); 
 				if(s!=0){ 
 					int num=s->get_isFunction()->get_number_of_parameter();
 				//	cout<<line_count<<" "<<para_list.size()<<endl;
 				//	$<symbolinfo>$->set_dectype(s->get_isFunction()->get_return_type());
 					if(num!=para_list.size()){
 						error_count++;
-						fprintf(error,"Error at Line No.%d:  Invalid number of arguments \n\n",line_count);
+						fprintf(error,"Error at Line No.%d:  Invalid number of parameters \n\n",line_count);
 
 					} else{
 					
@@ -150,36 +152,51 @@ func_definition : type_specifier ID  LPAREN  parameter_list RPAREN {$<symbolinfo
 						}
 						para_list.clear();
 					}
+					s->get_isFunction()->set_isdefined();
 				}
-
-				} compound_statement 
-				{fprintf(parsertext,"Line at %d : func_definition->type_specifier ID LPAREN parameter_list RPAREN compound_statement \n\n",line_count);
-				fprintf(parsertext,"%s %s(%s) %s \n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>2->get_name().c_str(),$<symbolinfo>4->get_name().c_str(),$<symbolinfo>7->get_name().c_str());
-				SymbolInfo *s=table->lookup($<symbolinfo>2->get_name());
-				if(s==0){
-					table->InsertPrev($<symbolinfo>2->get_name(),"ID","Function");
+				else{ //cout<<para_list.size()<<" "<<line_count<<endl;
+						table->InsertPrev($<symbolinfo>2->get_name(),"ID","Function");
 						s=table->lookup($<symbolinfo>2->get_name());
 						s->set_isFunction();
 						//cout<<s->get_isFunction()->get_number_of_parameter()<<endl;
 						s->get_isFunction()->set_isdefined();
 						for(int i=0;i<para_list.size();i++){
 							s->get_isFunction()->add_number_of_parameter(para_list[i]->get_name(),para_list[i]->get_dectype());
-						//cout<<para_list[i]->get_dectype()<<endl;
+					//	cout<<para_list[i]->get_dectype()<<para_list[i]->get_name()<<endl;
 					}
 					para_list.clear();s->get_isFunction()->set_return_type($<symbolinfo>1->get_name());
 					//cout<<line_count<<" "<<s->get_isFunction()->get_return_type()<<endl;
 				}
+
+				} compound_statement 
+				{fprintf(parsertext,"Line at %d : func_definition->type_specifier ID LPAREN parameter_list RPAREN compound_statement \n\n",line_count);
+				fprintf(parsertext,"%s %s(%s) %s \n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>2->get_name().c_str(),$<symbolinfo>4->get_name().c_str(),$<symbolinfo>7->get_name().c_str());
+				
 			
 				$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+" "+$<symbolinfo>2->get_name()+"("+$<symbolinfo>4->get_name()+")"+$<symbolinfo>7->get_name());
 				}
 		| type_specifier ID LPAREN RPAREN { $<symbolinfo>$=new SymbolInfo(); SymbolInfo *s=table->lookup($<symbolinfo>2->get_name());
 											if(s==0){
 												table->InsertPrev($<symbolinfo>2->get_name(),"ID","Function");
-											}
-											s=table->lookup($<symbolinfo>2->get_name());
-											s->set_isFunction();s->get_isFunction()->set_isdefined();
-											s->get_isFunction()->set_return_type($<symbolinfo>1->get_name());
+												s=table->lookup($<symbolinfo>2->get_name());
+												s->set_isFunction();
+												s->get_isFunction()->set_isdefined();
+												s->get_isFunction()->set_return_type($<symbolinfo>1->get_name());
 										//	cout<<line_count<<" "<<s->get_isFunction()->get_return_type()<<endl;
+											}
+											else{
+												if(s->get_isFunction()->get_number_of_parameter()!=0){
+													error_count++;
+													fprintf(error,"Error at Line No.%d:  Invalid number of parameters \n\n",line_count);
+												}
+												if(s->get_isFunction()->get_return_type()!=$<symbolinfo>1->get_name()){
+													error_count++;
+													fprintf(error,"Error at Line No.%d: Return Type Mismatch \n\n",line_count);
+												}
+
+												s->get_isFunction()->set_isdefined();
+											}
+											
 											$<symbolinfo>1->set_name($<symbolinfo>1->get_name()+" "+$<symbolinfo>2->get_name()+"()");
 											} compound_statement {
 											fprintf(parsertext,"Line at %d : func_definition->type_specifier ID LPAREN RPAREN compound_statement\n\n",line_count);
@@ -228,6 +245,12 @@ compound_statement : LCURL statements RCURL {$<symbolinfo>$=new SymbolInfo(); fp
 
 var_declaration : type_specifier declaration_list SEMICOLON {$<symbolinfo>$=new SymbolInfo(); fprintf(parsertext,"Line at %d : var_declaration->type_specifier declaration_list SEMICOLON\n\n",line_count);
 															fprintf(parsertext,"%s %s;\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>2->get_name().c_str());
+															if($<symbolinfo>1->get_name()=="void "){
+																error_count++;
+																fprintf(error,"Error at Line No.%d: TYpe specifier can not be void \n\n",line_count);
+																	
+															}
+															else{
 															for(int i=0;i<dec_list.size();i++){
 																if(table->lookupcurrent(dec_list[i]->get_name())){
 																	 error_count++;
@@ -239,7 +262,7 @@ var_declaration : type_specifier declaration_list SEMICOLON {$<symbolinfo>$=new 
 																	table->Insert(dec_list[i]->get_name(),dec_list[i]->get_type(),$<symbolinfo>1->get_name()+"array");
 																}else
 																table->Insert(dec_list[i]->get_name(),dec_list[i]->get_type(),$<symbolinfo>1->get_name());
-															}
+															}}
 															dec_list.clear();
 															$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+" "+$<symbolinfo>2->get_name()+";");
 															}
@@ -406,13 +429,13 @@ expression : logic_expression	{$<symbolinfo>$=new SymbolInfo();fprintf(parsertex
 												fprintf(error,"Error at Line No.%d:  Type MIsmatch \n\n",line_count);
 												$<symbolinfo>$->set_dectype("int "); 
 											}else if(table->lookup($<symbolinfo>1->get_name())!=0) {
-												//cout<<line_count<<" "<<table->lookup($<symbolinfo>1->get_name())->get_dectype()<<endl;
 												//cout<<line_count<<" "<<table->lookup($<symbolinfo>1->get_name())->get_dectype()<<""<<$<symbolinfo>3->get_dectype()<<endl;
 												if(table->lookup($<symbolinfo>1->get_name())->get_dectype()!=$<symbolinfo>3->get_dectype()){
 													 error_count++;
 													fprintf(error,"Error at Line No.%d: Type Mismatch \n\n",line_count);
 												}
 											}
+											$<symbolinfo>$->set_dectype($<symbolinfo>1->get_dectype()); 
 											$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+"="+$<symbolinfo>3->get_name());  
 
 											}
@@ -551,7 +574,7 @@ unary_expression : ADDOP unary_expression  {$<symbolinfo>$=new SymbolInfo(); fpr
 		 | factor {$<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Line at %d : unary_expression->factor\n\n",line_count);
 		 		fprintf(parsertext,"%s\n\n",$<symbolinfo>1->get_name().c_str()); 
 				// cout<<$<symbolinfo>1->get_dectype()<<endl;
-				
+				$<symbolinfo>$->set_dectype($<symbolinfo>1->get_dectype()); 
 				$<symbolinfo>$->set_name($<symbolinfo>1->get_name()); 
 				
 		 }
