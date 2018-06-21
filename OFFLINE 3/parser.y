@@ -158,6 +158,7 @@ func_declaration : type_specifier ID  LPAREN  parameter_list RPAREN SEMICOLON {$
 func_definition : type_specifier ID  LPAREN  parameter_list RPAREN {$<symbolinfo>$=new SymbolInfo(); 
 				SymbolInfo *s=table->lookup($<symbolinfo>2->get_name()); 
 				if(s!=0){ 
+					if(s->get_isFunction()->get_isdefined()==0){
 					int num=s->get_isFunction()->get_number_of_parameter();
 				//	cout<<line_count<<" "<<para_list.size()<<endl;
 				//	$<symbolinfo>$->set_dectype(s->get_isFunction()->get_return_type());
@@ -179,12 +180,17 @@ func_definition : type_specifier ID  LPAREN  parameter_list RPAREN {$<symbolinfo
 								error_count++;
 								fprintf(error,"Error at Line No.%d: Return Type Mismatch \n\n",line_count);
 						}
-						para_list.clear();
+					//	para_list.clear();
 					}
-					s->get_isFunction()->set_isdefined();
+					s->get_isFunction()->set_isdefined();}
+					else{
+						error_count++;
+						fprintf(error,"Error at Line No.%d:  Multiple defination of function %s\n\n",line_count,$<symbolinfo>2->get_name().c_str());
+											
+					}
 				}
 				else{ //cout<<para_list.size()<<" "<<line_count<<endl;
-						table->InsertPrev($<symbolinfo>2->get_name(),"ID","Function");
+						table->Insert($<symbolinfo>2->get_name(),"ID","Function");
 						s=table->lookup($<symbolinfo>2->get_name());
 						s->set_isFunction();
 						//cout<<s->get_isFunction()->get_number_of_parameter()<<endl;
@@ -193,7 +199,8 @@ func_definition : type_specifier ID  LPAREN  parameter_list RPAREN {$<symbolinfo
 							s->get_isFunction()->add_number_of_parameter(para_list[i]->get_name(),para_list[i]->get_dectype());
 					//	cout<<para_list[i]->get_dectype()<<para_list[i]->get_name()<<endl;
 					}
-					para_list.clear();s->get_isFunction()->set_return_type($<symbolinfo>1->get_name());
+				//	para_list.clear();
+					s->get_isFunction()->set_return_type($<symbolinfo>1->get_name());
 					//cout<<line_count<<" "<<s->get_isFunction()->get_return_type()<<endl;
 				}
 
@@ -206,14 +213,14 @@ func_definition : type_specifier ID  LPAREN  parameter_list RPAREN {$<symbolinfo
 				}
 		| type_specifier ID LPAREN RPAREN { $<symbolinfo>$=new SymbolInfo(); SymbolInfo *s=table->lookup($<symbolinfo>2->get_name());
 											if(s==0){
-												table->InsertPrev($<symbolinfo>2->get_name(),"ID","Function");
+												table->Insert($<symbolinfo>2->get_name(),"ID","Function");
 												s=table->lookup($<symbolinfo>2->get_name());
 												s->set_isFunction();
 												s->get_isFunction()->set_isdefined();
 												s->get_isFunction()->set_return_type($<symbolinfo>1->get_name());
 										//	cout<<line_count<<" "<<s->get_isFunction()->get_return_type()<<endl;
 											}
-											else{
+											else if(s->get_isFunction()->get_isdefined()==0){
 												if(s->get_isFunction()->get_number_of_parameter()!=0){
 													error_count++;
 													fprintf(error,"Error at Line No.%d:  Invalid number of parameters \n\n",line_count);
@@ -224,6 +231,10 @@ func_definition : type_specifier ID  LPAREN  parameter_list RPAREN {$<symbolinfo
 												}
 
 												s->get_isFunction()->set_isdefined();
+											}
+											else{
+												error_count++;
+												fprintf(error,"Error at Line No.%d:  Multiple defination of function %s\n\n",line_count,$<symbolinfo>2->get_name().c_str());
 											}
 											
 											$<symbolinfo>1->set_name($<symbolinfo>1->get_name()+" "+$<symbolinfo>2->get_name()+"()");
@@ -243,6 +254,7 @@ parameter_list  : parameter_list COMMA type_specifier ID {$<symbolinfo>$=new Sym
 															}
 		| parameter_list COMMA type_specifier {$<symbolinfo>$=new SymbolInfo(); fprintf(parsertext,"Line at %d : parameter_list->parameter_list COMMA type_specifier\n\n",line_count);
 											fprintf(parsertext,"%s,%s\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>3->get_name().c_str());
+											para_list.push_back(new SymbolInfo("","ID",$<symbolinfo>3->get_name()));
 											$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+","+$<symbolinfo>3->get_name());
 
 											}
@@ -253,18 +265,29 @@ parameter_list  : parameter_list COMMA type_specifier ID {$<symbolinfo>$=new Sym
 							}
 		| type_specifier {$<symbolinfo>$=new SymbolInfo(); fprintf(parsertext,"Line at %d : parameter_list->type_specifier\n\n",line_count);
 			fprintf(parsertext,"%s \n\n",$<symbolinfo>1->get_name().c_str());
+			para_list.push_back(new SymbolInfo("","ID",$<symbolinfo>1->get_name()));
 			$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+" ");
 		}
  		;
 
 
-compound_statement : LCURL statements RCURL {$<symbolinfo>$=new SymbolInfo(); fprintf(parsertext,"Line at %d : compound_statement->LCURL statements RCURL\n\n",line_count);
-											fprintf(parsertext,"{%s}\n\n",$<symbolinfo>2->get_name().c_str());
-											$<symbolinfo>$->set_name("{\n"+$<symbolinfo>2->get_name()+"\n}");
+compound_statement : LCURL {table->Enter_Scope();
+		//	cout<<line_count<<" "<<para_list.size()<<endl;
+			for(int i=0;i<para_list.size();i++)
+				table->Insert(para_list[i]->get_name(),"ID",para_list[i]->get_dectype());
+				//table->printcurrent();
+				para_list.clear();
+			} statements RCURL {$<symbolinfo>$=new SymbolInfo(); fprintf(parsertext,"Line at %d : compound_statement->LCURL statements RCURL\n\n",line_count);
+											fprintf(parsertext,"{%s}\n\n",$<symbolinfo>3->get_name().c_str());
+											$<symbolinfo>$->set_name("{\n"+$<symbolinfo>3->get_name()+"\n}");
 											table->printall();
 											table->Exit_Scope();
 											}
- 		    | LCURL RCURL {$<symbolinfo>$=new SymbolInfo(); fprintf(parsertext,"Line at %d : compound_statement->LCURL RCURL\n\n",line_count);
+ 		    | LCURL RCURL {for(int i=0;i<para_list.size();i++)
+				table->Insert(para_list[i]->get_name(),"ID",para_list[i]->get_dectype());
+				//table->printcurrent();
+				para_list.clear();
+				$<symbolinfo>$=new SymbolInfo(); fprintf(parsertext,"Line at %d : compound_statement->LCURL RCURL\n\n",line_count);
 			 				fprintf(parsertext,"{}\n\n");
 			 				$<symbolinfo>$->set_name("{}");
 							table->printall();
@@ -282,7 +305,7 @@ var_declaration : type_specifier declaration_list SEMICOLON {$<symbolinfo>$=new 
 															else{
 															for(int i=0;i<dec_list.size();i++){
 																if(table->lookupcurrent(dec_list[i]->get_name())){
-																	 error_count++;
+																	error_count++;
 																	fprintf(error,"Error at Line No.%d:  Multiple Declaration of %s \n\n",line_count,dec_list[i]->get_name().c_str());
 																	continue;
 																}
@@ -695,7 +718,7 @@ argument_list : arguments  {$<symbolinfo>$=new SymbolInfo(); fprintf(parsertext,
 							fprintf(parsertext,"%s\n\n",$<symbolinfo>1->get_name().c_str());
 							 $<symbolinfo>$->set_name($<symbolinfo>1->get_name());
 							}
-				| 		%empty	{ $<symbolinfo>$=new SymbolInfo();$<symbolinfo>$->set_name("");}
+				| 		%empty	{ $<symbolinfo>$=new SymbolInfo(); fprintf(parsertext,"Line at %d : argument_list-> \n\n",line_count);$<symbolinfo>$->set_name("");}
 			  ;
 
 arguments : arguments COMMA logic_expression { $<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Line at %d : arguments->arguments COMMA logic_expression \n\n",line_count);

@@ -1,8 +1,2 @@
-Error at Line No.4:  Invalid number of parameters 
-
-Error at Line No.19:  Invalid number of arguments 
-
-Error at Line No.28:  Invalid number of arguments 
-
-Total Errors : 3 
+Total Errors : 0 
 

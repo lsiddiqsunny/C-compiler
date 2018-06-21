@@ -1,155 +1,288 @@
-/* A Bison parser, made by GNU Bison 3.0.4.  */
+Line at 1 : type_specifier	: INT
 
-/* Bison interface for Yacc-like parsers in C
+int 
 
-   Copyright (C) 1984, 1989-1990, 2000-2015 Free Software Foundation, Inc.
+Line at 1 : declaration_list->ID
 
-   This program is free software: you can redistribute it and/or modify
-   it under the terms of the GNU General Public License as published by
-   the Free Software Foundation, either version 3 of the License, or
-   (at your option) any later version.
+x
 
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
+Line at 1 : declaration_list->declaration_list COMMA ID
 
-   You should have received a copy of the GNU General Public License
-   along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
+x,y
 
-/* As a special exception, you may create a larger work that contains
-   part or all of the Bison parser skeleton and distribute that work
-   under terms of your choice, so long as that work isn't itself a
-   parser generator using the skeleton or a modified version thereof
-   as a parser skeleton.  Alternatively, if you modify or redistribute
-   the parser skeleton itself, you may (at your option) remove this
-   special exception, which will cause the skeleton and the resulting
-   Bison output files to be licensed under the GNU General Public
-   License without this special exception.
+Line at 1 : declaration_list->declaration_list COMMA ID
 
-   This special exception was added by the Free Software Foundation in
-   version 2.2 of Bison.  */
+x,y,z
 
-#ifndef YY_YY_Y_TAB_H_INCLUDED
-# define YY_YY_Y_TAB_H_INCLUDED
-/* Debug traces.  */
-#ifndef YYDEBUG
-# define YYDEBUG 0
-#endif
-#if YYDEBUG
-extern int yydebug;
-#endif
+Line at 1 : var_declaration->type_specifier declaration_list SEMICOLON
 
-/* Token type.  */
-#ifndef YYTOKENTYPE
-# define YYTOKENTYPE
-  enum yytokentype
-  {
-    IF = 258,
-    ELSE = 259,
-    FOR = 260,
-    WHILE = 261,
-    DO = 262,
-    BREAK = 263,
-    INT = 264,
-    FLOAT = 265,
-    CHAR = 266,
-    DOUBLE = 267,
-    VOID = 268,
-    RETURN = 269,
-    SWITCH = 270,
-    CASE = 271,
-    DEFAULT = 272,
-    CONTINUE = 273,
-    CONST_INT = 274,
-    CONST_FLOAT = 275,
-    CONST_CHAR = 276,
-    ADDOP = 277,
-    MULOP = 278,
-    INCOP = 279,
-    RELOP = 280,
-    ASSIGNOP = 281,
-    LOGICOP = 282,
-    BITOP = 283,
-    NOT = 284,
-    DECOP = 285,
-    LPAREN = 286,
-    RPAREN = 287,
-    LCURL = 288,
-    RCURL = 289,
-    LTHIRD = 290,
-    RTHIRD = 291,
-    COMMA = 292,
-    SEMICOLON = 293,
-    STRING = 294,
-    ID = 295,
-    PRINTLN = 296,
-    LOWER_THAN_ELSE = 297
-  };
-#endif
-/* Tokens.  */
-#define IF 258
-#define ELSE 259
-#define FOR 260
-#define WHILE 261
-#define DO 262
-#define BREAK 263
-#define INT 264
-#define FLOAT 265
-#define CHAR 266
-#define DOUBLE 267
-#define VOID 268
-#define RETURN 269
-#define SWITCH 270
-#define CASE 271
-#define DEFAULT 272
-#define CONTINUE 273
-#define CONST_INT 274
-#define CONST_FLOAT 275
-#define CONST_CHAR 276
-#define ADDOP 277
-#define MULOP 278
-#define INCOP 279
-#define RELOP 280
-#define ASSIGNOP 281
-#define LOGICOP 282
-#define BITOP 283
-#define NOT 284
-#define DECOP 285
-#define LPAREN 286
-#define RPAREN 287
-#define LCURL 288
-#define RCURL 289
-#define LTHIRD 290
-#define RTHIRD 291
-#define COMMA 292
-#define SEMICOLON 293
-#define STRING 294
-#define ID 295
-#define PRINTLN 296
-#define LOWER_THAN_ELSE 297
+int  x,y,z;
 
-/* Value type.  */
-#if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
+Line at 1 : unit->var_declaration
 
-union YYSTYPE
-{
-#line 56 "parser.y" /* yacc.c:1909  */
+int  x,y,z;
 
-        SymbolInfo* symbolinfo;
-		vector<string>*s;
+Line at 1 : program->unit
 
-#line 143 "y.tab.h" /* yacc.c:1909  */
-};
-
-typedef union YYSTYPE YYSTYPE;
-# define YYSTYPE_IS_TRIVIAL 1
-# define YYSTYPE_IS_DECLARED 1
-#endif
+int  x,y,z;
 
 
-extern YYSTYPE yylval;
+Line at 1 : type_specifier	: FLOAT
 
-int yyparse (void);
+float 
 
-#endif /* !YY_YY_Y_TAB_H_INCLUDED  */
+Line at 1 : declaration_list->ID
+
+a
+
+Line at 1 : var_declaration->type_specifier declaration_list SEMICOLON
+
+float  a;
+
+Line at 1 : unit->var_declaration
+
+float  a;
+
+Line at 1 : program->program unit
+
+int  x,y,z;
+ float  a;
+
+
+Line at 3 : type_specifier	: VOID
+
+void 
+
+Line at 3 : func_declaration->type_specifier ID LPAREN RPAREN SEMICOLON
+
+void  foo();
+
+Line at 3 : unit->func_declaration
+
+void  foo();
+
+Line at 3 : program->program unit
+
+int  x,y,z;
+float  a;
+ void  foo();
+
+
+Line at 5 : type_specifier	: INT
+
+int 
+
+Line at 5 : type_specifier	: INT
+
+int 
+
+Line at 5 : parameter_list->type_specifier ID
+
+int  a
+
+Line at 5 : type_specifier	: INT
+
+int 
+
+Line at 5 : parameter_list->parameter_list COMMA type_specifier ID
+
+int  a,int  b
+
+ New ScopeTable with id 2 created
+
+Line at 6 : variable->ID
+
+a
+
+Line at 6 : factor->variable
+
+a
+
+Line at 6 : unary_expression->factor
+
+a
+
+Line at 6 : term->unary_expression
+
+a
+
+Line at 6 : simple_expression->term
+
+a
+
+Line at 6 : variable->ID
+
+b
+
+Line at 6 : factor->variable
+
+b
+
+Line at 6 : unary_expression->factor
+
+b
+
+Line at 6 : term->unary_expression
+
+b
+
+Line at 6 : simple_expression->simple_expression ADDOP term
+
+a+b
+
+Line at 6 : rel_expression->simple_expression
+
+a+b
+
+Line at 6 : logic_expression->rel_expression
+
+a+b
+
+Line at 6 : expression->logic_expression
+
+a+b
+
+Line at 6 : statement->RETURN expression SEMICOLON
+
+return a+b;
+
+Line at 6 : statements->statement
+
+return a+b;
+
+Line at 7 : compound_statement->LCURL statements RCURL
+
+{return a+b;}
+
+ ScopeTable# 2 
+ 51  --> < ID : a > 
+ 52  --> < ID : b > 
+
+ ScopeTable# 1 
+ 21  --> < ID : foo > 
+ 44  --> < ID : var > 
+ 51  --> < ID : a > 
+ 74  --> < ID : x > 
+ 75  --> < ID : y > 
+ 76  --> < ID : z > 
+
+ ScopeTable with id 2 removed
+
+Line at 7 : func_definition->type_specifier ID LPAREN parameter_list RPAREN compound_statement 
+
+int  var(int  a,int  b) {
+return a+b;
+} 
+
+Line at 7 : unit->func_definition
+
+int  var(int  a,int  b){
+return a+b;
+}
+
+Line at 7 : program->program unit
+
+int  x,y,z;
+float  a;
+void  foo();
+ int  var(int  a,int  b){
+return a+b;
+}
+
+
+Line at 8 : type_specifier	: INT
+
+int 
+
+Line at 8 : type_specifier	: INT
+
+int 
+
+Line at 8 : parameter_list->type_specifier ID
+
+int  a
+
+Line at 8 : type_specifier	: INT
+
+int 
+
+Line at 8 : parameter_list->parameter_list COMMA type_specifier ID
+
+int  a,int  b
+
+ New ScopeTable with id 3 created
+
+Line at 9 : variable->ID
+
+a
+
+Line at 9 : factor->variable
+
+a
+
+Line at 9 : unary_expression->factor
+
+a
+
+Line at 9 : term->unary_expression
+
+a
+
+Line at 9 : simple_expression->term
+
+a
+
+Line at 9 : variable->ID
+
+b
+
+Line at 9 : factor->variable
+
+b
+
+Line at 9 : unary_expression->factor
+
+b
+
+Line at 9 : term->unary_expression
+
+b
+
+Line at 9 : simple_expression->simple_expression ADDOP term
+
+a+b
+
+Line at 9 : rel_expression->simple_expression
+
+a+b
+
+Line at 9 : logic_expression->rel_expression
+
+a+b
+
+Line at 9 : expression->logic_expression
+
+a+b
+
+Line at 9 : statement->RETURN expression SEMICOLON
+
+return a+b;
+
+Line at 9 : statements->statement
+
+return a+b;
+
+Line at 10 : compound_statement->LCURL statements RCURL
+
+{return a+b;}
+
+ ScopeTable# 3 
+ 51  --> < ID : a > 
+ 52  --> < ID : b > 
+
+ ScopeTable# 1 
+ 21  --> < ID : foo > 
+ 44  --> < ID : var > 
+ 51  --> < ID : a > 
+ 74  --> < ID : x > 
+ 

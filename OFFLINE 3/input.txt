@@ -11,6 +11,7 @@ void foo(){
 	y=4;
 }
 
+
 int main(){
 
 	int a[2],b,c; float d;

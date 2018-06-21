@@ -68,117 +68,89 @@ float  a;
  void  foo();
 
 
-Line at 4 : type_specifier	: VOID
-
-void 
-
-Line at 4 : type_specifier	: INT
+Line at 5 : type_specifier	: INT
 
 int 
 
-Line at 4 : parameter_list->type_specifier ID
+Line at 5 : type_specifier	: INT
+
+int 
+
+Line at 5 : parameter_list->type_specifier ID
 
 int  a
 
-Line at 4 : func_declaration->type_specifier ID LPAREN parameter_list RPAREN SEMICOLON
-
-void  foo(int  a);
-
-Line at 4 : unit->func_declaration
-
-void  foo(int  a);
-
-Line at 4 : program->program unit
-
-int  x,y,z;
-float  a;
-void  foo();
- void  foo(int  a);
-
-
-Line at 6 : type_specifier	: INT
+Line at 5 : type_specifier	: INT
 
 int 
 
-Line at 6 : type_specifier	: INT
-
-int 
-
-Line at 6 : parameter_list->type_specifier ID
-
-int  a
-
-Line at 6 : type_specifier	: INT
-
-int 
-
-Line at 6 : parameter_list->parameter_list COMMA type_specifier ID
+Line at 5 : parameter_list->parameter_list COMMA type_specifier ID
 
 int  a,int  b
 
  New ScopeTable with id 2 created
 
-Line at 7 : variable->ID
+Line at 6 : variable->ID
 
 a
 
-Line at 7 : factor->variable
+Line at 6 : factor->variable
 
 a
 
-Line at 7 : unary_expression->factor
+Line at 6 : unary_expression->factor
 
 a
 
-Line at 7 : term->unary_expression
+Line at 6 : term->unary_expression
 
 a
 
-Line at 7 : simple_expression->term
+Line at 6 : simple_expression->term
 
 a
 
-Line at 7 : variable->ID
+Line at 6 : variable->ID
 
 b
 
-Line at 7 : factor->variable
+Line at 6 : factor->variable
 
 b
 
-Line at 7 : unary_expression->factor
+Line at 6 : unary_expression->factor
 
 b
 
-Line at 7 : term->unary_expression
+Line at 6 : term->unary_expression
 
 b
 
-Line at 7 : simple_expression->simple_expression ADDOP term
+Line at 6 : simple_expression->simple_expression ADDOP term
 
 a+b
 
-Line at 7 : rel_expression->simple_expression
+Line at 6 : rel_expression->simple_expression
 
 a+b
 
-Line at 7 : logic_expression->rel_expression
+Line at 6 : logic_expression->rel_expression
 
 a+b
 
-Line at 7 : expression->logic_expression
+Line at 6 : expression->logic_expression
 
 a+b
 
-Line at 7 : statement->RETURN expression SEMICOLON
+Line at 6 : statement->RETURN expression SEMICOLON
 
 return a+b;
 
-Line at 7 : statements->statement
+Line at 6 : statements->statement
 
 return a+b;
 
-Line at 8 : compound_statement->LCURL statements RCURL
+Line at 7 : compound_statement->LCURL statements RCURL
 
 {return a+b;}
 
@@ -196,124 +168,123 @@ Line at 8 : compound_statement->LCURL statements RCURL
 
  ScopeTable with id 2 removed
 
-Line at 8 : func_definition->type_specifier ID LPAREN parameter_list RPAREN compound_statement 
+Line at 7 : func_definition->type_specifier ID LPAREN parameter_list RPAREN compound_statement 
 
 int  var(int  a,int  b) {
 return a+b;
 } 
 
-Line at 8 : unit->func_definition
+Line at 7 : unit->func_definition
 
 int  var(int  a,int  b){
 return a+b;
 }
 
-Line at 8 : program->program unit
+Line at 7 : program->program unit
 
 int  x,y,z;
 float  a;
 void  foo();
-void  foo(int  a);
  int  var(int  a,int  b){
 return a+b;
 }
 
 
-Line at 10 : type_specifier	: VOID
+Line at 9 : type_specifier	: VOID
 
 void 
 
  New ScopeTable with id 3 created
 
-Line at 11 : variable->ID
+Line at 10 : variable->ID
 
 x
 
-Line at 11 : factor->CONST_INT
+Line at 10 : factor->CONST_INT
 
 2
 
-Line at 11 : unary_expression->factor
+Line at 10 : unary_expression->factor
 
 2
 
-Line at 11 : term->unary_expression
+Line at 10 : term->unary_expression
 
 2
 
-Line at 11 : simple_expression->term
+Line at 10 : simple_expression->term
 
 2
 
-Line at 11 : rel_expression->simple_expression
+Line at 10 : rel_expression->simple_expression
 
 2
 
-Line at 11 : logic_expression->rel_expression
+Line at 10 : logic_expression->rel_expression
 
 2
 
-Line at 11 : expression->variable ASSIGNOP logic_expression
+Line at 10 : expression->variable ASSIGNOP logic_expression
 
 x=2
 
-Line at 11 : expression_statement->expression SEMICOLON
+Line at 10 : expression_statement->expression SEMICOLON
 
 x=2;
 
-Line at 11 : statement -> expression_statement
+Line at 10 : statement -> expression_statement
 
 x=2;
 
-Line at 11 : statements->statement
+Line at 10 : statements->statement
 
 x=2;
 
-Line at 12 : variable->ID
+Line at 11 : variable->ID
 
 y
 
-Line at 12 : factor->CONST_INT
+Line at 11 : factor->CONST_INT
 
 4
 
-Line at 12 : unary_expression->factor
+Line at 11 : unary_expression->factor
 
 4
 
-Line at 12 : term->unary_expression
+Line at 11 : term->unary_expression
 
 4
 
-Line at 12 : simple_expression->term
+Line at 11 : simple_expression->term
 
 4
 
-Line at 12 : rel_expression->simple_expression
+Line at 11 : rel_expression->simple_expression
 
 4
 
-Line at 12 : logic_expression->rel_expression
+Line at 11 : logic_expression->rel_expression
 
 4
 
-Line at 12 : expression->variable ASSIGNOP logic_expression
+Line at 11 : expression->variable ASSIGNOP logic_expression
 
 y=4
 
-Line at 12 : expression_statement->expression SEMICOLON
+Line at 11 : expression_statement->expression SEMICOLON
 
 y=4;
 
-Line at 12 : statement -> expression_statement
+Line at 11 : statement -> expression_statement
 
 y=4;
 
-Line at 12 : statements->statements statement
+Line at 11 : statements->statements statement
 
 x=2; y=4;
 
-Line at 13 : compound_statement->LCURL statements RCURL
+Line at 12 : compound_statement->LCURL statements RCURL
 
 {x=2;
 y=4;}
@@ -330,26 +301,25 @@ y=4;}
 
  ScopeTable with id 3 removed
 
-Line at 13 : func_definition->type_specifier ID LPAREN RPAREN compound_statement
+Line at 12 : func_definition->type_specifier ID LPAREN RPAREN compound_statement
 
 void  foo() {
 x=2;
 y=4;
 }
 
-Line at 13 : unit->func_definition
+Line at 12 : unit->func_definition
 
 void  foo(){
 x=2;
 y=4;
 }
 
-Line at 13 : program->program unit
+Line at 12 : program->program unit
 
 int  x,y,z;
 float  a;
 void  foo();
-void  foo(int  a);
 int  var(int  a,int  b){
 return a+b;
 }
@@ -412,6 +382,8 @@ float  d;
 Line at 17 : statements->statements statement
 
 int  a[2],b,c; float  d;
+
+Line at 18 : argument_list-> 
 
 Line at 18 : factor->ID LPAREN argument_list RPAREN
 
@@ -1596,7 +1568,6 @@ Line at 31 : program->program unit
 int  x,y,z;
 float  a;
 void  foo();
-void  foo(int  a);
 int  var(int  a,int  b){
 return a+b;
 }
@@ -1635,5 +1606,5 @@ return 0;
 
 Total Lines : 31 
 
-Total Errors : 3 
+Total Errors : 0 
 
