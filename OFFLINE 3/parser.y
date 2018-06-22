@@ -504,12 +504,7 @@ logic_expression : rel_expression 	{$<symbolinfo>$=new SymbolInfo();fprintf(pars
 														error_count++;
 														fprintf(error,"Error at Line No.%d:  Type MIsmatch \n\n",line_count);
 														$<symbolinfo>$->set_dectype("int "); 
-													}else  if($<symbolinfo>1->get_dectype()=="float " ||$<symbolinfo>3->get_dectype()=="float "){
-											 			error_count++;
-														// cout<<$<symbolinfo>1->get_name()<<" "<<$<symbolinfo>3->get_name()<<endl;
-														fprintf(error,"Error at Line No.%d:  Type Mismatch \n\n",line_count);
-
-										 			} 
+													}
 										 			$<symbolinfo>$->set_dectype("int "); 
 		 											$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+$<symbolinfo>2->get_name()+$<symbolinfo>3->get_name());  
 
@@ -528,12 +523,7 @@ rel_expression	: simple_expression {$<symbolinfo>$=new SymbolInfo();fprintf(pars
 														error_count++;
 														fprintf(error,"Error at Line No.%d:  Type MIsmatch \n\n",line_count);
 														$<symbolinfo>$->set_dectype("int "); 
-												}else if($<symbolinfo>1->get_dectype()=="float " ||$<symbolinfo>3->get_dectype()=="float "){
-											 			error_count++;
-														// cout<<$<symbolinfo>1->get_name()<<" "<<$<symbolinfo>3->get_name()<<endl;
-														fprintf(error,"Error at Line No.%d:  Type Mismatch \n\n",line_count);
-
-										 				} 
+													}
 										 			$<symbolinfo>$->set_dectype("int "); 
 													
 													$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+$<symbolinfo>2->get_name()+$<symbolinfo>3->get_name());  
