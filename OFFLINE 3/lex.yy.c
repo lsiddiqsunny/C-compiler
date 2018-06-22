@@ -1251,17 +1251,13 @@ YY_RULE_SETUP
 #line 199 "scanner.l"
 {
 			
-			table->Enter_Scope();
-			for(int i=0;i<para_list.size();i++){
-				table->Insert(para_list[i]->get_name(),"ID",para_list[i]->get_dectype());
-				//table->printcurrent();
-			}
+			
 			return LCURL;
 		}
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 208 "scanner.l"
+#line 204 "scanner.l"
 {
 
 			return RCURL;
@@ -1269,7 +1265,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 212 "scanner.l"
+#line 208 "scanner.l"
 {
 			
 			return LTHIRD;
@@ -1277,7 +1273,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 216 "scanner.l"
+#line 212 "scanner.l"
 {
 			
 			return RTHIRD;
@@ -1285,7 +1281,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 220 "scanner.l"
+#line 216 "scanner.l"
 {
 		
 			return COMMA;
@@ -1293,7 +1289,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 224 "scanner.l"
+#line 220 "scanner.l"
 {
 		
 			return SEMICOLON;
@@ -1302,7 +1298,7 @@ YY_RULE_SETUP
 case 45:
 /* rule 45 can match eol */
 YY_RULE_SETUP
-#line 229 "scanner.l"
+#line 225 "scanner.l"
 {	
 							
 							pair<string,int> modify=ModifyString(yytext,line_count);
@@ -1317,7 +1313,7 @@ YY_RULE_SETUP
 case 46:
 /* rule 46 can match eol */
 YY_RULE_SETUP
-#line 239 "scanner.l"
+#line 235 "scanner.l"
 {
 							pair<string,int> modify=ModifyString(yytext,line_count);
 							fprintf(error,"Error at Line No.%d:  Unfinished String found %s \n",line_count,yytext);
@@ -1328,7 +1324,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-#line 249 "scanner.l"
+#line 245 "scanner.l"
 {
 								/*SymbolInfo *s= table->lookup(yytext);
 								if(s==NULL)
@@ -1343,7 +1339,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
-#line 261 "scanner.l"
+#line 257 "scanner.l"
 {
 								fprintf(error,"Error at Line No.%d:  Invalid Identifier %s \n",line_count,yytext);
 								error_count++;
@@ -1353,7 +1349,7 @@ YY_RULE_SETUP
 case 49:
 /* rule 49 can match eol */
 YY_RULE_SETUP
-#line 267 "scanner.l"
+#line 263 "scanner.l"
 {	 pair<string,int> modify=ModifyString(yytext,line_count);
 					
 						/// fprintf(error,"Line no %d: TOKEN <COMMENT> Lexeme %s found\n",line_count,yytext);
@@ -1365,7 +1361,7 @@ YY_RULE_SETUP
 case 50:
 /* rule 50 can match eol */
 YY_RULE_SETUP
-#line 274 "scanner.l"
+#line 270 "scanner.l"
 {
 						pair<string,int> modify=ModifyString(yytext,line_count);
 						//fprintf(error,"Line no %d: TOKEN <COMMENT> Lexeme %s found\n",line_count,yytext);
@@ -1377,7 +1373,7 @@ YY_RULE_SETUP
 case 51:
 /* rule 51 can match eol */
 YY_RULE_SETUP
-#line 281 "scanner.l"
+#line 277 "scanner.l"
 {
 								pair<string,int> modify=ModifyString(yytext,line_count);
 								fprintf(error,"Error at Line No.%d:  Unfinished Comment %s \n",line_count,yytext);
@@ -1388,7 +1384,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 52:
 YY_RULE_SETUP
-#line 288 "scanner.l"
+#line 284 "scanner.l"
 {
 								fprintf(error,"Error at Line No.%d:  Unrecognized character %s \n",line_count,yytext);
 								error_count++;
@@ -1397,10 +1393,10 @@ YY_RULE_SETUP
 	YY_BREAK
 case 53:
 YY_RULE_SETUP
-#line 294 "scanner.l"
+#line 290 "scanner.l"
 ECHO;
 	YY_BREAK
-#line 1404 "lex.yy.c"
+#line 1400 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -2401,7 +2397,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 294 "scanner.l"
+#line 290 "scanner.l"
 
 
 

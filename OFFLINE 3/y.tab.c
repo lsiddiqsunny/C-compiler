@@ -488,16 +488,16 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  11
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   186
+#define YYLAST   147
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  43
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  26
+#define YYNNTS  27
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  66
+#define YYNRULES  67
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  120
+#define YYNSTATES  121
 
 /* YYTRANSLATE[YYX] -- Symbol number corresponding to YYX as returned
    by yylex, with out-of-bounds checking.  */
@@ -548,12 +548,12 @@ static const yytype_uint8 yytranslate[] =
 static const yytype_uint16 yyrline[] =
 {
        0,    65,    65,    69,    74,    80,    83,    87,    93,   135,
-     158,   158,   207,   207,   239,   244,   249,   254,   261,   267,
-     275,   300,   303,   306,   311,   316,   321,   327,   335,   339,
-     345,   350,   355,   360,   365,   370,   375,   379,   383,   389,
-     393,   399,   415,   449,   454,   472,   478,   496,   502,   521,
-     528,   543,   550,   581,   592,   603,   612,   618,   663,   668,
-     674,   680,   686,   694,   698,   701,   706
+     158,   158,   214,   214,   250,   255,   261,   266,   274,   274,
+     286,   298,   323,   326,   329,   334,   339,   344,   350,   358,
+     362,   368,   373,   378,   383,   394,   405,   416,   425,   429,
+     440,   444,   451,   467,   501,   506,   524,   530,   543,   549,
+     563,   570,   585,   592,   633,   644,   655,   664,   670,   715,
+     720,   726,   732,   738,   746,   750,   753,   758
 };
 #endif
 
@@ -570,10 +570,10 @@ static const char *const yytname[] =
   "COMMA", "SEMICOLON", "STRING", "ID", "PRINTLN", "LOWER_THAN_ELSE",
   "$accept", "start", "program", "unit", "func_declaration",
   "func_definition", "@1", "@2", "parameter_list", "compound_statement",
-  "var_declaration", "type_specifier", "declaration_list", "statements",
-  "statement", "expression_statement", "variable", "expression",
-  "logic_expression", "rel_expression", "simple_expression", "term",
-  "unary_expression", "factor", "argument_list", "arguments", YY_NULLPTR
+  "$@3", "var_declaration", "type_specifier", "declaration_list",
+  "statements", "statement", "expression_statement", "variable",
+  "expression", "logic_expression", "rel_expression", "simple_expression",
+  "term", "unary_expression", "factor", "argument_list", "arguments", YY_NULLPTR
 };
 #endif
 
@@ -590,10 +590,10 @@ static const yytype_uint16 yytoknum[] =
 };
 # endif
 
-#define YYPACT_NINF -68
+#define YYPACT_NINF -74
 
 #define yypact_value_is_default(Yystate) \
-  (!!((Yystate) == (-68)))
+  (!!((Yystate) == (-74)))
 
 #define YYTABLE_NINF -1
 
@@ -602,20 +602,21 @@ static const yytype_uint16 yytoknum[] =
 
   /* YYPACT[STATE-NUM] -- Index in YYTABLE of the portion describing
      STATE-NUM.  */
-static const yytype_int16 yypact[] =
+static const yytype_int8 yypact[] =
 {
-      65,   -68,   -68,   -68,    10,    65,   -68,   -68,   -68,   -68,
-     -12,   -68,   -68,    24,     9,     3,     5,     0,   -68,    11,
-     -10,    14,    16,    28,   -68,    33,    41,    65,   -68,   -68,
-      45,    67,   -68,   -68,    33,    42,    47,    53,    54,    57,
-      31,   -68,   -68,    31,    31,    31,   -68,   -68,    26,    59,
-     -68,   -68,    51,   106,   -68,   -68,    -7,    55,   -68,    68,
-      12,    69,   -68,   -68,   -68,   -68,   -68,    31,   141,    31,
-      56,    -4,   -68,   -68,    70,    31,    31,    63,    62,   -68,
-     -68,   -68,    31,   -68,   -68,    31,    31,    31,    31,    72,
-     141,    74,   -68,   -68,   -68,    78,    76,    81,    82,   -68,
-     -68,    69,    77,   -68,   145,    31,   145,   -68,    31,   -68,
-      80,   117,    90,   -68,   -68,   -68,   145,   145,   -68,   -68
+      46,   -74,   -74,   -74,    44,    46,   -74,   -74,   -74,   -74,
+     -35,   -74,   -74,   -19,     8,     5,    28,    17,   -74,    20,
+      -6,    27,    42,    40,   -74,    47,    41,    46,   -74,   -74,
+      62,    50,   -74,   -74,    47,    48,    51,   -74,   102,   -74,
+     -74,   -74,    55,    58,    59,    31,   -74,   -74,    31,    31,
+      31,   -74,    39,    60,   -74,   -74,    53,    63,   -74,   -74,
+      -7,    57,   -74,    71,     7,    76,   -74,   -74,    31,    98,
+      31,    64,     0,   -74,   -74,    68,    31,    31,    66,    74,
+     -74,   -74,   -74,    31,   -74,   -74,    31,    31,    31,    31,
+      78,    98,    81,   -74,   -74,   -74,    82,    86,    83,    93,
+     -74,   -74,    76,   104,   -74,   102,    31,   102,   -74,    31,
+     -74,    90,   126,   100,   -74,   -74,   -74,   102,   102,   -74,
+     -74
 };
 
   /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -623,34 +624,35 @@ static const yytype_int16 yypact[] =
      means the default is an error.  */
 static const yytype_uint8 yydefact[] =
 {
-       0,    21,    22,    23,     0,     2,     4,     6,     7,     5,
-       0,     1,     3,    26,     0,     0,     0,     0,    20,    12,
-       0,    17,     0,    24,     9,     0,    10,     0,    16,    27,
-       0,     0,    13,     8,     0,    15,     0,     0,     0,     0,
-       0,    59,    60,     0,     0,     0,    19,    39,    41,     0,
-      32,    30,     0,     0,    28,    31,    56,     0,    43,    45,
-      47,    49,    51,    55,    11,    14,    25,     0,     0,     0,
-       0,    56,    53,    54,     0,    64,     0,     0,    26,    18,
-      29,    61,     0,    62,    40,     0,     0,     0,     0,     0,
-       0,     0,    38,    58,    66,     0,    63,     0,     0,    44,
-      46,    50,    48,    52,     0,     0,     0,    57,     0,    42,
-       0,    34,     0,    36,    65,    37,     0,     0,    35,    33
+       0,    22,    23,    24,     0,     2,     4,     6,     7,     5,
+       0,     1,     3,    27,     0,     0,     0,     0,    21,    12,
+       0,    17,     0,    25,     9,     0,    10,     0,    16,    28,
+       0,    18,    13,     8,     0,    15,     0,    20,     0,    11,
+      14,    26,     0,     0,     0,     0,    60,    61,     0,     0,
+       0,    40,    42,     0,    33,    31,     0,     0,    29,    32,
+      57,     0,    44,    46,    48,    50,    52,    56,     0,     0,
+       0,     0,    57,    54,    55,     0,    65,     0,     0,    27,
+      19,    30,    62,     0,    63,    41,     0,     0,     0,     0,
+       0,     0,     0,    39,    59,    67,     0,    64,     0,     0,
+      45,    47,    51,    49,    53,     0,     0,     0,    58,     0,
+      43,     0,    35,     0,    37,    66,    38,     0,     0,    36,
+      34
 };
 
   /* YYPGOTO[NTERM-NUM].  */
-static const yytype_int8 yypgoto[] =
+static const yytype_int16 yypgoto[] =
 {
-     -68,   -68,   -68,   118,   -68,   -68,   -68,   -68,   -68,   -16,
-      25,     6,   -68,   -68,   -48,   -54,   -43,   -38,   -67,    39,
-      40,    43,   -40,   -68,   -68,   -68
+     -74,   -74,   -74,   129,   -74,   -74,   -74,   -74,   -74,   -12,
+     -74,    43,     6,   -74,   -74,   -53,   -49,   -48,   -43,   -73,
+      61,    49,    52,   -40,   -74,   -74,   -74
 };
 
   /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-      -1,     4,     5,     6,     7,     8,    34,    25,    20,    50,
-      51,    52,    14,    53,    54,    55,    56,    57,    58,    59,
-      60,    61,    62,    63,    95,    96
+      -1,     4,     5,     6,     7,     8,    34,    25,    20,    54,
+      38,    55,    56,    14,    57,    58,    59,    60,    61,    62,
+      63,    64,    65,    66,    67,    96,    97
 };
 
   /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -658,90 +660,83 @@ static const yytype_int8 yydefgoto[] =
      number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_uint8 yytable[] =
 {
-      71,    71,    70,    72,    73,    80,    10,    74,    94,    32,
-      11,    10,     1,     2,    90,    99,     3,    81,    64,    82,
-      81,    21,    26,    83,    22,     9,    83,    27,    13,    89,
-       9,    91,    71,    35,    86,    19,   105,    87,    97,    71,
-      23,   114,    71,    71,    71,    71,    17,    18,   103,    24,
-      41,    42,    29,    43,    28,    15,   111,    75,   113,    16,
-      44,    76,    45,    30,    36,    71,    31,   112,   118,   119,
-      37,    48,    38,    39,     1,     2,     1,     2,     3,    33,
-       3,    40,    65,    66,    67,    68,    41,    42,    69,    43,
-      77,    78,    88,    84,    92,    85,    44,    16,    45,    86,
-      31,    46,    93,    98,   104,    47,   106,    48,    49,    37,
-     107,    38,    39,   108,   110,     1,     2,   109,   115,     3,
-      40,   116,   117,    12,   100,    41,    42,   102,    43,   101,
-       0,     0,     0,     0,     0,    44,     0,    45,     0,    31,
-      79,     0,     0,     0,    47,     0,    48,    49,    37,     0,
-      38,    39,     0,     0,     1,     2,     0,     0,     3,    40,
-      41,    42,     0,    43,    41,    42,     0,    43,     0,     0,
-      44,     0,    45,     0,    44,     0,    45,     0,    31,    47,
-       0,    48,     0,    47,     0,    48,    49
+      72,    72,    71,    95,    81,    13,    10,    75,    73,    74,
+     100,    10,    15,    32,     1,     2,    16,    82,     3,    83,
+      91,    21,    39,    84,    82,    90,    26,    92,    72,    87,
+      84,    27,    88,    35,    98,    72,   115,    19,    72,    72,
+      72,    72,   106,     9,    11,    17,    18,    22,     9,   104,
+      46,    47,   112,    48,   114,     1,     2,    23,    24,     3,
+      49,    72,    50,   113,   119,   120,    42,    28,    43,    44,
+      76,    52,     1,     2,    77,    30,     3,    45,    29,    33,
+      31,    36,    46,    47,    37,    48,    68,    41,    40,    69,
+      70,    78,    49,    79,    50,    85,    31,    80,    86,    89,
+      94,    51,    93,    52,    53,    42,    99,    43,    44,    16,
+     105,     1,     2,   107,   108,     3,    45,    46,    47,   110,
+      48,    46,    47,   109,    48,   111,    87,    49,   116,    50,
+     117,    49,   118,    50,    12,    31,    51,   103,    52,   102,
+      51,     0,    52,    53,     0,     0,     0,   101
 };
 
 static const yytype_int8 yycheck[] =
 {
-      43,    44,    40,    43,    44,    53,     0,    45,    75,    25,
-       0,     5,     9,    10,    68,    82,    13,    24,    34,    26,
-      24,    15,    32,    30,    19,     0,    30,    37,    40,    67,
-       5,    69,    75,    27,    22,    32,    90,    25,    76,    82,
-      40,   108,    85,    86,    87,    88,    37,    38,    88,    38,
-      19,    20,    36,    22,    40,    31,   104,    31,   106,    35,
-      29,    35,    31,    35,    19,   108,    33,   105,   116,   117,
-       3,    40,     5,     6,     9,    10,     9,    10,    13,    38,
-      13,    14,    40,    36,    31,    31,    19,    20,    31,    22,
-      31,    40,    23,    38,    38,    27,    29,    35,    31,    22,
-      33,    34,    32,    40,    32,    38,    32,    40,    41,     3,
-      32,     5,     6,    37,    32,     9,    10,    36,    38,    13,
-      14,     4,    32,     5,    85,    19,    20,    87,    22,    86,
-      -1,    -1,    -1,    -1,    -1,    29,    -1,    31,    -1,    33,
-      34,    -1,    -1,    -1,    38,    -1,    40,    41,     3,    -1,
-       5,     6,    -1,    -1,     9,    10,    -1,    -1,    13,    14,
-      19,    20,    -1,    22,    19,    20,    -1,    22,    -1,    -1,
-      29,    -1,    31,    -1,    29,    -1,    31,    -1,    33,    38,
-      -1,    40,    -1,    38,    -1,    40,    41
+      48,    49,    45,    76,    57,    40,     0,    50,    48,    49,
+      83,     5,    31,    25,     9,    10,    35,    24,    13,    26,
+      69,    15,    34,    30,    24,    68,    32,    70,    76,    22,
+      30,    37,    25,    27,    77,    83,   109,    32,    86,    87,
+      88,    89,    91,     0,     0,    37,    38,    19,     5,    89,
+      19,    20,   105,    22,   107,     9,    10,    40,    38,    13,
+      29,   109,    31,   106,   117,   118,     3,    40,     5,     6,
+      31,    40,     9,    10,    35,    35,    13,    14,    36,    38,
+      33,    19,    19,    20,    34,    22,    31,    36,    40,    31,
+      31,    31,    29,    40,    31,    38,    33,    34,    27,    23,
+      32,    38,    38,    40,    41,     3,    40,     5,     6,    35,
+      32,     9,    10,    32,    32,    13,    14,    19,    20,    36,
+      22,    19,    20,    37,    22,    32,    22,    29,    38,    31,
+       4,    29,    32,    31,     5,    33,    38,    88,    40,    87,
+      38,    -1,    40,    41,    -1,    -1,    -1,    86
 };
 
   /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
      symbol of state STATE-NUM.  */
 static const yytype_uint8 yystos[] =
 {
-       0,     9,    10,    13,    44,    45,    46,    47,    48,    53,
-      54,     0,    46,    40,    55,    31,    35,    37,    38,    32,
-      51,    54,    19,    40,    38,    50,    32,    37,    40,    36,
-      35,    33,    52,    38,    49,    54,    19,     3,     5,     6,
-      14,    19,    20,    22,    29,    31,    34,    38,    40,    41,
-      52,    53,    54,    56,    57,    58,    59,    60,    61,    62,
-      63,    64,    65,    66,    52,    40,    36,    31,    31,    31,
-      60,    59,    65,    65,    60,    31,    35,    31,    40,    34,
-      57,    24,    26,    30,    38,    27,    22,    25,    23,    60,
-      58,    60,    38,    32,    61,    67,    68,    60,    40,    61,
-      62,    64,    63,    65,    32,    58,    32,    32,    37,    36,
-      32,    57,    60,    57,    61,    38,     4,    32,    57,    57
+       0,     9,    10,    13,    44,    45,    46,    47,    48,    54,
+      55,     0,    46,    40,    56,    31,    35,    37,    38,    32,
+      51,    55,    19,    40,    38,    50,    32,    37,    40,    36,
+      35,    33,    52,    38,    49,    55,    19,    34,    53,    52,
+      40,    36,     3,     5,     6,    14,    19,    20,    22,    29,
+      31,    38,    40,    41,    52,    54,    55,    57,    58,    59,
+      60,    61,    62,    63,    64,    65,    66,    67,    31,    31,
+      31,    61,    60,    66,    66,    61,    31,    35,    31,    40,
+      34,    58,    24,    26,    30,    38,    27,    22,    25,    23,
+      61,    59,    61,    38,    32,    62,    68,    69,    61,    40,
+      62,    63,    65,    64,    66,    32,    59,    32,    32,    37,
+      36,    32,    58,    61,    58,    62,    38,     4,    32,    58,
+      58
 };
 
   /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
 static const yytype_uint8 yyr1[] =
 {
        0,    43,    44,    45,    45,    46,    46,    46,    47,    47,
-      49,    48,    50,    48,    51,    51,    51,    51,    52,    52,
-      53,    54,    54,    54,    55,    55,    55,    55,    56,    56,
-      57,    57,    57,    57,    57,    57,    57,    57,    57,    58,
-      58,    59,    59,    60,    60,    61,    61,    62,    62,    63,
-      63,    64,    64,    65,    65,    65,    66,    66,    66,    66,
-      66,    66,    66,    67,    67,    68,    68
+      49,    48,    50,    48,    51,    51,    51,    51,    53,    52,
+      52,    54,    55,    55,    55,    56,    56,    56,    56,    57,
+      57,    58,    58,    58,    58,    58,    58,    58,    58,    58,
+      59,    59,    60,    60,    61,    61,    62,    62,    63,    63,
+      64,    64,    65,    65,    66,    66,    66,    67,    67,    67,
+      67,    67,    67,    67,    68,    68,    69,    69
 };
 
   /* YYR2[YYN] -- Number of symbols on the right hand side of rule YYN.  */
 static const yytype_uint8 yyr2[] =
 {
        0,     2,     1,     2,     1,     1,     1,     1,     6,     5,
-       0,     7,     0,     6,     4,     3,     2,     1,     3,     2,
-       3,     1,     1,     1,     3,     6,     1,     4,     1,     2,
-       1,     1,     1,     7,     5,     7,     5,     5,     3,     1,
-       2,     1,     4,     1,     3,     1,     3,     1,     3,     1,
-       3,     1,     3,     2,     2,     1,     1,     4,     3,     1,
-       1,     2,     2,     1,     0,     3,     1
+       0,     7,     0,     6,     4,     3,     2,     1,     0,     4,
+       2,     3,     1,     1,     1,     3,     6,     1,     4,     1,
+       2,     1,     1,     1,     7,     5,     7,     5,     5,     3,
+       1,     2,     1,     4,     1,     3,     1,     3,     1,     3,
+       1,     3,     1,     3,     2,     2,     1,     1,     4,     3,
+       1,     1,     2,     2,     1,     0,     3,     1
 };
 
 
@@ -1420,7 +1415,7 @@ yyreduce:
         case 2:
 #line 65 "parser.y" /* yacc.c:1646  */
     {	}
-#line 1424 "y.tab.c" /* yacc.c:1646  */
+#line 1419 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 3:
@@ -1429,7 +1424,7 @@ yyreduce:
 						fprintf(parsertext,"%s %s\n\n",(yyvsp[-1].symbolinfo)->get_name().c_str(),(yyvsp[0].symbolinfo)->get_name().c_str()); 
 						(yyval.symbolinfo)->set_name((yyvsp[-1].symbolinfo)->get_name()+(yyvsp[0].symbolinfo)->get_name());
 						}
-#line 1433 "y.tab.c" /* yacc.c:1646  */
+#line 1428 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 4:
@@ -1438,7 +1433,7 @@ yyreduce:
 	fprintf(parsertext,"%s\n\n",(yyvsp[0].symbolinfo)->get_name().c_str());
 	(yyval.symbolinfo)->set_name((yyvsp[0].symbolinfo)->get_name());
 	}
-#line 1442 "y.tab.c" /* yacc.c:1646  */
+#line 1437 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 5:
@@ -1446,7 +1441,7 @@ yyreduce:
     {(yyval.symbolinfo)=new SymbolInfo(); fprintf(parsertext,"Line at %d : unit->var_declaration\n\n",line_count);
 						fprintf(parsertext,"%s\n\n",(yyvsp[0].symbolinfo)->get_name().c_str()); 
 						(yyval.symbolinfo)->set_name((yyvsp[0].symbolinfo)->get_name()+"\n");}
-#line 1450 "y.tab.c" /* yacc.c:1646  */
+#line 1445 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 6:
@@ -1455,7 +1450,7 @@ yyreduce:
 	 					fprintf(parsertext,"%s\n\n",(yyvsp[0].symbolinfo)->get_name().c_str()); 
 						 (yyval.symbolinfo)->set_name((yyvsp[0].symbolinfo)->get_name()+"\n");
 						}
-#line 1459 "y.tab.c" /* yacc.c:1646  */
+#line 1454 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 7:
@@ -1464,7 +1459,7 @@ yyreduce:
 	 					 fprintf(parsertext,"%s\n\n",(yyvsp[0].symbolinfo)->get_name().c_str());
 						 (yyval.symbolinfo)->set_name((yyvsp[0].symbolinfo)->get_name()+"\n");
 						 }
-#line 1468 "y.tab.c" /* yacc.c:1646  */
+#line 1463 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 8:
@@ -1511,7 +1506,7 @@ yyreduce:
 				
 		(yyval.symbolinfo)->set_name((yyvsp[-5].symbolinfo)->get_name()+" "+(yyvsp[-4].symbolinfo)->get_name()+"("+(yyvsp[-2].symbolinfo)->get_name()+");");
 		}
-#line 1515 "y.tab.c" /* yacc.c:1646  */
+#line 1510 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 9:
@@ -1537,7 +1532,7 @@ yyreduce:
 				}
 				(yyval.symbolinfo)->set_name((yyvsp[-4].symbolinfo)->get_name()+" "+(yyvsp[-3].symbolinfo)->get_name()+"();");
 		}
-#line 1541 "y.tab.c" /* yacc.c:1646  */
+#line 1536 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 10:
@@ -1545,6 +1540,7 @@ yyreduce:
     {(yyval.symbolinfo)=new SymbolInfo(); 
 				SymbolInfo *s=table->lookup((yyvsp[-3].symbolinfo)->get_name()); 
 				if(s!=0){ 
+					if(s->get_isFunction()->get_isdefined()==0){
 					int num=s->get_isFunction()->get_number_of_parameter();
 				//	cout<<line_count<<" "<<para_list.size()<<endl;
 				//	$<symbolinfo>$->set_dectype(s->get_isFunction()->get_return_type());
@@ -1566,12 +1562,17 @@ yyreduce:
 								error_count++;
 								fprintf(error,"Error at Line No.%d: Return Type Mismatch \n\n",line_count);
 						}
-						para_list.clear();
+					//	para_list.clear();
 					}
-					s->get_isFunction()->set_isdefined();
+					s->get_isFunction()->set_isdefined();}
+					else{
+						error_count++;
+						fprintf(error,"Error at Line No.%d:  Multiple defination of function %s\n\n",line_count,(yyvsp[-3].symbolinfo)->get_name().c_str());
+											
+					}
 				}
 				else{ //cout<<para_list.size()<<" "<<line_count<<endl;
-						table->InsertPrev((yyvsp[-3].symbolinfo)->get_name(),"ID","Function");
+						table->Insert((yyvsp[-3].symbolinfo)->get_name(),"ID","Function");
 						s=table->lookup((yyvsp[-3].symbolinfo)->get_name());
 						s->set_isFunction();
 						//cout<<s->get_isFunction()->get_number_of_parameter()<<endl;
@@ -1580,37 +1581,38 @@ yyreduce:
 							s->get_isFunction()->add_number_of_parameter(para_list[i]->get_name(),para_list[i]->get_dectype());
 					//	cout<<para_list[i]->get_dectype()<<para_list[i]->get_name()<<endl;
 					}
-					para_list.clear();s->get_isFunction()->set_return_type((yyvsp[-4].symbolinfo)->get_name());
+				//	para_list.clear();
+					s->get_isFunction()->set_return_type((yyvsp[-4].symbolinfo)->get_name());
 					//cout<<line_count<<" "<<s->get_isFunction()->get_return_type()<<endl;
 				}
 
 				}
-#line 1589 "y.tab.c" /* yacc.c:1646  */
+#line 1591 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 11:
-#line 201 "parser.y" /* yacc.c:1646  */
+#line 208 "parser.y" /* yacc.c:1646  */
     {fprintf(parsertext,"Line at %d : func_definition->type_specifier ID LPAREN parameter_list RPAREN compound_statement \n\n",line_count);
 				fprintf(parsertext,"%s %s(%s) %s \n\n",(yyvsp[-6].symbolinfo)->get_name().c_str(),(yyvsp[-5].symbolinfo)->get_name().c_str(),(yyvsp[-3].symbolinfo)->get_name().c_str(),(yyvsp[0].symbolinfo)->get_name().c_str());
 				
 			
 				(yyval.symbolinfo)->set_name((yyvsp[-6].symbolinfo)->get_name()+" "+(yyvsp[-5].symbolinfo)->get_name()+"("+(yyvsp[-3].symbolinfo)->get_name()+")"+(yyvsp[0].symbolinfo)->get_name());
 				}
-#line 1600 "y.tab.c" /* yacc.c:1646  */
+#line 1602 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 12:
-#line 207 "parser.y" /* yacc.c:1646  */
+#line 214 "parser.y" /* yacc.c:1646  */
     { (yyval.symbolinfo)=new SymbolInfo(); SymbolInfo *s=table->lookup((yyvsp[-2].symbolinfo)->get_name());
 											if(s==0){
-												table->InsertPrev((yyvsp[-2].symbolinfo)->get_name(),"ID","Function");
+												table->Insert((yyvsp[-2].symbolinfo)->get_name(),"ID","Function");
 												s=table->lookup((yyvsp[-2].symbolinfo)->get_name());
 												s->set_isFunction();
 												s->get_isFunction()->set_isdefined();
 												s->get_isFunction()->set_return_type((yyvsp[-3].symbolinfo)->get_name());
 										//	cout<<line_count<<" "<<s->get_isFunction()->get_return_type()<<endl;
 											}
-											else{
+											else if(s->get_isFunction()->get_isdefined()==0){
 												if(s->get_isFunction()->get_number_of_parameter()!=0){
 													error_count++;
 													fprintf(error,"Error at Line No.%d:  Invalid number of parameters \n\n",line_count);
@@ -1622,86 +1624,108 @@ yyreduce:
 
 												s->get_isFunction()->set_isdefined();
 											}
+											else{
+												error_count++;
+												fprintf(error,"Error at Line No.%d:  Multiple defination of function %s\n\n",line_count,(yyvsp[-2].symbolinfo)->get_name().c_str());
+											}
 											
 											(yyvsp[-3].symbolinfo)->set_name((yyvsp[-3].symbolinfo)->get_name()+" "+(yyvsp[-2].symbolinfo)->get_name()+"()");
 											}
-#line 1629 "y.tab.c" /* yacc.c:1646  */
+#line 1635 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 13:
-#line 230 "parser.y" /* yacc.c:1646  */
+#line 241 "parser.y" /* yacc.c:1646  */
     {
 											fprintf(parsertext,"Line at %d : func_definition->type_specifier ID LPAREN RPAREN compound_statement\n\n",line_count);
 											fprintf(parsertext,"%s %s\n\n",(yyvsp[-5].symbolinfo)->get_name().c_str(),(yyvsp[0].symbolinfo)->get_name().c_str());
 											(yyval.symbolinfo)->set_name((yyvsp[-5].symbolinfo)->get_name()+(yyvsp[0].symbolinfo)->get_name());
 			
 					}
-#line 1640 "y.tab.c" /* yacc.c:1646  */
+#line 1646 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 14:
-#line 239 "parser.y" /* yacc.c:1646  */
+#line 250 "parser.y" /* yacc.c:1646  */
     {(yyval.symbolinfo)=new SymbolInfo(); fprintf(parsertext,"Line at %d : parameter_list->parameter_list COMMA type_specifier ID\n\n",line_count);
 															fprintf(parsertext,"%s,%s %s\n\n",(yyvsp[-3].symbolinfo)->get_name().c_str(),(yyvsp[-1].symbolinfo)->get_name().c_str(),(yyvsp[0].symbolinfo)->get_name().c_str());
 															 para_list.push_back(new SymbolInfo((yyvsp[0].symbolinfo)->get_name(),"ID",(yyvsp[-1].symbolinfo)->get_name()));
 															(yyval.symbolinfo)->set_name((yyvsp[-3].symbolinfo)->get_name()+","+(yyvsp[-1].symbolinfo)->get_name()+" "+(yyvsp[0].symbolinfo)->get_name());
 															}
-#line 1650 "y.tab.c" /* yacc.c:1646  */
+#line 1656 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 15:
-#line 244 "parser.y" /* yacc.c:1646  */
+#line 255 "parser.y" /* yacc.c:1646  */
     {(yyval.symbolinfo)=new SymbolInfo(); fprintf(parsertext,"Line at %d : parameter_list->parameter_list COMMA type_specifier\n\n",line_count);
 											fprintf(parsertext,"%s,%s\n\n",(yyvsp[-2].symbolinfo)->get_name().c_str(),(yyvsp[0].symbolinfo)->get_name().c_str());
+											para_list.push_back(new SymbolInfo("","ID",(yyvsp[0].symbolinfo)->get_name()));
 											(yyval.symbolinfo)->set_name((yyvsp[-2].symbolinfo)->get_name()+","+(yyvsp[0].symbolinfo)->get_name());
 
 											}
-#line 1660 "y.tab.c" /* yacc.c:1646  */
+#line 1667 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 16:
-#line 249 "parser.y" /* yacc.c:1646  */
+#line 261 "parser.y" /* yacc.c:1646  */
     {(yyval.symbolinfo)=new SymbolInfo(); fprintf(parsertext,"Line at %d : parameter_list->type_specifier ID\n\n",line_count);
 		 					fprintf(parsertext,"%s %s\n\n",(yyvsp[-1].symbolinfo)->get_name().c_str(),(yyvsp[0].symbolinfo)->get_name().c_str());
 							para_list.push_back(new SymbolInfo((yyvsp[0].symbolinfo)->get_name(),"ID",(yyvsp[-1].symbolinfo)->get_name()));
 		 					(yyval.symbolinfo)->set_name((yyvsp[-1].symbolinfo)->get_name()+" "+(yyvsp[0].symbolinfo)->get_name());
 							}
-#line 1670 "y.tab.c" /* yacc.c:1646  */
+#line 1677 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 17:
-#line 254 "parser.y" /* yacc.c:1646  */
+#line 266 "parser.y" /* yacc.c:1646  */
     {(yyval.symbolinfo)=new SymbolInfo(); fprintf(parsertext,"Line at %d : parameter_list->type_specifier\n\n",line_count);
 			fprintf(parsertext,"%s \n\n",(yyvsp[0].symbolinfo)->get_name().c_str());
+			para_list.push_back(new SymbolInfo("","ID",(yyvsp[0].symbolinfo)->get_name()));
 			(yyval.symbolinfo)->set_name((yyvsp[0].symbolinfo)->get_name()+" ");
 		}
-#line 1679 "y.tab.c" /* yacc.c:1646  */
+#line 1687 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 18:
-#line 261 "parser.y" /* yacc.c:1646  */
+#line 274 "parser.y" /* yacc.c:1646  */
+    {table->Enter_Scope();
+		//	cout<<line_count<<" "<<para_list.size()<<endl;
+			for(int i=0;i<para_list.size();i++)
+				table->Insert(para_list[i]->get_name(),"ID",para_list[i]->get_dectype());
+				//table->printcurrent();
+				para_list.clear();
+			}
+#line 1699 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 19:
+#line 280 "parser.y" /* yacc.c:1646  */
     {(yyval.symbolinfo)=new SymbolInfo(); fprintf(parsertext,"Line at %d : compound_statement->LCURL statements RCURL\n\n",line_count);
 											fprintf(parsertext,"{%s}\n\n",(yyvsp[-1].symbolinfo)->get_name().c_str());
 											(yyval.symbolinfo)->set_name("{\n"+(yyvsp[-1].symbolinfo)->get_name()+"\n}");
 											table->printall();
 											table->Exit_Scope();
 											}
-#line 1690 "y.tab.c" /* yacc.c:1646  */
+#line 1710 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 19:
-#line 267 "parser.y" /* yacc.c:1646  */
-    {(yyval.symbolinfo)=new SymbolInfo(); fprintf(parsertext,"Line at %d : compound_statement->LCURL RCURL\n\n",line_count);
+  case 20:
+#line 286 "parser.y" /* yacc.c:1646  */
+    {for(int i=0;i<para_list.size();i++)
+				table->Insert(para_list[i]->get_name(),"ID",para_list[i]->get_dectype());
+				//table->printcurrent();
+				para_list.clear();
+				(yyval.symbolinfo)=new SymbolInfo(); fprintf(parsertext,"Line at %d : compound_statement->LCURL RCURL\n\n",line_count);
 			 				fprintf(parsertext,"{}\n\n");
 			 				(yyval.symbolinfo)->set_name("{}");
 							table->printall();
 							table->Exit_Scope();
 			 }
-#line 1701 "y.tab.c" /* yacc.c:1646  */
+#line 1725 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 20:
-#line 275 "parser.y" /* yacc.c:1646  */
+  case 21:
+#line 298 "parser.y" /* yacc.c:1646  */
     {(yyval.symbolinfo)=new SymbolInfo(); fprintf(parsertext,"Line at %d : var_declaration->type_specifier declaration_list SEMICOLON\n\n",line_count);
 															fprintf(parsertext,"%s %s;\n\n",(yyvsp[-2].symbolinfo)->get_name().c_str(),(yyvsp[-1].symbolinfo)->get_name().c_str());
 															if((yyvsp[-2].symbolinfo)->get_name()=="void "){
@@ -1712,7 +1736,7 @@ yyreduce:
 															else{
 															for(int i=0;i<dec_list.size();i++){
 																if(table->lookupcurrent(dec_list[i]->get_name())){
-																	 error_count++;
+																	error_count++;
 																	fprintf(error,"Error at Line No.%d:  Multiple Declaration of %s \n\n",line_count,dec_list[i]->get_name().c_str());
 																	continue;
 																}
@@ -1725,199 +1749,228 @@ yyreduce:
 															dec_list.clear();
 															(yyval.symbolinfo)->set_name((yyvsp[-2].symbolinfo)->get_name()+" "+(yyvsp[-1].symbolinfo)->get_name()+";");
 															}
-#line 1729 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 21:
-#line 300 "parser.y" /* yacc.c:1646  */
-    {(yyval.symbolinfo)=new SymbolInfo(); fprintf(parsertext,"Line at %d : type_specifier	: INT\n\n",line_count);fprintf(parsertext,"int \n\n");
-				(yyval.symbolinfo)->set_name("int ");
-				}
-#line 1737 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 22:
-#line 303 "parser.y" /* yacc.c:1646  */
-    {(yyval.symbolinfo)=new SymbolInfo(); fprintf(parsertext,"Line at %d : type_specifier	: FLOAT\n\n",line_count);fprintf(parsertext,"float \n\n");
-		 (yyval.symbolinfo)->set_name("float ");
-		 }
-#line 1745 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 23:
-#line 306 "parser.y" /* yacc.c:1646  */
-    {(yyval.symbolinfo)=new SymbolInfo(); fprintf(parsertext,"Line at %d : type_specifier	: VOID\n\n",line_count);fprintf(parsertext,"void \n\n");
-		 (yyval.symbolinfo)->set_name("void ");
-		 }
 #line 1753 "y.tab.c" /* yacc.c:1646  */
     break;
 
+  case 22:
+#line 323 "parser.y" /* yacc.c:1646  */
+    {(yyval.symbolinfo)=new SymbolInfo(); fprintf(parsertext,"Line at %d : type_specifier	: INT\n\n",line_count);fprintf(parsertext,"int \n\n");
+				(yyval.symbolinfo)->set_name("int ");
+				}
+#line 1761 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 23:
+#line 326 "parser.y" /* yacc.c:1646  */
+    {(yyval.symbolinfo)=new SymbolInfo(); fprintf(parsertext,"Line at %d : type_specifier	: FLOAT\n\n",line_count);fprintf(parsertext,"float \n\n");
+		 (yyval.symbolinfo)->set_name("float ");
+		 }
+#line 1769 "y.tab.c" /* yacc.c:1646  */
+    break;
+
   case 24:
-#line 311 "parser.y" /* yacc.c:1646  */
+#line 329 "parser.y" /* yacc.c:1646  */
+    {(yyval.symbolinfo)=new SymbolInfo(); fprintf(parsertext,"Line at %d : type_specifier	: VOID\n\n",line_count);fprintf(parsertext,"void \n\n");
+		 (yyval.symbolinfo)->set_name("void ");
+		 }
+#line 1777 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 25:
+#line 334 "parser.y" /* yacc.c:1646  */
     {(yyval.symbolinfo)=new SymbolInfo(); fprintf(parsertext,"Line at %d : declaration_list->declaration_list COMMA ID\n\n",line_count);
 											fprintf(parsertext,"%s,%s\n\n",(yyvsp[-2].symbolinfo)->get_name().c_str(),(yyvsp[0].symbolinfo)->get_name().c_str());
 												dec_list.push_back(new SymbolInfo((yyvsp[0].symbolinfo)->get_name(),"ID"));
 											(yyval.symbolinfo)->set_name((yyvsp[-2].symbolinfo)->get_name()+","+(yyvsp[0].symbolinfo)->get_name());
 											}
-#line 1763 "y.tab.c" /* yacc.c:1646  */
+#line 1787 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 25:
-#line 316 "parser.y" /* yacc.c:1646  */
+  case 26:
+#line 339 "parser.y" /* yacc.c:1646  */
     {(yyval.symbolinfo)=new SymbolInfo(); fprintf(parsertext,"Line at %d : declaration_list->declaration_list COMMA ID LTHIRD CONST_INT RTHIRD\n\n",line_count);
 		   														fprintf(parsertext,"%s,%s[%s]\n\n",(yyvsp[-5].symbolinfo)->get_name().c_str(),(yyvsp[-3].symbolinfo)->get_name().c_str(),(yyvsp[-1].symbolinfo)->get_name().c_str());
 																dec_list.push_back(new SymbolInfo((yyvsp[-3].symbolinfo)->get_name(),"IDa"));
 																(yyval.symbolinfo)->set_name((yyvsp[-5].symbolinfo)->get_name()+","+(yyvsp[-3].symbolinfo)->get_name()+"["+(yyvsp[-1].symbolinfo)->get_name()+"]");
 																   }
-#line 1773 "y.tab.c" /* yacc.c:1646  */
+#line 1797 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 26:
-#line 321 "parser.y" /* yacc.c:1646  */
+  case 27:
+#line 344 "parser.y" /* yacc.c:1646  */
     {(yyval.symbolinfo)=new SymbolInfo(); fprintf(parsertext,"Line at %d : declaration_list->ID\n\n",line_count);
 		   fprintf(parsertext,"%s\n\n",(yyvsp[0].symbolinfo)->get_name().c_str());
 		   	dec_list.push_back(new SymbolInfo((yyvsp[0].symbolinfo)->get_name(),"ID"));
 			(yyval.symbolinfo)->set_name((yyvsp[0].symbolinfo)->get_name());
 		
 		   }
-#line 1784 "y.tab.c" /* yacc.c:1646  */
+#line 1808 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 27:
-#line 327 "parser.y" /* yacc.c:1646  */
+  case 28:
+#line 350 "parser.y" /* yacc.c:1646  */
     {(yyval.symbolinfo)=new SymbolInfo(); fprintf(parsertext,"Line at %d : declaration_list->ID LTHIRD CONST_INT RTHIRD\n\n",line_count);
 		   fprintf(parsertext,"%s[%s]\n\n",(yyvsp[-3].symbolinfo)->get_name().c_str(),(yyvsp[-1].symbolinfo)->get_name().c_str());
 		   	dec_list.push_back(new SymbolInfo((yyvsp[-3].symbolinfo)->get_name(),"IDa"));
 		   	(yyval.symbolinfo)->set_name((yyvsp[-3].symbolinfo)->get_name()+"["+(yyvsp[-1].symbolinfo)->get_name()+"]");
 
 		   }
-#line 1795 "y.tab.c" /* yacc.c:1646  */
+#line 1819 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 28:
-#line 335 "parser.y" /* yacc.c:1646  */
+  case 29:
+#line 358 "parser.y" /* yacc.c:1646  */
     {(yyval.symbolinfo)=new SymbolInfo(); fprintf(parsertext,"Line at %d : statements->statement\n\n",line_count);
 						fprintf(parsertext,"%s\n\n",(yyvsp[0].symbolinfo)->get_name().c_str()); 
 						(yyval.symbolinfo)->set_name((yyvsp[0].symbolinfo)->get_name());
 						}
-#line 1804 "y.tab.c" /* yacc.c:1646  */
+#line 1828 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 29:
-#line 339 "parser.y" /* yacc.c:1646  */
+  case 30:
+#line 362 "parser.y" /* yacc.c:1646  */
     {(yyval.symbolinfo)=new SymbolInfo(); fprintf(parsertext,"Line at %d : statements->statements statement\n\n",line_count);
 	   						fprintf(parsertext,"%s %s\n\n",(yyvsp[-1].symbolinfo)->get_name().c_str(),(yyvsp[0].symbolinfo)->get_name().c_str()); 
 							   (yyval.symbolinfo)->set_name((yyvsp[-1].symbolinfo)->get_name()+"\n"+(yyvsp[0].symbolinfo)->get_name()); 
 							   }
-#line 1813 "y.tab.c" /* yacc.c:1646  */
+#line 1837 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 30:
-#line 345 "parser.y" /* yacc.c:1646  */
+  case 31:
+#line 368 "parser.y" /* yacc.c:1646  */
     { (yyval.symbolinfo)=new SymbolInfo();fprintf(parsertext,"Line at %d : statement -> var_declaration\n\n",line_count);
 							fprintf(parsertext,"%s\n\n",(yyvsp[0].symbolinfo)->get_name().c_str());
 							(yyval.symbolinfo)->set_name((yyvsp[0].symbolinfo)->get_name()); 
 
 							}
-#line 1823 "y.tab.c" /* yacc.c:1646  */
+#line 1847 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 31:
-#line 350 "parser.y" /* yacc.c:1646  */
+  case 32:
+#line 373 "parser.y" /* yacc.c:1646  */
     {(yyval.symbolinfo)=new SymbolInfo();fprintf(parsertext,"Line at %d : statement -> expression_statement\n\n",line_count);
 	  						fprintf(parsertext,"%s\n\n",(yyvsp[0].symbolinfo)->get_name().c_str()); 
 							(yyval.symbolinfo)->set_name((yyvsp[0].symbolinfo)->get_name()); 
 
 							  }
-#line 1833 "y.tab.c" /* yacc.c:1646  */
+#line 1857 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 32:
-#line 355 "parser.y" /* yacc.c:1646  */
+  case 33:
+#line 378 "parser.y" /* yacc.c:1646  */
     {(yyval.symbolinfo)=new SymbolInfo();fprintf(parsertext,"Line at %d : statement->compound_statement\n\n",line_count);
 	  						fprintf(parsertext,"%s\n\n",(yyvsp[0].symbolinfo)->get_name().c_str()); 
 							 (yyval.symbolinfo)->set_name((yyvsp[0].symbolinfo)->get_name()); 
  
 							  }
-#line 1843 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 33:
-#line 360 "parser.y" /* yacc.c:1646  */
-    {(yyval.symbolinfo)=new SymbolInfo();fprintf(parsertext,"Line at %d : statement ->FOR LPAREN expression_statement expression_statement expression RPAREN statement\n\n",line_count);
-	  																					fprintf(parsertext,"for(%s %s %s)\n%s \n\n",(yyvsp[-4].symbolinfo)->get_name().c_str(),(yyvsp[-3].symbolinfo)->get_name().c_str(),(yyvsp[-2].symbolinfo)->get_name().c_str(),(yyvsp[0].symbolinfo)->get_name().c_str());
-																						  (yyval.symbolinfo)->set_name("for("+(yyvsp[-4].symbolinfo)->get_name()+(yyvsp[-3].symbolinfo)->get_name()+(yyvsp[-2].symbolinfo)->get_name()+")\n"+(yyvsp[-2].symbolinfo)->get_name()); 
-
-																						  }
-#line 1853 "y.tab.c" /* yacc.c:1646  */
+#line 1867 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 34:
-#line 365 "parser.y" /* yacc.c:1646  */
-    {(yyval.symbolinfo)=new SymbolInfo();fprintf(parsertext,"Line at %d : statement->IF LPAREN expression RPAREN statement\n\n",line_count);
-	  																fprintf(parsertext,"if(%s)\n%s\n\n",(yyvsp[-2].symbolinfo)->get_name().c_str(),(yyvsp[0].symbolinfo)->get_name().c_str());
-																	(yyval.symbolinfo)->set_name("if("+(yyvsp[-2].symbolinfo)->get_name()+")\n"+(yyvsp[0].symbolinfo)->get_name()); 
+#line 383 "parser.y" /* yacc.c:1646  */
+    {(yyval.symbolinfo)=new SymbolInfo();fprintf(parsertext,"Line at %d : statement ->FOR LPAREN expression_statement expression_statement expression RPAREN statement\n\n",line_count);
+	  																					fprintf(parsertext,"for(%s %s %s)\n%s \n\n",(yyvsp[-4].symbolinfo)->get_name().c_str(),(yyvsp[-3].symbolinfo)->get_name().c_str(),(yyvsp[-2].symbolinfo)->get_name().c_str(),(yyvsp[0].symbolinfo)->get_name().c_str());
+																						if((yyvsp[-4].symbolinfo)->get_dectype()=="void "){
+																							error_count++;
+																							fprintf(error,"Error at Line No.%d:  Type Mismatch \n\n",line_count);
+																							//$<symbolinfo>$->set_dectype("int "); 
+																						}
+																						
+																						(yyval.symbolinfo)->set_name("for("+(yyvsp[-4].symbolinfo)->get_name()+(yyvsp[-3].symbolinfo)->get_name()+(yyvsp[-2].symbolinfo)->get_name()+")\n"+(yyvsp[-2].symbolinfo)->get_name()); 
 
-																	  }
-#line 1863 "y.tab.c" /* yacc.c:1646  */
+																						  }
+#line 1883 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 35:
-#line 370 "parser.y" /* yacc.c:1646  */
-    {(yyval.symbolinfo)=new SymbolInfo();fprintf(parsertext,"Line at %d : statement->IF LPAREN expression RPAREN statement ELSE statement\n\n",line_count);
-	  														fprintf(parsertext,"if(%s)\n%s\n else \n %s\n\n",(yyvsp[-4].symbolinfo)->get_name().c_str(),(yyvsp[-2].symbolinfo)->get_name().c_str(),(yyvsp[0].symbolinfo)->get_name().c_str());
-															(yyval.symbolinfo)->set_name("if("+(yyvsp[-4].symbolinfo)->get_name()+")\n"+(yyvsp[-2].symbolinfo)->get_name()+" else \n"+(yyvsp[0].symbolinfo)->get_name()); 
-															}
-#line 1872 "y.tab.c" /* yacc.c:1646  */
+#line 394 "parser.y" /* yacc.c:1646  */
+    {(yyval.symbolinfo)=new SymbolInfo();fprintf(parsertext,"Line at %d : statement->IF LPAREN expression RPAREN statement\n\n",line_count);
+	  																fprintf(parsertext,"if(%s)\n%s\n\n",(yyvsp[-2].symbolinfo)->get_name().c_str(),(yyvsp[0].symbolinfo)->get_name().c_str());
+																	if((yyvsp[-2].symbolinfo)->get_dectype()=="void "){
+																		error_count++;
+																		fprintf(error,"Error at Line No.%d:  Type Mismatch \n\n",line_count);
+																//$<symbolinfo>$->set_dectype("int "); 
+																	}
+																	
+																	(yyval.symbolinfo)->set_name("if("+(yyvsp[-2].symbolinfo)->get_name()+")\n"+(yyvsp[0].symbolinfo)->get_name()); 
+
+																	  }
+#line 1899 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 36:
-#line 375 "parser.y" /* yacc.c:1646  */
-    {(yyval.symbolinfo)=new SymbolInfo();fprintf(parsertext,"Line at %d : statement->WHILE LPAREN expression RPAREN statement\n\n",line_count);
-	  											fprintf(parsertext,"while(%s)\n%s\n\n",(yyvsp[-2].symbolinfo)->get_name().c_str(),(yyvsp[0].symbolinfo)->get_name().c_str());
-												  (yyval.symbolinfo)->set_name("while("+(yyvsp[-2].symbolinfo)->get_name()+")\n"+(yyvsp[0].symbolinfo)->get_name()); 
-												  }
-#line 1881 "y.tab.c" /* yacc.c:1646  */
+#line 405 "parser.y" /* yacc.c:1646  */
+    {(yyval.symbolinfo)=new SymbolInfo();fprintf(parsertext,"Line at %d : statement->IF LPAREN expression RPAREN statement ELSE statement\n\n",line_count);
+	  														fprintf(parsertext,"if(%s)\n%s\n else \n %s\n\n",(yyvsp[-4].symbolinfo)->get_name().c_str(),(yyvsp[-2].symbolinfo)->get_name().c_str(),(yyvsp[0].symbolinfo)->get_name().c_str());
+															if((yyvsp[-4].symbolinfo)->get_dectype()=="void "){
+																error_count++;
+																fprintf(error,"Error at Line No.%d:  Type Mismatch \n\n",line_count);
+																//$<symbolinfo>$->set_dectype("int "); 
+															}
+															
+															(yyval.symbolinfo)->set_name("if("+(yyvsp[-4].symbolinfo)->get_name()+")\n"+(yyvsp[-2].symbolinfo)->get_name()+" else \n"+(yyvsp[0].symbolinfo)->get_name()); 
+															}
+#line 1914 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 37:
-#line 379 "parser.y" /* yacc.c:1646  */
+#line 416 "parser.y" /* yacc.c:1646  */
+    {(yyval.symbolinfo)=new SymbolInfo();fprintf(parsertext,"Line at %d : statement->WHILE LPAREN expression RPAREN statement\n\n",line_count);
+	  											fprintf(parsertext,"while(%s)\n%s\n\n",(yyvsp[-2].symbolinfo)->get_name().c_str(),(yyvsp[0].symbolinfo)->get_name().c_str());
+												  if((yyvsp[-2].symbolinfo)->get_dectype()=="void "){
+													error_count++;
+													fprintf(error,"Error at Line No.%d:  Type Mismatch \n\n",line_count);
+												//	$<symbolinfo>$->set_dectype("int "); 
+												}
+												  (yyval.symbolinfo)->set_name("while("+(yyvsp[-2].symbolinfo)->get_name()+")\n"+(yyvsp[0].symbolinfo)->get_name()); 
+												  }
+#line 1928 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 38:
+#line 425 "parser.y" /* yacc.c:1646  */
     {(yyval.symbolinfo)=new SymbolInfo();fprintf(parsertext,"Line at %d : statement->PRINTLN LPAREN ID RPAREN SEMICOLON\n\n",line_count);
 	  										fprintf(parsertext,"\n (%s);\n\n",(yyvsp[-2].symbolinfo)->get_name().c_str());
 											  (yyval.symbolinfo)->set_name("\n("+(yyvsp[-2].symbolinfo)->get_name()+")"); 
 											  }
-#line 1890 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 38:
-#line 383 "parser.y" /* yacc.c:1646  */
-    {(yyval.symbolinfo)=new SymbolInfo();fprintf(parsertext,"Line at %d : statement->RETURN expression SEMICOLON\n\n",line_count);
-	  								fprintf(parsertext,"return %s;\n\n",(yyvsp[-1].symbolinfo)->get_name().c_str());
-									(yyval.symbolinfo)->set_name("return "+(yyvsp[-1].symbolinfo)->get_name()+";"); 
-									}
-#line 1899 "y.tab.c" /* yacc.c:1646  */
+#line 1937 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 39:
-#line 389 "parser.y" /* yacc.c:1646  */
+#line 429 "parser.y" /* yacc.c:1646  */
+    {(yyval.symbolinfo)=new SymbolInfo();fprintf(parsertext,"Line at %d : statement->RETURN expression SEMICOLON\n\n",line_count);
+	  								fprintf(parsertext,"return %s;\n\n",(yyvsp[-1].symbolinfo)->get_name().c_str());
+									if((yyvsp[-1].symbolinfo)->get_dectype()=="void "){
+												error_count++;
+												fprintf(error,"Error at Line No.%d:  Type Mismatch \n\n",line_count);
+												(yyval.symbolinfo)->set_dectype("int "); 
+									}
+									(yyval.symbolinfo)->set_name("return "+(yyvsp[-1].symbolinfo)->get_name()+";"); 
+									}
+#line 1951 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 40:
+#line 440 "parser.y" /* yacc.c:1646  */
     {(yyval.symbolinfo)=new SymbolInfo();fprintf(parsertext,"Line at %d : expression_statement->SEMICOLON\n\n",line_count);
 									fprintf(parsertext,";\n\n"); 
 									(yyval.symbolinfo)->set_name(";"); 
 									}
-#line 1908 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 40:
-#line 393 "parser.y" /* yacc.c:1646  */
-    {(yyval.symbolinfo)=new SymbolInfo();fprintf(parsertext,"Line at %d : expression_statement->expression SEMICOLON\n\n",line_count);
-									fprintf(parsertext,"%s;\n\n",(yyvsp[-1].symbolinfo)->get_name().c_str());
-										(yyval.symbolinfo)->set_name((yyvsp[-1].symbolinfo)->get_name()+";"); 
-									}
-#line 1917 "y.tab.c" /* yacc.c:1646  */
+#line 1960 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 41:
-#line 399 "parser.y" /* yacc.c:1646  */
+#line 444 "parser.y" /* yacc.c:1646  */
+    {(yyval.symbolinfo)=new SymbolInfo();fprintf(parsertext,"Line at %d : expression_statement->expression SEMICOLON\n\n",line_count);
+									fprintf(parsertext,"%s;\n\n",(yyvsp[-1].symbolinfo)->get_name().c_str());
+									
+									(yyval.symbolinfo)->set_name((yyvsp[-1].symbolinfo)->get_name()+";"); 
+									}
+#line 1970 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 42:
+#line 451 "parser.y" /* yacc.c:1646  */
     {(yyval.symbolinfo)=new SymbolInfo();
 					fprintf(parsertext,"Line at %d : variable->ID\n\n",line_count);
 					fprintf(parsertext,"%s\n\n",(yyvsp[0].symbolinfo)->get_name().c_str());
@@ -1934,11 +1987,11 @@ yyreduce:
 						
 						
 					}
-#line 1938 "y.tab.c" /* yacc.c:1646  */
+#line 1991 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 42:
-#line 415 "parser.y" /* yacc.c:1646  */
+  case 43:
+#line 467 "parser.y" /* yacc.c:1646  */
     {(yyval.symbolinfo)=new SymbolInfo();fprintf(parsertext,"Line at %d : variable->ID LTHIRD expression RTHIRD\n\n",line_count);
 	 								fprintf(parsertext,"%s[%s]\n\n",(yyvsp[-3].symbolinfo)->get_name().c_str(),(yyvsp[-1].symbolinfo)->get_name().c_str());
 									if(table->lookup((yyvsp[-3].symbolinfo)->get_name())==0){
@@ -1972,26 +2025,26 @@ yyreduce:
 									(yyval.symbolinfo)->set_name((yyvsp[-3].symbolinfo)->get_name()+"["+(yyvsp[-1].symbolinfo)->get_name()+"]");  
 									
 									}
-#line 1976 "y.tab.c" /* yacc.c:1646  */
+#line 2029 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 43:
-#line 449 "parser.y" /* yacc.c:1646  */
+  case 44:
+#line 501 "parser.y" /* yacc.c:1646  */
     {(yyval.symbolinfo)=new SymbolInfo();fprintf(parsertext,"Line at %d : expression->logic_expression\n\n",line_count);
  								fprintf(parsertext,"%s\n\n",(yyvsp[0].symbolinfo)->get_name().c_str());
 								 	(yyval.symbolinfo)->set_name((yyvsp[0].symbolinfo)->get_name()); 
 									(yyval.symbolinfo)->set_dectype((yyvsp[0].symbolinfo)->get_dectype()); 
 								 }
-#line 1986 "y.tab.c" /* yacc.c:1646  */
+#line 2039 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 44:
-#line 454 "parser.y" /* yacc.c:1646  */
+  case 45:
+#line 506 "parser.y" /* yacc.c:1646  */
     {(yyval.symbolinfo)=new SymbolInfo();fprintf(parsertext,"Line at %d : expression->variable ASSIGNOP logic_expression\n\n",line_count);
 	   										fprintf(parsertext,"%s=%s\n\n",(yyvsp[-2].symbolinfo)->get_name().c_str(),(yyvsp[0].symbolinfo)->get_name().c_str());
 											   if((yyvsp[0].symbolinfo)->get_dectype()=="void "){
 												error_count++;
-												fprintf(error,"Error at Line No.%d:  Type MIsmatch \n\n",line_count);
+												fprintf(error,"Error at Line No.%d:  Type Mismatch \n\n",line_count);
 												(yyval.symbolinfo)->set_dectype("int "); 
 											}else if(table->lookup((yyvsp[-2].symbolinfo)->get_name())!=0) {
 												//cout<<line_count<<" "<<table->lookup($<symbolinfo>1->get_name())->get_dectype()<<""<<$<symbolinfo>3->get_dectype()<<endl;
@@ -2004,76 +2057,66 @@ yyreduce:
 											(yyval.symbolinfo)->set_name((yyvsp[-2].symbolinfo)->get_name()+"="+(yyvsp[0].symbolinfo)->get_name());  
 
 											}
-#line 2008 "y.tab.c" /* yacc.c:1646  */
+#line 2061 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 45:
-#line 472 "parser.y" /* yacc.c:1646  */
+  case 46:
+#line 524 "parser.y" /* yacc.c:1646  */
     {(yyval.symbolinfo)=new SymbolInfo();fprintf(parsertext,"Line at %d : logic_expression->rel_expression\n\n",line_count);
 										fprintf(parsertext,"%s\n\n",(yyvsp[0].symbolinfo)->get_name().c_str());
 										(yyval.symbolinfo)->set_name((yyvsp[0].symbolinfo)->get_name()); 
 										(yyval.symbolinfo)->set_dectype((yyvsp[0].symbolinfo)->get_dectype()); 
 
 										}
-#line 2019 "y.tab.c" /* yacc.c:1646  */
+#line 2072 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 46:
-#line 478 "parser.y" /* yacc.c:1646  */
+  case 47:
+#line 530 "parser.y" /* yacc.c:1646  */
     {(yyval.symbolinfo)=new SymbolInfo();fprintf(parsertext,"Line at %d : logic_expression->rel_expression LOGICOP rel_expression\n\n",line_count);
 		 											fprintf(parsertext,"%s%s%s\n\n",(yyvsp[-2].symbolinfo)->get_name().c_str(),(yyvsp[-1].symbolinfo)->get_name().c_str(),(yyvsp[0].symbolinfo)->get_name().c_str());
 													 if((yyvsp[-2].symbolinfo)->get_dectype()=="void "||(yyvsp[0].symbolinfo)->get_dectype()=="void "){
 														error_count++;
-														fprintf(error,"Error at Line No.%d:  Type MIsmatch \n\n",line_count);
-														(yyval.symbolinfo)->set_dectype("int "); 
-													}else  if((yyvsp[-2].symbolinfo)->get_dectype()=="float " ||(yyvsp[0].symbolinfo)->get_dectype()=="float "){
-											 			error_count++;
-														// cout<<$<symbolinfo>1->get_name()<<" "<<$<symbolinfo>3->get_name()<<endl;
 														fprintf(error,"Error at Line No.%d:  Type Mismatch \n\n",line_count);
-
-										 			} 
+														(yyval.symbolinfo)->set_dectype("int "); 
+													}
 										 			(yyval.symbolinfo)->set_dectype("int "); 
 		 											(yyval.symbolinfo)->set_name((yyvsp[-2].symbolinfo)->get_name()+(yyvsp[-1].symbolinfo)->get_name()+(yyvsp[0].symbolinfo)->get_name());  
 
 												}
-#line 2040 "y.tab.c" /* yacc.c:1646  */
+#line 2088 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 47:
-#line 496 "parser.y" /* yacc.c:1646  */
+  case 48:
+#line 543 "parser.y" /* yacc.c:1646  */
     {(yyval.symbolinfo)=new SymbolInfo();fprintf(parsertext,"Line at %d : rel_expression->simple_expression\n\n",line_count);
 									fprintf(parsertext,"%s\n\n",(yyvsp[0].symbolinfo)->get_name().c_str());
 									(yyval.symbolinfo)->set_name((yyvsp[0].symbolinfo)->get_name()); 
 									 (yyval.symbolinfo)->set_dectype((yyvsp[0].symbolinfo)->get_dectype()); 
 									 
 									}
-#line 2051 "y.tab.c" /* yacc.c:1646  */
+#line 2099 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 48:
-#line 502 "parser.y" /* yacc.c:1646  */
+  case 49:
+#line 549 "parser.y" /* yacc.c:1646  */
     {(yyval.symbolinfo)=new SymbolInfo();fprintf(parsertext,"Line at %d : rel_expression->simple_expression RELOP simple_expression\n\n",line_count);
 													fprintf(parsertext,"%s%s%s\n\n",(yyvsp[-2].symbolinfo)->get_name().c_str(),(yyvsp[-1].symbolinfo)->get_name().c_str(),(yyvsp[0].symbolinfo)->get_name().c_str());
 													if((yyvsp[-2].symbolinfo)->get_dectype()=="void "||(yyvsp[0].symbolinfo)->get_dectype()=="void "){
 														error_count++;
-														fprintf(error,"Error at Line No.%d:  Type MIsmatch \n\n",line_count);
-														(yyval.symbolinfo)->set_dectype("int "); 
-												}else if((yyvsp[-2].symbolinfo)->get_dectype()=="float " ||(yyvsp[0].symbolinfo)->get_dectype()=="float "){
-											 			error_count++;
-														// cout<<$<symbolinfo>1->get_name()<<" "<<$<symbolinfo>3->get_name()<<endl;
 														fprintf(error,"Error at Line No.%d:  Type Mismatch \n\n",line_count);
-
-										 				} 
+														(yyval.symbolinfo)->set_dectype("int "); 
+													}
 										 			(yyval.symbolinfo)->set_dectype("int "); 
 													
 													(yyval.symbolinfo)->set_name((yyvsp[-2].symbolinfo)->get_name()+(yyvsp[-1].symbolinfo)->get_name()+(yyvsp[0].symbolinfo)->get_name());  
 
 													}
-#line 2073 "y.tab.c" /* yacc.c:1646  */
+#line 2116 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 49:
-#line 521 "parser.y" /* yacc.c:1646  */
+  case 50:
+#line 563 "parser.y" /* yacc.c:1646  */
     {(yyval.symbolinfo)=new SymbolInfo();fprintf(parsertext,"Line at %d : simple_expression->term\n\n",line_count);
 							fprintf(parsertext,"%s\n\n",(yyvsp[0].symbolinfo)->get_name().c_str());
 							(yyval.symbolinfo)->set_dectype((yyvsp[0].symbolinfo)->get_dectype());
@@ -2081,29 +2124,29 @@ yyreduce:
 							 
 
 							}
-#line 2085 "y.tab.c" /* yacc.c:1646  */
+#line 2128 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 50:
-#line 528 "parser.y" /* yacc.c:1646  */
+  case 51:
+#line 570 "parser.y" /* yacc.c:1646  */
     {(yyval.symbolinfo)=new SymbolInfo(); 
 		  								fprintf(parsertext,"Line at %d : simple_expression->simple_expression ADDOP term\n\n",line_count);
 		  								fprintf(parsertext,"%s%s%s\n\n",(yyvsp[-2].symbolinfo)->get_name().c_str(),(yyvsp[-1].symbolinfo)->get_name().c_str(),(yyvsp[0].symbolinfo)->get_name().c_str());
 										//cout<<$<symbolinfo>3->get_dectype()<<endl;
 										if((yyvsp[-2].symbolinfo)->get_dectype()=="void "||(yyvsp[0].symbolinfo)->get_dectype()=="void "){
 												error_count++;
-												fprintf(error,"Error at Line No.%d:  Type MIsmatch \n\n",line_count);
+												fprintf(error,"Error at Line No.%d:  Type Mismatch \n\n",line_count);
 												(yyval.symbolinfo)->set_dectype("int "); 
 										}else if((yyvsp[-2].symbolinfo)->get_dectype()=="float " ||(yyvsp[0].symbolinfo)->get_dectype()=="float ")
 											(yyval.symbolinfo)->set_dectype("float ");
 										else  (yyval.symbolinfo)->set_dectype("int ");
 										 	(yyval.symbolinfo)->set_name((yyvsp[-2].symbolinfo)->get_name()+(yyvsp[-1].symbolinfo)->get_name()+(yyvsp[0].symbolinfo)->get_name());  
 										  }
-#line 2103 "y.tab.c" /* yacc.c:1646  */
+#line 2146 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 51:
-#line 543 "parser.y" /* yacc.c:1646  */
+  case 52:
+#line 585 "parser.y" /* yacc.c:1646  */
     {(yyval.symbolinfo)=new SymbolInfo();fprintf(parsertext,"Line at %d : term->unary_expression\n\n",line_count);
 							fprintf(parsertext,"%s\n\n",(yyvsp[0].symbolinfo)->get_name().c_str()); 
 							(yyval.symbolinfo)->set_dectype((yyvsp[0].symbolinfo)->get_dectype()); 
@@ -2111,16 +2154,16 @@ yyreduce:
 							(yyval.symbolinfo)->set_name((yyvsp[0].symbolinfo)->get_name()); 
 							
 							}
-#line 2115 "y.tab.c" /* yacc.c:1646  */
+#line 2158 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 52:
-#line 550 "parser.y" /* yacc.c:1646  */
+  case 53:
+#line 592 "parser.y" /* yacc.c:1646  */
     {(yyval.symbolinfo)=new SymbolInfo();fprintf(parsertext,"Line at %d : term->term MULOP unary_expression\n\n",line_count);
 	 								fprintf(parsertext,"%s%s%s\n\n",(yyvsp[-2].symbolinfo)->get_name().c_str(),(yyvsp[-1].symbolinfo)->get_name().c_str(),(yyvsp[0].symbolinfo)->get_name().c_str());
 									 if((yyvsp[-2].symbolinfo)->get_dectype()=="void "||(yyvsp[0].symbolinfo)->get_dectype()=="void "){
 											error_count++;
-											fprintf(error,"Error at Line No.%d:  Type MIsmatch \n\n",line_count);
+											fprintf(error,"Error at Line No.%d:  Type Mismatch \n\n",line_count);
 											(yyval.symbolinfo)->set_dectype("int "); 
 									}else if((yyvsp[-1].symbolinfo)->get_name()=="%"){
 										 if((yyvsp[-2].symbolinfo)->get_dectype()!="int " ||(yyvsp[0].symbolinfo)->get_dectype()!="int "){
@@ -2132,56 +2175,66 @@ yyreduce:
 										
 									 }
 									else if((yyvsp[-1].symbolinfo)->get_name()=="/"){
-										 if((yyvsp[-2].symbolinfo)->get_dectype()=="int " && (yyvsp[0].symbolinfo)->get_dectype()=="int ")
+ 									if((yyvsp[-2].symbolinfo)->get_dectype()=="void "||(yyvsp[0].symbolinfo)->get_dectype()=="void "){
+											error_count++;
+											fprintf(error,"Error at Line No.%d:  Type Mismatch \n\n",line_count);
+											(yyval.symbolinfo)->set_dectype("int "); 
+									}
+										else  if((yyvsp[-2].symbolinfo)->get_dectype()=="int " && (yyvsp[0].symbolinfo)->get_dectype()=="int ")
 										 (yyval.symbolinfo)->set_dectype("int "); 
 										 else (yyval.symbolinfo)->set_dectype("float "); 
 										
 									 }
 									 else{
-										  if((yyvsp[-2].symbolinfo)->get_dectype()=="float " || (yyvsp[0].symbolinfo)->get_dectype()=="float ")
+										  if((yyvsp[-2].symbolinfo)->get_dectype()=="void "||(yyvsp[0].symbolinfo)->get_dectype()=="void "){
+											error_count++;
+											fprintf(error,"Error at Line No.%d:  Type Mismatch \n\n",line_count);
+											(yyval.symbolinfo)->set_dectype("int "); 
+									}
+										else  if((yyvsp[-2].symbolinfo)->get_dectype()=="float " || (yyvsp[0].symbolinfo)->get_dectype()=="float ")
 										 (yyval.symbolinfo)->set_dectype("float "); 
 										 else (yyval.symbolinfo)->set_dectype("int "); 
 									 }
 									(yyval.symbolinfo)->set_name((yyvsp[-2].symbolinfo)->get_name()+(yyvsp[-1].symbolinfo)->get_name()+(yyvsp[0].symbolinfo)->get_name()); 
 								
 									 }
-#line 2149 "y.tab.c" /* yacc.c:1646  */
+#line 2202 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 53:
-#line 581 "parser.y" /* yacc.c:1646  */
+  case 54:
+#line 633 "parser.y" /* yacc.c:1646  */
     {(yyval.symbolinfo)=new SymbolInfo(); fprintf(parsertext,"Line at %d : unary_expression->ADDOP unary_expression\n\n",line_count);
 											fprintf(parsertext,"%s%s\n\n",(yyvsp[-1].symbolinfo)->get_name().c_str(),(yyvsp[0].symbolinfo)->get_name().c_str());
-											if((yyvsp[0].symbolinfo)->get_dectype()=="void "||(yyvsp[0].symbolinfo)->get_dectype()=="float "){
+											if((yyvsp[0].symbolinfo)->get_dectype()=="void "){
 												error_count++;
-												fprintf(error,"Error at Line No.%d:  Type MIsmatch \n\n",line_count);
+												fprintf(error,"Error at Line No.%d:  Type Mismatch \n\n",line_count);
 												(yyval.symbolinfo)->set_dectype("int "); 
 											}else 
 											 (yyval.symbolinfo)->set_dectype((yyvsp[0].symbolinfo)->get_dectype()); 	
 											 (yyval.symbolinfo)->set_name((yyvsp[-1].symbolinfo)->get_name()+(yyvsp[0].symbolinfo)->get_name()); 
 										
 										}
-#line 2165 "y.tab.c" /* yacc.c:1646  */
+#line 2218 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 54:
-#line 592 "parser.y" /* yacc.c:1646  */
+  case 55:
+#line 644 "parser.y" /* yacc.c:1646  */
     {(yyval.symbolinfo)=new SymbolInfo();fprintf(parsertext,"Line at %d : unary_expression->NOT unary_expression\n\n",line_count);
 				fprintf(parsertext,"!%s\n\n",(yyvsp[0].symbolinfo)->get_name().c_str()); 
-				if((yyvsp[0].symbolinfo)->get_dectype()=="void "||(yyvsp[0].symbolinfo)->get_dectype()=="float "){
+				if((yyvsp[0].symbolinfo)->get_dectype()=="void "){
 					error_count++;
-					fprintf(error,"Error at Line No.%d:  Type MIsmatch \n\n",line_count);
+					fprintf(error,"Error at Line No.%d:  Type Mismatch \n\n",line_count);
 					(yyval.symbolinfo)->set_dectype("int "); 
 				}else 
 				(yyval.symbolinfo)->set_dectype((yyvsp[0].symbolinfo)->get_dectype());  
 		 		(yyval.symbolinfo)->set_name("!"+(yyvsp[0].symbolinfo)->get_name()); 
 		 
 		 }
-#line 2181 "y.tab.c" /* yacc.c:1646  */
+#line 2234 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 55:
-#line 603 "parser.y" /* yacc.c:1646  */
+  case 56:
+#line 655 "parser.y" /* yacc.c:1646  */
     {(yyval.symbolinfo)=new SymbolInfo();fprintf(parsertext,"Line at %d : unary_expression->factor\n\n",line_count);
 		 		fprintf(parsertext,"%s\n\n",(yyvsp[0].symbolinfo)->get_name().c_str()); 
 				// cout<<$<symbolinfo>1->get_dectype()<<endl;
@@ -2189,22 +2242,22 @@ yyreduce:
 				(yyval.symbolinfo)->set_name((yyvsp[0].symbolinfo)->get_name()); 
 				
 		 }
-#line 2193 "y.tab.c" /* yacc.c:1646  */
+#line 2246 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 56:
-#line 612 "parser.y" /* yacc.c:1646  */
+  case 57:
+#line 664 "parser.y" /* yacc.c:1646  */
     { (yyval.symbolinfo)=new SymbolInfo();fprintf(parsertext,"Line at %d : factor->variable\n\n",line_count);
 					fprintf(parsertext,"%s\n\n",(yyvsp[0].symbolinfo)->get_name().c_str());
 					(yyval.symbolinfo)->set_dectype((yyvsp[0].symbolinfo)->get_dectype()); 
 					(yyval.symbolinfo)->set_name((yyvsp[0].symbolinfo)->get_name()); 
 					
 					}
-#line 2204 "y.tab.c" /* yacc.c:1646  */
+#line 2257 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 57:
-#line 618 "parser.y" /* yacc.c:1646  */
+  case 58:
+#line 670 "parser.y" /* yacc.c:1646  */
     {(yyval.symbolinfo)=new SymbolInfo(); fprintf(parsertext,"Line at %d : factor->ID LPAREN argument_list RPAREN\n\n",line_count);
 									fprintf(parsertext,"%s(%s)\n\n",(yyvsp[-3].symbolinfo)->get_name().c_str(),(yyvsp[-1].symbolinfo)->get_name().c_str());
 									SymbolInfo* s=table->lookup((yyvsp[-3].symbolinfo)->get_name());
@@ -2239,7 +2292,7 @@ yyreduce:
 											for(int i=0;i<arg_list.size();i++){
 												if(arg_list[i]->get_dectype()!=para_type[i]){
 													error_count++;
-													fprintf(error,"Error at Line No.%d: Type MIsmatch \n\n",line_count);
+													fprintf(error,"Error at Line No.%d: Type Mismatch \n\n",line_count);
 													break;
 												}
 											}
@@ -2250,90 +2303,90 @@ yyreduce:
 									//cout<<line_count<<" "<<$<symbolinfo>$->get_dectype()<<endl;
 									(yyval.symbolinfo)->set_name((yyvsp[-3].symbolinfo)->get_name()+"("+(yyvsp[-1].symbolinfo)->get_name()+")"); 
 									}
-#line 2254 "y.tab.c" /* yacc.c:1646  */
+#line 2307 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 58:
-#line 663 "parser.y" /* yacc.c:1646  */
+  case 59:
+#line 715 "parser.y" /* yacc.c:1646  */
     {(yyval.symbolinfo)=new SymbolInfo();fprintf(parsertext,"Line at %d : factor->LPAREN expression RPAREN\n\n",line_count);
 								fprintf(parsertext,"(%s)\n\n",(yyvsp[-1].symbolinfo)->get_name().c_str()); 
 								(yyval.symbolinfo)->set_dectype((yyvsp[-1].symbolinfo)->get_dectype()); 
 								(yyval.symbolinfo)->set_name("("+(yyvsp[-1].symbolinfo)->get_name()+")"); 
 								}
-#line 2264 "y.tab.c" /* yacc.c:1646  */
+#line 2317 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 59:
-#line 668 "parser.y" /* yacc.c:1646  */
+  case 60:
+#line 720 "parser.y" /* yacc.c:1646  */
     { (yyval.symbolinfo)=new SymbolInfo();fprintf(parsertext,"Line at %d : factor->CONST_INT\n\n",line_count);
 				fprintf(parsertext,"%s\n\n",(yyvsp[0].symbolinfo)->get_name().c_str());
 				(yyval.symbolinfo)->set_dectype("int "); 	
 				(yyval.symbolinfo)->set_name((yyvsp[0].symbolinfo)->get_name()); 
 			
 				}
-#line 2275 "y.tab.c" /* yacc.c:1646  */
+#line 2328 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 60:
-#line 674 "parser.y" /* yacc.c:1646  */
+  case 61:
+#line 726 "parser.y" /* yacc.c:1646  */
     {(yyval.symbolinfo)=new SymbolInfo();fprintf(parsertext,"Line at %d : factor->CONST_FLOAT\n\n",line_count);
 					fprintf(parsertext,"%s\n\n",(yyvsp[0].symbolinfo)->get_name().c_str()); 
 					(yyval.symbolinfo)->set_dectype("float "); 	
 					(yyval.symbolinfo)->set_name((yyvsp[0].symbolinfo)->get_name()); 
 				
 					}
-#line 2286 "y.tab.c" /* yacc.c:1646  */
+#line 2339 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 61:
-#line 680 "parser.y" /* yacc.c:1646  */
+  case 62:
+#line 732 "parser.y" /* yacc.c:1646  */
     {(yyval.symbolinfo)=new SymbolInfo();fprintf(parsertext,"Line at %d : factor->variable INCOP\n\n",line_count);
 					fprintf(parsertext,"%s++\n\n",(yyvsp[-1].symbolinfo)->get_name().c_str()); 
 					(yyval.symbolinfo)->set_dectype((yyvsp[-1].symbolinfo)->get_dectype());
 					(yyval.symbolinfo)->set_name((yyvsp[-1].symbolinfo)->get_name()+"++"); 
 					 
 					 }
-#line 2297 "y.tab.c" /* yacc.c:1646  */
+#line 2350 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 62:
-#line 686 "parser.y" /* yacc.c:1646  */
+  case 63:
+#line 738 "parser.y" /* yacc.c:1646  */
     {(yyval.symbolinfo)=new SymbolInfo();fprintf(parsertext,"Line at %d : factor->variable DECOP\n\n",line_count);
 					fprintf(parsertext,"%s--\n\n",(yyvsp[-1].symbolinfo)->get_name().c_str());
 					  (yyval.symbolinfo)->set_dectype((yyvsp[-1].symbolinfo)->get_dectype()); 
 					  (yyval.symbolinfo)->set_name((yyvsp[-1].symbolinfo)->get_name()+"--"); 
 					 
 					 }
-#line 2308 "y.tab.c" /* yacc.c:1646  */
+#line 2361 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 63:
-#line 694 "parser.y" /* yacc.c:1646  */
+  case 64:
+#line 746 "parser.y" /* yacc.c:1646  */
     {(yyval.symbolinfo)=new SymbolInfo(); fprintf(parsertext,"Line at %d : argument_list->arguments\n\n",line_count);
 							fprintf(parsertext,"%s\n\n",(yyvsp[0].symbolinfo)->get_name().c_str());
 							 (yyval.symbolinfo)->set_name((yyvsp[0].symbolinfo)->get_name());
 							}
-#line 2317 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 64:
-#line 698 "parser.y" /* yacc.c:1646  */
-    { (yyval.symbolinfo)=new SymbolInfo();(yyval.symbolinfo)->set_name("");}
-#line 2323 "y.tab.c" /* yacc.c:1646  */
+#line 2370 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 65:
-#line 701 "parser.y" /* yacc.c:1646  */
+#line 750 "parser.y" /* yacc.c:1646  */
+    { (yyval.symbolinfo)=new SymbolInfo(); fprintf(parsertext,"Line at %d : argument_list-> \n\n",line_count);(yyval.symbolinfo)->set_name("");}
+#line 2376 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 66:
+#line 753 "parser.y" /* yacc.c:1646  */
     { (yyval.symbolinfo)=new SymbolInfo();fprintf(parsertext,"Line at %d : arguments->arguments COMMA logic_expression \n\n",line_count);
 											fprintf(parsertext,"%s,%s\n\n",(yyvsp[-2].symbolinfo)->get_name().c_str(),(yyvsp[0].symbolinfo)->get_name().c_str());
 											arg_list.push_back((yyvsp[0].symbolinfo));
 											(yyval.symbolinfo)->set_name((yyvsp[-2].symbolinfo)->get_name()+","+(yyvsp[0].symbolinfo)->get_name());
 											}
-#line 2333 "y.tab.c" /* yacc.c:1646  */
+#line 2386 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 66:
-#line 706 "parser.y" /* yacc.c:1646  */
+  case 67:
+#line 758 "parser.y" /* yacc.c:1646  */
     {(yyval.symbolinfo)=new SymbolInfo();
 		  					fprintf(parsertext,"Line at %d : arguments->logic_expression\n\n",line_count);
 		  					fprintf(parsertext,"%s\n\n",(yyvsp[0].symbolinfo)->get_name().c_str()); 
@@ -2342,11 +2395,11 @@ yyreduce:
 		  					(yyval.symbolinfo)->set_name((yyvsp[0].symbolinfo)->get_name());
 							
 		  }
-#line 2346 "y.tab.c" /* yacc.c:1646  */
+#line 2399 "y.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 2350 "y.tab.c" /* yacc.c:1646  */
+#line 2403 "y.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -2574,7 +2627,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 715 "parser.y" /* yacc.c:1906  */
+#line 767 "parser.y" /* yacc.c:1906  */
 
 int main(int argc,char *argv[])
 {

@@ -382,21 +382,44 @@ statement : var_declaration { $<symbolinfo>$=new SymbolInfo();fprintf(parsertext
 							  }
 	  | FOR LPAREN expression_statement expression_statement expression RPAREN statement {$<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Line at %d : statement ->FOR LPAREN expression_statement expression_statement expression RPAREN statement\n\n",line_count);
 	  																					fprintf(parsertext,"for(%s %s %s)\n%s \n\n",$<symbolinfo>3->get_name().c_str(),$<symbolinfo>4->get_name().c_str(),$<symbolinfo>5->get_name().c_str(),$<symbolinfo>7->get_name().c_str());
-																						  $<symbolinfo>$->set_name("for("+$<symbolinfo>3->get_name()+$<symbolinfo>4->get_name()+$<symbolinfo>5->get_name()+")\n"+$<symbolinfo>5->get_name()); 
+																						if($<symbolinfo>3->get_dectype()=="void "){
+																							error_count++;
+																							fprintf(error,"Error at Line No.%d:  Type Mismatch \n\n",line_count);
+																							//$<symbolinfo>$->set_dectype("int "); 
+																						}
+																						
+																						$<symbolinfo>$->set_name("for("+$<symbolinfo>3->get_name()+$<symbolinfo>4->get_name()+$<symbolinfo>5->get_name()+")\n"+$<symbolinfo>5->get_name()); 
 
 																						  }
 	  | IF LPAREN expression RPAREN statement %prec LOWER_THAN_ELSE {$<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Line at %d : statement->IF LPAREN expression RPAREN statement\n\n",line_count);
 	  																fprintf(parsertext,"if(%s)\n%s\n\n",$<symbolinfo>3->get_name().c_str(),$<symbolinfo>5->get_name().c_str());
+																	if($<symbolinfo>3->get_dectype()=="void "){
+																		error_count++;
+																		fprintf(error,"Error at Line No.%d:  Type Mismatch \n\n",line_count);
+																//$<symbolinfo>$->set_dectype("int "); 
+																	}
+																	
 																	$<symbolinfo>$->set_name("if("+$<symbolinfo>3->get_name()+")\n"+$<symbolinfo>5->get_name()); 
 
 																	  }
 	  | IF LPAREN expression RPAREN statement ELSE statement {$<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Line at %d : statement->IF LPAREN expression RPAREN statement ELSE statement\n\n",line_count);
 	  														fprintf(parsertext,"if(%s)\n%s\n else \n %s\n\n",$<symbolinfo>3->get_name().c_str(),$<symbolinfo>5->get_name().c_str(),$<symbolinfo>7->get_name().c_str());
+															if($<symbolinfo>3->get_dectype()=="void "){
+																error_count++;
+																fprintf(error,"Error at Line No.%d:  Type Mismatch \n\n",line_count);
+																//$<symbolinfo>$->set_dectype("int "); 
+															}
+															
 															$<symbolinfo>$->set_name("if("+$<symbolinfo>3->get_name()+")\n"+$<symbolinfo>5->get_name()+" else \n"+$<symbolinfo>7->get_name()); 
 															}
 
 	  | WHILE LPAREN expression RPAREN statement {$<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Line at %d : statement->WHILE LPAREN expression RPAREN statement\n\n",line_count);
 	  											fprintf(parsertext,"while(%s)\n%s\n\n",$<symbolinfo>3->get_name().c_str(),$<symbolinfo>5->get_name().c_str());
+												  if($<symbolinfo>3->get_dectype()=="void "){
+													error_count++;
+													fprintf(error,"Error at Line No.%d:  Type Mismatch \n\n",line_count);
+												//	$<symbolinfo>$->set_dectype("int "); 
+												}
 												  $<symbolinfo>$->set_name("while("+$<symbolinfo>3->get_name()+")\n"+$<symbolinfo>5->get_name()); 
 												  }
 	  | PRINTLN LPAREN ID RPAREN SEMICOLON {$<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Line at %d : statement->PRINTLN LPAREN ID RPAREN SEMICOLON\n\n",line_count);
@@ -405,6 +428,11 @@ statement : var_declaration { $<symbolinfo>$=new SymbolInfo();fprintf(parsertext
 											  }
 	  | RETURN expression SEMICOLON {$<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Line at %d : statement->RETURN expression SEMICOLON\n\n",line_count);
 	  								fprintf(parsertext,"return %s;\n\n",$<symbolinfo>2->get_name().c_str());
+									if($<symbolinfo>2->get_dectype()=="void "){
+												error_count++;
+												fprintf(error,"Error at Line No.%d:  Type Mismatch \n\n",line_count);
+												$<symbolinfo>$->set_dectype("int "); 
+									}
 									$<symbolinfo>$->set_name("return "+$<symbolinfo>2->get_name()+";"); 
 									}
 	  ;
@@ -415,7 +443,8 @@ expression_statement 	: SEMICOLON	{$<symbolinfo>$=new SymbolInfo();fprintf(parse
 									}
 			| expression SEMICOLON {$<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Line at %d : expression_statement->expression SEMICOLON\n\n",line_count);
 									fprintf(parsertext,"%s;\n\n",$<symbolinfo>1->get_name().c_str());
-										$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+";"); 
+									
+									$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+";"); 
 									}
 			;
 
@@ -478,7 +507,7 @@ expression : logic_expression	{$<symbolinfo>$=new SymbolInfo();fprintf(parsertex
 	   										fprintf(parsertext,"%s=%s\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>3->get_name().c_str());
 											   if($<symbolinfo>3->get_dectype()=="void "){
 												error_count++;
-												fprintf(error,"Error at Line No.%d:  Type MIsmatch \n\n",line_count);
+												fprintf(error,"Error at Line No.%d:  Type Mismatch \n\n",line_count);
 												$<symbolinfo>$->set_dectype("int "); 
 											}else if(table->lookup($<symbolinfo>1->get_name())!=0) {
 												//cout<<line_count<<" "<<table->lookup($<symbolinfo>1->get_name())->get_dectype()<<""<<$<symbolinfo>3->get_dectype()<<endl;
@@ -502,7 +531,7 @@ logic_expression : rel_expression 	{$<symbolinfo>$=new SymbolInfo();fprintf(pars
 		 											fprintf(parsertext,"%s%s%s\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>2->get_name().c_str(),$<symbolinfo>3->get_name().c_str());
 													 if($<symbolinfo>1->get_dectype()=="void "||$<symbolinfo>3->get_dectype()=="void "){
 														error_count++;
-														fprintf(error,"Error at Line No.%d:  Type MIsmatch \n\n",line_count);
+														fprintf(error,"Error at Line No.%d:  Type Mismatch \n\n",line_count);
 														$<symbolinfo>$->set_dectype("int "); 
 													}
 										 			$<symbolinfo>$->set_dectype("int "); 
@@ -521,7 +550,7 @@ rel_expression	: simple_expression {$<symbolinfo>$=new SymbolInfo();fprintf(pars
 													fprintf(parsertext,"%s%s%s\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>2->get_name().c_str(),$<symbolinfo>3->get_name().c_str());
 													if($<symbolinfo>1->get_dectype()=="void "||$<symbolinfo>3->get_dectype()=="void "){
 														error_count++;
-														fprintf(error,"Error at Line No.%d:  Type MIsmatch \n\n",line_count);
+														fprintf(error,"Error at Line No.%d:  Type Mismatch \n\n",line_count);
 														$<symbolinfo>$->set_dectype("int "); 
 													}
 										 			$<symbolinfo>$->set_dectype("int "); 
@@ -544,7 +573,7 @@ simple_expression : term {$<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Li
 										//cout<<$<symbolinfo>3->get_dectype()<<endl;
 										if($<symbolinfo>1->get_dectype()=="void "||$<symbolinfo>3->get_dectype()=="void "){
 												error_count++;
-												fprintf(error,"Error at Line No.%d:  Type MIsmatch \n\n",line_count);
+												fprintf(error,"Error at Line No.%d:  Type Mismatch \n\n",line_count);
 												$<symbolinfo>$->set_dectype("int "); 
 										}else if($<symbolinfo>1->get_dectype()=="float " ||$<symbolinfo>3->get_dectype()=="float ")
 											$<symbolinfo>$->set_dectype("float ");
@@ -564,7 +593,7 @@ term :	unary_expression  {$<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Li
 	 								fprintf(parsertext,"%s%s%s\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>2->get_name().c_str(),$<symbolinfo>3->get_name().c_str());
 									 if($<symbolinfo>1->get_dectype()=="void "||$<symbolinfo>3->get_dectype()=="void "){
 											error_count++;
-											fprintf(error,"Error at Line No.%d:  Type MIsmatch \n\n",line_count);
+											fprintf(error,"Error at Line No.%d:  Type Mismatch \n\n",line_count);
 											$<symbolinfo>$->set_dectype("int "); 
 									}else if($<symbolinfo>2->get_name()=="%"){
 										 if($<symbolinfo>1->get_dectype()!="int " ||$<symbolinfo>3->get_dectype()!="int "){
@@ -576,13 +605,23 @@ term :	unary_expression  {$<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Li
 										
 									 }
 									else if($<symbolinfo>2->get_name()=="/"){
-										 if($<symbolinfo>1->get_dectype()=="int " && $<symbolinfo>3->get_dectype()=="int ")
+ 									if($<symbolinfo>1->get_dectype()=="void "||$<symbolinfo>3->get_dectype()=="void "){
+											error_count++;
+											fprintf(error,"Error at Line No.%d:  Type Mismatch \n\n",line_count);
+											$<symbolinfo>$->set_dectype("int "); 
+									}
+										else  if($<symbolinfo>1->get_dectype()=="int " && $<symbolinfo>3->get_dectype()=="int ")
 										 $<symbolinfo>$->set_dectype("int "); 
 										 else $<symbolinfo>$->set_dectype("float "); 
 										
 									 }
 									 else{
-										  if($<symbolinfo>1->get_dectype()=="float " || $<symbolinfo>3->get_dectype()=="float ")
+										  if($<symbolinfo>1->get_dectype()=="void "||$<symbolinfo>3->get_dectype()=="void "){
+											error_count++;
+											fprintf(error,"Error at Line No.%d:  Type Mismatch \n\n",line_count);
+											$<symbolinfo>$->set_dectype("int "); 
+									}
+										else  if($<symbolinfo>1->get_dectype()=="float " || $<symbolinfo>3->get_dectype()=="float ")
 										 $<symbolinfo>$->set_dectype("float "); 
 										 else $<symbolinfo>$->set_dectype("int "); 
 									 }
@@ -593,9 +632,9 @@ term :	unary_expression  {$<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Li
 
 unary_expression : ADDOP unary_expression  {$<symbolinfo>$=new SymbolInfo(); fprintf(parsertext,"Line at %d : unary_expression->ADDOP unary_expression\n\n",line_count);
 											fprintf(parsertext,"%s%s\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>2->get_name().c_str());
-											if($<symbolinfo>2->get_dectype()=="void "||$<symbolinfo>2->get_dectype()=="float "){
+											if($<symbolinfo>2->get_dectype()=="void "){
 												error_count++;
-												fprintf(error,"Error at Line No.%d:  Type MIsmatch \n\n",line_count);
+												fprintf(error,"Error at Line No.%d:  Type Mismatch \n\n",line_count);
 												$<symbolinfo>$->set_dectype("int "); 
 											}else 
 											 $<symbolinfo>$->set_dectype($<symbolinfo>2->get_dectype()); 	
@@ -604,9 +643,9 @@ unary_expression : ADDOP unary_expression  {$<symbolinfo>$=new SymbolInfo(); fpr
 										}
 		 | NOT unary_expression {$<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Line at %d : unary_expression->NOT unary_expression\n\n",line_count);
 				fprintf(parsertext,"!%s\n\n",$<symbolinfo>2->get_name().c_str()); 
-				if($<symbolinfo>2->get_dectype()=="void "||$<symbolinfo>2->get_dectype()=="float "){
+				if($<symbolinfo>2->get_dectype()=="void "){
 					error_count++;
-					fprintf(error,"Error at Line No.%d:  Type MIsmatch \n\n",line_count);
+					fprintf(error,"Error at Line No.%d:  Type Mismatch \n\n",line_count);
 					$<symbolinfo>$->set_dectype("int "); 
 				}else 
 				$<symbolinfo>$->set_dectype($<symbolinfo>2->get_dectype());  
@@ -662,7 +701,7 @@ factor	: variable { $<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Line at 
 											for(int i=0;i<arg_list.size();i++){
 												if(arg_list[i]->get_dectype()!=para_type[i]){
 													error_count++;
-													fprintf(error,"Error at Line No.%d: Type MIsmatch \n\n",line_count);
+													fprintf(error,"Error at Line No.%d: Type Mismatch \n\n",line_count);
 													break;
 												}
 											}

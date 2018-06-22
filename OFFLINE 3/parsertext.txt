@@ -1443,37 +1443,39 @@ b=(2%3*4+5);
 b=b+(2%3*4+5);
 d=2.3*4; b=var(2,3);
 
-Line at 29 : factor->CONST_INT
+Line at 29 : argument_list-> 
 
-0
+Line at 29 : factor->ID LPAREN argument_list RPAREN
+
+foo()
 
 Line at 29 : unary_expression->factor
 
-0
+foo()
 
 Line at 29 : term->unary_expression
 
-0
+foo()
 
 Line at 29 : simple_expression->term
 
-0
+foo()
 
 Line at 29 : rel_expression->simple_expression
 
-0
+foo()
 
 Line at 29 : logic_expression->rel_expression
 
-0
+foo()
 
 Line at 29 : expression->logic_expression
 
-0
+foo()
 
 Line at 29 : statement->RETURN expression SEMICOLON
 
-return 0;
+return foo();
 
 Line at 29 : statements->statements statement
 
@@ -1489,7 +1491,7 @@ a[b%c]=x;
 b=(2%3*4+5);
 b=b+(2%3*4+5);
 d=2.3*4;
-b=var(2,3); return 0;
+b=var(2,3); return foo();
 
 Line at 31 : compound_statement->LCURL statements RCURL
 
@@ -1506,7 +1508,7 @@ b=(2%3*4+5);
 b=b+(2%3*4+5);
 d=2.3*4;
 b=var(2,3);
-return 0;}
+return foo();}
 
  ScopeTable# 4 
  51  --> < ID : a > 
@@ -1541,7 +1543,7 @@ b=(2%3*4+5);
 b=b+(2%3*4+5);
 d=2.3*4;
 b=var(2,3);
-return 0;
+return foo();
 }
 
 Line at 31 : unit->func_definition
@@ -1560,7 +1562,7 @@ b=(2%3*4+5);
 b=b+(2%3*4+5);
 d=2.3*4;
 b=var(2,3);
-return 0;
+return foo();
 }
 
 Line at 31 : program->program unit
@@ -1589,7 +1591,7 @@ b=(2%3*4+5);
 b=b+(2%3*4+5);
 d=2.3*4;
 b=var(2,3);
-return 0;
+return foo();
 }
 
 
@@ -1606,5 +1608,5 @@ return 0;
 
 Total Lines : 31 
 
-Total Errors : 0 
+Total Errors : 1 
 
