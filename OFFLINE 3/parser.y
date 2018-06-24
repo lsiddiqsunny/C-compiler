@@ -388,7 +388,7 @@ statement : var_declaration { $<symbolinfo>$=new SymbolInfo();fprintf(parsertext
 																							//$<symbolinfo>$->set_dectype("int "); 
 																						}
 																						
-																						$<symbolinfo>$->set_name("for("+$<symbolinfo>3->get_name()+$<symbolinfo>4->get_name()+$<symbolinfo>5->get_name()+")\n"+$<symbolinfo>5->get_name()); 
+																						$<symbolinfo>$->set_name("for("+$<symbolinfo>3->get_name()+$<symbolinfo>4->get_name()+$<symbolinfo>5->get_name()+")\n"+$<symbolinfo>7->get_name()); 
 
 																						  }
 	  | IF LPAREN expression RPAREN statement %prec LOWER_THAN_ELSE {$<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Line at %d : statement->IF LPAREN expression RPAREN statement\n\n",line_count);
@@ -443,7 +443,6 @@ expression_statement 	: SEMICOLON	{$<symbolinfo>$=new SymbolInfo();fprintf(parse
 									}
 			| expression SEMICOLON {$<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Line at %d : expression_statement->expression SEMICOLON\n\n",line_count);
 									fprintf(parsertext,"%s;\n\n",$<symbolinfo>1->get_name().c_str());
-									
 									$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+";"); 
 									}
 			;

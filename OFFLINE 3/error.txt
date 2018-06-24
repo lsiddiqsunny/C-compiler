@@ -1,4 +1,2 @@
-Error at Line No.29:  Type Mismatch 
-
-Total Errors : 1 
+Total Errors : 0 
 
