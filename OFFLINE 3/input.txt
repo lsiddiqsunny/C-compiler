@@ -5,10 +5,10 @@ int func(int a){
 float f(){
 	return 1.0;
 }
-/*
+
 void g(){
-	return;
-}*/
+//	return ;
+}
 
 int h(int a);
 

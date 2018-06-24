@@ -8,11 +8,15 @@ Error at Line No.20:  Integer operand on modulus operator
 
 Error at Line No.21:  Integer operand on modulus operator  
 
+Error at Line No.22:  Not an array: a 
+
 Error at Line No.22: Type Mismatch 
 
-Error at Line No.23:  Undefined Function 
+Error at Line No.23:  Type Mismatch 
 
 Error at Line No.25:  Undeclared Variable: b 
+
+Error at Line No.26:  Not an array: a 
 
 Error at Line No.26: Type Mismatch 
 
@@ -24,5 +28,5 @@ Error at Line No.29:  Not A Function
 
 Error at Line No.33: Type Mismatch 
 
-Total Errors : 13 
+Total Errors : 15 
 

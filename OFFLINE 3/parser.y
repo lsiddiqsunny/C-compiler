@@ -284,7 +284,8 @@ compound_statement : LCURL {table->Enter_Scope();
 											table->printall();
 											table->Exit_Scope();
 											}
- 		    | LCURL RCURL {for(int i=0;i<para_list.size();i++)
+ 		    | LCURL RCURL {table->Enter_Scope();
+				 for(int i=0;i<para_list.size();i++)
 				table->Insert(para_list[i]->get_name(),"ID",para_list[i]->get_dectype());
 				//table->printcurrent();
 				para_list.clear();
@@ -455,6 +456,10 @@ variable : ID 		{$<symbolinfo>$=new SymbolInfo();
 						 error_count++;
 						fprintf(error,"Error at Line No.%d:  Undeclared Variable: %s \n\n",line_count,$<symbolinfo>1->get_name().c_str());
 					
+					}
+					else if(table->lookup($<symbolinfo>1->get_name())->get_dectype()=="int array" || table->lookup($<symbolinfo>1->get_name())->get_dectype()=="float array"){
+						 error_count++;
+						fprintf(error,"Error at Line No.%d:  Not an array: %s \n\n",line_count,$<symbolinfo>1->get_name().c_str());
 					}
 					if(table->lookup($<symbolinfo>1->get_name())!=0){
 						//cout<<line_count<<" "<<$<symbolinfo>1->get_name()<<" "<<table->lookup($<symbolinfo>1->get_name())->get_dectype()<<endl;

@@ -159,6 +159,44 @@ return 1.0;
 }
 
 
+Line at 9 : type_specifier	: VOID
+
+void 
+
+ New ScopeTable with id 4 created
+
+Line at 11 : compound_statement->LCURL RCURL
+
+{}
+
+ ScopeTable# 4 
+
+ ScopeTable# 1 
+ 15  --> < ID : func > 
+ 56  --> < ID : f > 
+ 57  --> < ID : g > 
+
+ ScopeTable with id 4 removed
+
+Line at 11 : func_definition->type_specifier ID LPAREN RPAREN compound_statement
+
+void  g() {}
+
+Line at 11 : unit->func_definition
+
+void  g(){}
+
+Line at 11 : program->program unit
+
+int  func(int  a){
+return a;
+}
+float  f(){
+return 1.0;
+}
+ void  g(){}
+
+
 Line at 13 : type_specifier	: INT
 
 int 
@@ -187,6 +225,7 @@ return a;
 float  f(){
 return 1.0;
 }
+void  g(){}
  int  h(int  a);
 
 
@@ -194,7 +233,7 @@ Line at 15 : type_specifier	: INT
 
 int 
 
- New ScopeTable with id 4 created
+ New ScopeTable with id 5 created
 
 Line at 16 : type_specifier	: INT
 
@@ -1089,7 +1128,7 @@ func();
 i();
 return 0;}
 
- ScopeTable# 4 
+ ScopeTable# 5 
  51  --> < ID : a > 
  53  --> < ID : c > 
  59  --> < ID : i > 
@@ -1098,10 +1137,11 @@ return 0;}
  ScopeTable# 1 
  15  --> < ID : func > 
  56  --> < ID : f > 
+ 57  --> < ID : g > 
  58  --> < ID : h > 
  64  --> < ID : main > 
 
- ScopeTable with id 4 removed
+ ScopeTable with id 5 removed
 
 Line at 31 : func_definition->type_specifier ID LPAREN RPAREN compound_statement
 
@@ -1151,6 +1191,7 @@ return a;
 float  f(){
 return 1.0;
 }
+void  g(){}
 int  h(int  a);
  int  main(){
 int  a[2],c,i,j;
@@ -1183,7 +1224,7 @@ Line at 33 : parameter_list->type_specifier ID
 
 float  a
 
- New ScopeTable with id 5 created
+ New ScopeTable with id 6 created
 
 Line at 34 : factor->CONST_INT
 
@@ -1225,16 +1266,17 @@ Line at 35 : compound_statement->LCURL statements RCURL
 
 {return 0;}
 
- ScopeTable# 5 
+ ScopeTable# 6 
  51  --> < ID : a > 
 
  ScopeTable# 1 
  15  --> < ID : func > 
  56  --> < ID : f > 
+ 57  --> < ID : g > 
  58  --> < ID : h > 
  64  --> < ID : main > 
 
- ScopeTable with id 5 removed
+ ScopeTable with id 6 removed
 
 Line at 35 : func_definition->type_specifier ID LPAREN parameter_list RPAREN compound_statement 
 
@@ -1256,6 +1298,7 @@ return a;
 float  f(){
 return 1.0;
 }
+void  g(){}
 int  h(int  a);
 int  main(){
 int  a[2],c,i,j;
@@ -1284,10 +1327,11 @@ return 0;
  ScopeTable# 1 
  15  --> < ID : func > 
  56  --> < ID : f > 
+ 57  --> < ID : g > 
  58  --> < ID : h > 
  64  --> < ID : main > 
 
 Total Lines : 35 
 
-Total Errors : 13 
+Total Errors : 15 
 
