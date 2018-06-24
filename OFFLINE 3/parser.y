@@ -121,7 +121,7 @@ func_declaration : type_specifier ID  LPAREN  parameter_list RPAREN SEMICOLON {$
 								break;
 							}
 						}
-						if(s->get_isFunction()->get_return_type()!=$<symbolinfo>1->get_dectype()){
+						if(s->get_isFunction()->get_return_type()!=$<symbolinfo>1->get_name()){
 								error_count++;
 								fprintf(error,"Error at Line No.%d: Return Type Mismatch \n\n",line_count);
 						}
@@ -156,6 +156,7 @@ func_declaration : type_specifier ID  LPAREN  parameter_list RPAREN SEMICOLON {$
 		;
 
 func_definition : type_specifier ID  LPAREN  parameter_list RPAREN {$<symbolinfo>$=new SymbolInfo(); 
+
 				SymbolInfo *s=table->lookup($<symbolinfo>2->get_name()); 
 				if(s!=0){ 
 					if(s->get_isFunction()->get_isdefined()==0){
@@ -176,9 +177,9 @@ func_definition : type_specifier ID  LPAREN  parameter_list RPAREN {$<symbolinfo
 								break;
 							}
 						}
-						if(s->get_isFunction()->get_return_type()!=$<symbolinfo>1->get_dectype()){
+						if(s->get_isFunction()->get_return_type()!=$<symbolinfo>1->get_name()){
 								error_count++;
-								fprintf(error,"Error at Line No.%d: Return Type Mismatch \n\n",line_count);
+								fprintf(error,"Error at Line No.%d: Return Type Mismatch1 \n\n",line_count);
 						}
 					//	para_list.clear();
 					}
@@ -388,7 +389,7 @@ statement : var_declaration { $<symbolinfo>$=new SymbolInfo();fprintf(parsertext
 																							//$<symbolinfo>$->set_dectype("int "); 
 																						}
 																						
-																						$<symbolinfo>$->set_name("for("+$<symbolinfo>3->get_name()+$<symbolinfo>4->get_name()+$<symbolinfo>5->get_name()+")\n"+$<symbolinfo>7->get_name()); 
+																						$<symbolinfo>$->set_name("for("+$<symbolinfo>3->get_name()+$<symbolinfo>4->get_name()+$<symbolinfo>5->get_name()+")\n"+$<symbolinfo>5->get_name()); 
 
 																						  }
 	  | IF LPAREN expression RPAREN statement %prec LOWER_THAN_ELSE {$<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Line at %d : statement->IF LPAREN expression RPAREN statement\n\n",line_count);
