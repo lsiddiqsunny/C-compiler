@@ -13,6 +13,7 @@ class SymbolInfo
         string name,type,dectype;
         SymbolInfo * next;
         Function* isFunction;
+        string asmcode;
         public:
         SymbolInfo()
         {
@@ -26,6 +27,7 @@ class SymbolInfo
             this->name=sym_name;
             this->type=sym_type;
             this->dectype=sym_dec;
+            asmcode="";
             this->next=0;
         }
 
@@ -46,6 +48,9 @@ class SymbolInfo
         SymbolInfo *get_next()
         {
             return this->next;
+        }
+        string getASMcode(){
+            return asmcode;
         }
 
 
@@ -70,6 +75,9 @@ class SymbolInfo
         {
             this->next=new_next;
             return this->next;
+        }
+        void setASMcode(string s){
+            asmcode=s;
         }
         void set_isFunction(){
             isFunction=new Function();

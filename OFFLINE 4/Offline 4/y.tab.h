@@ -134,7 +134,7 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 56 "parser.y" /* yacc.c:1909  */
+#line 82 "parser.y" /* yacc.c:1909  */
 
         SymbolInfo* symbolinfo;
 		vector<string>*s;

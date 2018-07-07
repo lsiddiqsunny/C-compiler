@@ -159,7 +159,7 @@ public:
     }
     void printScopeTable()
     {
-        fprintf(logout," ScopeTable# %d \n",uniqueid); 
+        //fprintf(logout," ScopeTable# %d \n",uniqueid); 
         SymbolInfo *temp;
 
         for (int i = 0; i < num; i++)
@@ -170,23 +170,23 @@ public:
 		{
 			continue;
 		}
-	    fprintf(logout," %d  --> ",i); 
+	//    fprintf(logout," %d  --> ",i); 
 
         //cout <<" "<< i << " --> ";
 
         while (temp)
         {
-	        fprintf(logout,"< %s : %s > ",temp->get_type().c_str(),temp->get_name().c_str()); 
+	     //   fprintf(logout,"< %s : %s > ",temp->get_type().c_str(),temp->get_name().c_str()); 
                 
 
             // cout << "<" << temp->get_name() << " : " << temp->get_type()<< ">  ";
             temp = temp->get_next();
         }
-	    fprintf(logout,"\n"); 
+	   // fprintf(logout,"\n"); 
 
            // cout<<endl;
         }
-        fprintf(logout,"\n"); 
+      //  fprintf(logout,"\n"); 
     }
 
     void set_pcon(int x)

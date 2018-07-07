@@ -36,8 +36,9 @@ public:
         if(!Scopes.empty())
         {
             new_table=new ScopeTable(current_id,n,Scopes.back(),logout);
+            /*
             if(current_id!=1)
-	        fprintf(logout," New ScopeTable with id %d created\n\n",current_id);
+	        fprintf(logout," New ScopeTable with id %d created\n\n",current_id);*/
            // cout<<" New ScopeTable with id "<<current_id<<" created"<<endl;
         }
         else
@@ -56,7 +57,7 @@ public:
             return;
         }
         if(current_id!=1)
- 	    fprintf(logout," ScopeTable with id %d removed\n\n",current_id);
+ 	  //  fprintf(logout," ScopeTable with id %d removed\n\n",current_id);
         current=Scopes.back()->get_parent();
         Scopes.pop_back();
     }
