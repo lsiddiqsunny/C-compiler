@@ -11,9 +11,9 @@ using namespace std;
 class SymbolInfo
         {
         string name,type,dectype;
+        string asmcode;
         SymbolInfo * next;
         Function* isFunction;
-        string asmcode;
         public:
         SymbolInfo()
         {
@@ -27,7 +27,7 @@ class SymbolInfo
             this->name=sym_name;
             this->type=sym_type;
             this->dectype=sym_dec;
-            asmcode="";
+            this->asmcode="";
             this->next=0;
         }
 
@@ -44,13 +44,13 @@ class SymbolInfo
         {
             return this->dectype;
         }
+        string get_ASMcode(){
+            return this->asmcode;
+        }
 
         SymbolInfo *get_next()
         {
             return this->next;
-        }
-        string getASMcode(){
-            return asmcode;
         }
 
 
@@ -70,14 +70,15 @@ class SymbolInfo
             this->dectype=new_type;
             return this->dectype;
         }
+        string set_ASMcode(string s){
+            this->asmcode=s;
+            return this->asmcode;
+        }
 
         SymbolInfo *set_next(SymbolInfo * new_next)
         {
             this->next=new_next;
             return this->next;
-        }
-        void setASMcode(string s){
-            asmcode=s;
         }
         void set_isFunction(){
             isFunction=new Function();
