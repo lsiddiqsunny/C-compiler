@@ -1,11 +1,45 @@
 .MODEL SMALL
 .STACK 100H
 .DATA 
+a2 dw ?
+c5 dw ?
+i5 dw ?
+j5 dw ?
+a6 dw ?
+a5 dw 2 dup(?)
+.CODE
 func PROC
+	PUSH ax
+	PUSH bx 
+	PUSH cx 
+	PUSH dx
+	POP dx
+	POP cx
+	POP bx
+	POP ax
+	ret
 func ENDP
 f PROC
+	PUSH ax
+	PUSH bx 
+	PUSH cx 
+	PUSH dx
+	POP dx
+	POP cx
+	POP bx
+	POP ax
+	ret
 f ENDP
 g PROC
+	PUSH ax
+	PUSH bx 
+	PUSH cx 
+	PUSH dx
+	POP dx
+	POP cx
+	POP bx
+	POP ax
+	ret
 g ENDP
 main PROC
     MOV AX,@DATA
@@ -14,6 +48,15 @@ main PROC
 	INT 21H
 main ENDP
 h PROC
+	PUSH ax
+	PUSH bx 
+	PUSH cx 
+	PUSH dx
+	POP dx
+	POP cx
+	POP bx
+	POP ax
+	ret
 h ENDP
 OUTDEC PROC  
     PUSH AX 

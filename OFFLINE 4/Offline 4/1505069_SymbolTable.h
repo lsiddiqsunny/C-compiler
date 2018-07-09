@@ -146,6 +146,9 @@ public:
             temp=temp->get_parent();
         }
     }
+    int getCurrentId(){
+        return current_id;
+    }
 
 };
 

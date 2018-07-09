@@ -1,9 +1,12 @@
 %{
-#include<iostream>
-#include<cstdio>
-#include<cstdlib>
-#include<cstring>
-#include<cmath>
+#include <iostream>
+#include <cstdlib>
+
+#include <cmath>
+#include <vector>
+#include <string>
+#include <limits>
+#include <sstream>
 #include "1505069_SymbolTable.h"
 //#define YYSTYPE SymbolInfo*
 
@@ -24,6 +27,8 @@ SymbolTable *table=new SymbolTable(100,parsertext);
 vector<SymbolInfo*>para_list;
 vector<SymbolInfo*>dec_list;
 vector<SymbolInfo*>arg_list;
+vector<string> var_dec;
+vector<pair<string,string> >arr_dec;
 
 
 void yyerror(char *s)
@@ -35,7 +40,12 @@ void yyerror(char *s)
 
 int labelCount=0;
 int tempCount=0;
-
+string IntToString (int a)
+{
+    ostringstream temp;
+    temp<<a;
+    return temp.str();
+}
 
 char *newLabel()
 {
@@ -89,9 +99,23 @@ char *newTemp()
 %%
 
 start : program {	
-$<symbolinfo>1->set_ASMcode(".MODEL SMALL\n\
+	string codes="";
+	
+
+
+codes+=".MODEL SMALL\n\
 .STACK 100H\n\ 
-.DATA \n"+$<symbolinfo>1->get_ASMcode());
+.DATA \n";
+	for(int i=0;i<var_dec.size();i++){
+		codes+=var_dec[i]+" dw ?\n";
+	}
+	for(int i=0;i<arr_dec.size();i++){
+		codes+=arr_dec[i].first+" dw "+arr_dec[i].second+" dup(?)\n";
+	}
+	
+
+	$<symbolinfo>1->set_ASMcode(codes+".CODE\n"+$<symbolinfo>1->get_ASMcode());
+
 	$<symbolinfo>1->set_ASMcode($<symbolinfo>1->get_ASMcode()+"OUTDEC PROC  \n\ 
     PUSH AX \n\ 
     PUSH BX \n\ 
@@ -296,7 +320,9 @@ func_definition : type_specifier ID  LPAREN  parameter_list RPAREN {$<symbolinfo
 												$<symbolinfo>$->set_ASMcode($<symbolinfo>$->get_ASMcode()+"    MOV AX,@DATA\n\tMOV DS,AX \n"+$<symbolinfo>7->get_ASMcode()+"    MOV AH,4CH\n\tINT 21H\n");
 											}
 											else {
-												$<symbolinfo>$->set_ASMcode($<symbolinfo>$->get_ASMcode()+$<symbolinfo>7->get_ASMcode());
+												$<symbolinfo>$->set_ASMcode($<symbolinfo>$->get_ASMcode()+
+												"\tPUSH ax\n\tPUSH bx \n\tPUSH cx \n\tPUSH dx\n" +$<symbolinfo>7->get_ASMcode()+
+												"\tPOP dx\n\tPOP cx\n\tPOP bx\n\tPOP ax\n\tret\n");
 
 											}
 											$<symbolinfo>$->set_ASMcode($<symbolinfo>$->get_ASMcode()+$<symbolinfo>2->get_name()+" ENDP\n");
@@ -339,7 +365,9 @@ func_definition : type_specifier ID  LPAREN  parameter_list RPAREN {$<symbolinfo
 												$<symbolinfo>$->set_ASMcode($<symbolinfo>$->get_ASMcode()+"    MOV AX,@DATA\n\tMOV DS,AX \n"+$<symbolinfo>6->get_ASMcode()+"    MOV AH,4CH\n\tINT 21H\n");
 											}
 											else {
-												$<symbolinfo>$->set_ASMcode($<symbolinfo>$->get_ASMcode()+$<symbolinfo>6->get_ASMcode());
+												$<symbolinfo>$->set_ASMcode($<symbolinfo>$->get_ASMcode()+
+												"\tPUSH ax\n\tPUSH bx \n\tPUSH cx \n\tPUSH dx\n"+$<symbolinfo>6->get_ASMcode()+
+												"\tPOP dx\n\tPOP cx\n\tPOP bx\n\tPOP ax\n\tret\n");
 
 											}
 											$<symbolinfo>$->set_ASMcode($<symbolinfo>$->get_ASMcode()+$<symbolinfo>2->get_name()+" ENDP\n");
@@ -375,20 +403,24 @@ parameter_list  : parameter_list COMMA type_specifier ID {$<symbolinfo>$=new Sym
 
 compound_statement : LCURL {table->Enter_Scope();
 		//	cout<<line_count<<" "<<para_list.size()<<endl;
-			for(int i=0;i<para_list.size();i++)
+			for(int i=0;i<para_list.size();i++){
 				table->Insert(para_list[i]->get_name(),"ID",para_list[i]->get_dectype());
 				//table->printcurrent();
+				var_dec.push_back(para_list[i]->get_name()+IntToString(table->getCurrentId()));}
 				para_list.clear();
 			} statements RCURL {$<symbolinfo>$=new SymbolInfo(); fprintf(parsertext,"Line at %d : compound_statement->LCURL statements RCURL\n\n",line_count);
 											fprintf(parsertext,"{%s}\n\n",$<symbolinfo>3->get_name().c_str());
 											$<symbolinfo>$->set_name("{\n"+$<symbolinfo>3->get_name()+"\n}");
+											$<symbolinfo>$->set_ASMcode($<symbolinfo>3->get_ASMcode());
 											table->printall();
 											table->Exit_Scope();
 											}
  		    | LCURL RCURL {table->Enter_Scope();
-				 for(int i=0;i<para_list.size();i++)
+				 for(int i=0;i<para_list.size();i++){
 				table->Insert(para_list[i]->get_name(),"ID",para_list[i]->get_dectype());
 				//table->printcurrent();
+				var_dec.push_back(para_list[i]->get_name()+IntToString(table->getCurrentId()));
+				}
 				para_list.clear();
 				$<symbolinfo>$=new SymbolInfo(); fprintf(parsertext,"Line at %d : compound_statement->LCURL RCURL\n\n",line_count);
 			 				fprintf(parsertext,"{}\n\n");
@@ -402,7 +434,7 @@ var_declaration : type_specifier declaration_list SEMICOLON {$<symbolinfo>$=new 
 															fprintf(parsertext,"%s %s;\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>2->get_name().c_str());
 															if($<symbolinfo>1->get_name()=="void "){
 																error_count++;
-																fprintf(error,"Error at Line No.%d: TYpe specifier can not be void \n\n",line_count);
+																fprintf(error,"Error at Line No.%d: Type specifier can not be void \n\n",line_count);
 																	
 															}
 															else{
@@ -412,12 +444,19 @@ var_declaration : type_specifier declaration_list SEMICOLON {$<symbolinfo>$=new 
 																	fprintf(error,"Error at Line No.%d:  Multiple Declaration of %s \n\n",line_count,dec_list[i]->get_name().c_str());
 																	continue;
 																}
-																if(dec_list[i]->get_type().size()==3){
+																if(dec_list[i]->get_type().size()>2){
+																	arr_dec.push_back(make_pair(dec_list[i]->get_name()+IntToString(table->getCurrentId()),dec_list[i]->get_type().substr(2,dec_list[i]->get_type().size () - 1)));
+
 																	dec_list[i]->set_type(dec_list[i]->get_type().substr(0,dec_list[i]->get_type().size () - 1));
+
 																	table->Insert(dec_list[i]->get_name(),dec_list[i]->get_type(),$<symbolinfo>1->get_name()+"array");
-																}else
+
+																}else{
 																table->Insert(dec_list[i]->get_name(),dec_list[i]->get_type(),$<symbolinfo>1->get_name());
-															}}
+																var_dec.push_back(dec_list[i]->get_name()+IntToString(table->getCurrentId()));
+																}
+															}
+															}
 															dec_list.clear();
 															$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+" "+$<symbolinfo>2->get_name()+";");
 															}
@@ -441,7 +480,7 @@ declaration_list : declaration_list COMMA ID {$<symbolinfo>$=new SymbolInfo(); f
 											}
  		  | declaration_list COMMA ID LTHIRD CONST_INT RTHIRD {$<symbolinfo>$=new SymbolInfo(); fprintf(parsertext,"Line at %d : declaration_list->declaration_list COMMA ID LTHIRD CONST_INT RTHIRD\n\n",line_count);
 		   														fprintf(parsertext,"%s,%s[%s]\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>3->get_name().c_str(),$<symbolinfo>5->get_name().c_str());
-																dec_list.push_back(new SymbolInfo($<symbolinfo>3->get_name(),"IDa"));
+																dec_list.push_back(new SymbolInfo($<symbolinfo>3->get_name(),"ID"+$<symbolinfo>5->get_name()));
 																$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+","+$<symbolinfo>3->get_name()+"["+$<symbolinfo>5->get_name()+"]");
 																   }
  		  | ID {$<symbolinfo>$=new SymbolInfo(); fprintf(parsertext,"Line at %d : declaration_list->ID\n\n",line_count);
@@ -452,7 +491,7 @@ declaration_list : declaration_list COMMA ID {$<symbolinfo>$=new SymbolInfo(); f
 		   }
  		  | ID LTHIRD CONST_INT RTHIRD {$<symbolinfo>$=new SymbolInfo(); fprintf(parsertext,"Line at %d : declaration_list->ID LTHIRD CONST_INT RTHIRD\n\n",line_count);
 		   fprintf(parsertext,"%s[%s]\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>3->get_name().c_str());
-		   	dec_list.push_back(new SymbolInfo($<symbolinfo>1->get_name(),"IDa"));
+		   	dec_list.push_back(new SymbolInfo($<symbolinfo>1->get_name(),"ID"+$<symbolinfo>3->get_name()));
 		   	$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+"["+$<symbolinfo>3->get_name()+"]");
 
 		   }
@@ -461,10 +500,12 @@ declaration_list : declaration_list COMMA ID {$<symbolinfo>$=new SymbolInfo(); f
 statements : statement {$<symbolinfo>$=new SymbolInfo(); fprintf(parsertext,"Line at %d : statements->statement\n\n",line_count);
 						fprintf(parsertext,"%s\n\n",$<symbolinfo>1->get_name().c_str()); 
 						$<symbolinfo>$->set_name($<symbolinfo>1->get_name());
+						$<symbolinfo>$->set_ASMcode($<symbolinfo>1->get_ASMcode());
 						}
 	   | statements statement {$<symbolinfo>$=new SymbolInfo(); fprintf(parsertext,"Line at %d : statements->statements statement\n\n",line_count);
 	   						fprintf(parsertext,"%s %s\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>2->get_name().c_str()); 
-							   $<symbolinfo>$->set_name($<symbolinfo>1->get_name()+"\n"+$<symbolinfo>2->get_name()); 
+							$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+"\n"+$<symbolinfo>2->get_name()); 
+							$<symbolinfo>$->set_ASMcode($<symbolinfo>1->get_ASMcode()+$<symbolinfo>2->get_ASMcode());
 							   }
 	   ;
 
@@ -527,7 +568,12 @@ statement : var_declaration { $<symbolinfo>$=new SymbolInfo();fprintf(parsertext
 												  }
 	  | PRINTLN LPAREN ID RPAREN SEMICOLON {$<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Line at %d : statement->PRINTLN LPAREN ID RPAREN SEMICOLON\n\n",line_count);
 	  										fprintf(parsertext,"\n (%s);\n\n",$<symbolinfo>3->get_name().c_str());
-											  $<symbolinfo>$->set_name("\n("+$<symbolinfo>3->get_name()+")"); 
+											string codes="";
+											codes+="\tMOV ax,"+$<symbolinfo>3->get_name();
+											codes+="\n\tCALL OUTDEC\n";
+											  $<symbolinfo>$->set_name("\n("+$<symbolinfo>3->get_name()+")");
+											 
+											  $<symbolinfo>$->set_ASMcode(codes); 
 											  }
 	  | RETURN expression SEMICOLON {$<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Line at %d : statement->RETURN expression SEMICOLON\n\n",line_count);
 	  								fprintf(parsertext,"return %s;\n\n",$<symbolinfo>2->get_name().c_str());
