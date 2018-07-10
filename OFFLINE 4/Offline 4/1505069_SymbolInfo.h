@@ -12,6 +12,7 @@ class SymbolInfo
         {
         string name,type,dectype;
         string asmcode;
+        string idvalue;
         SymbolInfo * next;
         Function* isFunction;
         public:
@@ -28,6 +29,7 @@ class SymbolInfo
             this->type=sym_type;
             this->dectype=sym_dec;
             this->asmcode="";
+            this->idvalue="";
             this->next=0;
         }
 
@@ -46,6 +48,9 @@ class SymbolInfo
         }
         string get_ASMcode(){
             return this->asmcode;
+        }
+        string get_idvalue(){
+            return this->idvalue;
         }
 
         SymbolInfo *get_next()
@@ -73,6 +78,10 @@ class SymbolInfo
         string set_ASMcode(string s){
             this->asmcode=s;
             return this->asmcode;
+        }
+        string set_idvalue(string s){
+            this->idvalue=s;
+            return this->idvalue;
         }
 
         SymbolInfo *set_next(SymbolInfo * new_next)

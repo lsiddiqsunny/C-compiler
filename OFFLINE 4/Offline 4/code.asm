@@ -44,6 +44,9 @@ g ENDP
 main PROC
     MOV AX,@DATA
 	MOV DS,AX 
+	MOV ax,j5
+	CALL OUTDEC
+	INC i5
     MOV AH,4CH
 	INT 21H
 main ENDP

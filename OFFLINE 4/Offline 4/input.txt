@@ -20,6 +20,8 @@ int main(){
 	j=2%3.7;  //not integer on modulus
 	j=2%f();  //not integer on modulus
 	func(a);	//type mismatch
+	println(j);
+	i++;
 	j=g();
 	j=2%(3.5<4); // type conversion of RELOP
 	b=8;		//undeclared variable

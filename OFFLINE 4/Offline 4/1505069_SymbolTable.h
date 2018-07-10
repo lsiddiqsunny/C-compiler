@@ -132,6 +132,24 @@ public:
         return 0;
 
     }
+    int lookupscopeid(string name)
+    {
+        ScopeTable *temp=current;
+        while(temp)
+        {
+
+            temp->set_pcon(0);
+            if(temp->lookup(name))
+            {
+                temp->set_pcon(1);
+                return temp->get_id();
+            }
+            temp=temp->get_parent();
+        }
+        //fprintf(logout," Not Found\n");
+        return -1;
+
+    }
 
     void printcurrent()
     {

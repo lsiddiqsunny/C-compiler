@@ -517,6 +517,8 @@ statement : var_declaration { $<symbolinfo>$=new SymbolInfo();fprintf(parsertext
 	  | expression_statement {$<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Line at %d : statement -> expression_statement\n\n",line_count);
 	  						fprintf(parsertext,"%s\n\n",$<symbolinfo>1->get_name().c_str()); 
 							$<symbolinfo>$->set_name($<symbolinfo>1->get_name()); 
+							$<symbolinfo>$->set_ASMcode($<symbolinfo>1->get_ASMcode());
+
 
 							  }
 	  | compound_statement {$<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Line at %d : statement->compound_statement\n\n",line_count);
@@ -569,11 +571,18 @@ statement : var_declaration { $<symbolinfo>$=new SymbolInfo();fprintf(parsertext
 	  | PRINTLN LPAREN ID RPAREN SEMICOLON {$<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Line at %d : statement->PRINTLN LPAREN ID RPAREN SEMICOLON\n\n",line_count);
 	  										fprintf(parsertext,"\n (%s);\n\n",$<symbolinfo>3->get_name().c_str());
 											string codes="";
-											codes+="\tMOV ax,"+$<symbolinfo>3->get_name();
-											codes+="\n\tCALL OUTDEC\n";
-											  $<symbolinfo>$->set_name("\n("+$<symbolinfo>3->get_name()+")");
+											if(table->lookupscopeid($<symbolinfo>3->get_name())==-1){
+												error_count++;
+												fprintf(error,"Error at Line No.%d:  Undeclared Variable: %s \n\n",line_count,$<symbolinfo>3->get_name());
+											}
+											else{
+											
+												codes+="\tMOV ax,"+$<symbolinfo>3->get_name()+IntToString(table->lookupscopeid($<symbolinfo>3->get_name()));
+												codes+="\n\tCALL OUTDEC\n";
+											}
+											$<symbolinfo>$->set_name("\n("+$<symbolinfo>3->get_name()+")");
 											 
-											  $<symbolinfo>$->set_ASMcode(codes); 
+											$<symbolinfo>$->set_ASMcode(codes); 
 											  }
 	  | RETURN expression SEMICOLON {$<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Line at %d : statement->RETURN expression SEMICOLON\n\n",line_count);
 	  								fprintf(parsertext,"return %s;\n\n",$<symbolinfo>2->get_name().c_str());
@@ -593,6 +602,8 @@ expression_statement 	: SEMICOLON	{$<symbolinfo>$=new SymbolInfo();fprintf(parse
 			| expression SEMICOLON {$<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Line at %d : expression_statement->expression SEMICOLON\n\n",line_count);
 									fprintf(parsertext,"%s;\n\n",$<symbolinfo>1->get_name().c_str());
 									$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+";"); 
+									$<symbolinfo>$->set_ASMcode($<symbolinfo>1->get_ASMcode());
+
 									}
 			;
 
@@ -605,14 +616,16 @@ variable : ID 		{$<symbolinfo>$=new SymbolInfo();
 					
 					}
 					else if(table->lookup($<symbolinfo>1->get_name())->get_dectype()=="int array" || table->lookup($<symbolinfo>1->get_name())->get_dectype()=="float array"){
-						 error_count++;
+						error_count++;
 						fprintf(error,"Error at Line No.%d:  Not an array: %s \n\n",line_count,$<symbolinfo>1->get_name().c_str());
 					}
 					if(table->lookup($<symbolinfo>1->get_name())!=0){
 						//cout<<line_count<<" "<<$<symbolinfo>1->get_name()<<" "<<table->lookup($<symbolinfo>1->get_name())->get_dectype()<<endl;
 						$<symbolinfo>$->set_dectype(table->lookup($<symbolinfo>1->get_name())->get_dectype()); 
+						$<symbolinfo>$->set_idvalue($<symbolinfo>1->get_name()+IntToString(table->lookupscopeid($<symbolinfo>1->get_name())));
 					}
-						$<symbolinfo>$->set_name($<symbolinfo>1->get_name()); 
+					$<symbolinfo>$->set_name($<symbolinfo>1->get_name()); 
+					$<symbolinfo>$->set_type("notarray");
 						
 						
 					}
@@ -624,8 +637,10 @@ variable : ID 		{$<symbolinfo>$=new SymbolInfo();
 									}
 									//cout<<line_count<<" "<<$<symbolinfo>3->get_dectype()<<endl;
 									if($<symbolinfo>3->get_dectype()=="float "||$<symbolinfo>3->get_dectype()=="void "){
-										 error_count++;
+										error_count++;
 										fprintf(error,"Error at Line No.%d:  Non-integer Array Index  \n\n",line_count);
+										$<symbolinfo>$->set_idvalue($<symbolinfo>1->get_name()+IntToString(table->lookupscopeid($<symbolinfo>1->get_name())));
+
 									}
 									if(table->lookup($<symbolinfo>1->get_name())!=0){
 										//cout<<line_count<<" "<<table->lookup($<symbolinfo>1->get_name())->get_dectype()<<endl;
@@ -644,16 +659,20 @@ variable : ID 		{$<symbolinfo>$=new SymbolInfo();
 											$<symbolinfo>1->set_dectype("float ");
 										}
 										$<symbolinfo>$->set_dectype($<symbolinfo>1->get_dectype()); 
+										$<symbolinfo>$->set_idvalue($<symbolinfo>1->get_name()+IntToString(table->lookupscopeid($<symbolinfo>1->get_name())));
+
 										
 									}
 									$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+"["+$<symbolinfo>3->get_name()+"]");  
-									
+									$<symbolinfo>$->set_type("array");
 									}
 	 ;
 expression : logic_expression	{$<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Line at %d : expression->logic_expression\n\n",line_count);
  								fprintf(parsertext,"%s\n\n",$<symbolinfo>1->get_name().c_str());
 								 	$<symbolinfo>$->set_name($<symbolinfo>1->get_name()); 
 									$<symbolinfo>$->set_dectype($<symbolinfo>1->get_dectype()); 
+									$<symbolinfo>$->set_ASMcode($<symbolinfo>1->get_ASMcode());
+				
 								 }
 	   | variable ASSIGNOP logic_expression {$<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Line at %d : expression->variable ASSIGNOP logic_expression\n\n",line_count);
 	   										fprintf(parsertext,"%s=%s\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>3->get_name().c_str());
@@ -677,6 +696,7 @@ logic_expression : rel_expression 	{$<symbolinfo>$=new SymbolInfo();fprintf(pars
 										fprintf(parsertext,"%s\n\n",$<symbolinfo>1->get_name().c_str());
 										$<symbolinfo>$->set_name($<symbolinfo>1->get_name()); 
 										$<symbolinfo>$->set_dectype($<symbolinfo>1->get_dectype()); 
+										$<symbolinfo>$->set_ASMcode($<symbolinfo>1->get_ASMcode());
 
 										}
 		 | rel_expression LOGICOP rel_expression {$<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Line at %d : logic_expression->rel_expression LOGICOP rel_expression\n\n",line_count);
@@ -695,8 +715,9 @@ logic_expression : rel_expression 	{$<symbolinfo>$=new SymbolInfo();fprintf(pars
 rel_expression	: simple_expression {$<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Line at %d : rel_expression->simple_expression\n\n",line_count);
 									fprintf(parsertext,"%s\n\n",$<symbolinfo>1->get_name().c_str());
 									$<symbolinfo>$->set_name($<symbolinfo>1->get_name()); 
-									 $<symbolinfo>$->set_dectype($<symbolinfo>1->get_dectype()); 
-									 
+									$<symbolinfo>$->set_dectype($<symbolinfo>1->get_dectype()); 
+									$<symbolinfo>$->set_ASMcode($<symbolinfo>1->get_ASMcode());
+ 
 									}
 		| simple_expression RELOP simple_expression	 {$<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Line at %d : rel_expression->simple_expression RELOP simple_expression\n\n",line_count);
 													fprintf(parsertext,"%s%s%s\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>2->get_name().c_str(),$<symbolinfo>3->get_name().c_str());
@@ -716,7 +737,8 @@ simple_expression : term {$<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Li
 							fprintf(parsertext,"%s\n\n",$<symbolinfo>1->get_name().c_str());
 							$<symbolinfo>$->set_dectype($<symbolinfo>1->get_dectype());
 							$<symbolinfo>$->set_name($<symbolinfo>1->get_name());  
-							 
+							$<symbolinfo>$->set_ASMcode($<symbolinfo>1->get_ASMcode());
+
 
 							}
 		  | simple_expression ADDOP term {$<symbolinfo>$=new SymbolInfo(); 
@@ -739,7 +761,8 @@ term :	unary_expression  {$<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Li
 							$<symbolinfo>$->set_dectype($<symbolinfo>1->get_dectype()); 
 							
 							$<symbolinfo>$->set_name($<symbolinfo>1->get_name()); 
-							
+							$<symbolinfo>$->set_ASMcode($<symbolinfo>1->get_ASMcode());
+
 							}
      |  term MULOP unary_expression {$<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Line at %d : term->term MULOP unary_expression\n\n",line_count);
 	 								fprintf(parsertext,"%s%s%s\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>2->get_name().c_str(),$<symbolinfo>3->get_name().c_str());
@@ -809,6 +832,7 @@ unary_expression : ADDOP unary_expression  {$<symbolinfo>$=new SymbolInfo(); fpr
 				// cout<<$<symbolinfo>1->get_dectype()<<endl;
 				$<symbolinfo>$->set_dectype($<symbolinfo>1->get_dectype()); 
 				$<symbolinfo>$->set_name($<symbolinfo>1->get_name()); 
+				$<symbolinfo>$->set_ASMcode($<symbolinfo>1->get_ASMcode());
 				
 		 }
 		 ;
@@ -879,18 +903,33 @@ factor	: variable { $<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Line at 
 					fprintf(parsertext,"%s\n\n",$<symbolinfo>1->get_name().c_str()); 
 					$<symbolinfo>$->set_dectype("float "); 	
 					$<symbolinfo>$->set_name($<symbolinfo>1->get_name()); 
-				
+					
 					}
 	| variable INCOP {$<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Line at %d : factor->variable INCOP\n\n",line_count);
 					fprintf(parsertext,"%s++\n\n",$<symbolinfo>1->get_name().c_str()); 
 					$<symbolinfo>$->set_dectype($<symbolinfo>1->get_dectype());
-					$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+"++"); 
+					//cout<<$<symbolinfo>1->get_idvalue()<<endl;
+					string codes="";
+					if($<symbolinfo>1->get_type()=="notarray"){
+					codes+="\tINC "+$<symbolinfo>1->get_idvalue()+"\n";}
+					else{
+
+					}
+					$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+"++");
+					$<symbolinfo>$->set_ASMcode(codes); 
 					 
 					 }
 	| variable DECOP {$<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Line at %d : factor->variable DECOP\n\n",line_count);
 					fprintf(parsertext,"%s--\n\n",$<symbolinfo>1->get_name().c_str());
-					  $<symbolinfo>$->set_dectype($<symbolinfo>1->get_dectype()); 
-					  $<symbolinfo>$->set_name($<symbolinfo>1->get_name()+"--"); 
+					$<symbolinfo>$->set_dectype($<symbolinfo>1->get_dectype()); 
+					string codes="";
+					if($<symbolinfo>1->get_type()=="notarray"){
+					codes+="\tDEC "+$<symbolinfo>1->get_idvalue()+"\n";}
+					else{
+						
+					}
+					$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+"--");
+					$<symbolinfo>$->set_ASMcode(codes); 
 					 
 					 }
 	;

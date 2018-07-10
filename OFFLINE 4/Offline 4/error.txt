@@ -12,21 +12,21 @@ Error at Line No.22:  Not an array: a
 
 Error at Line No.22: Type Mismatch 
 
-Error at Line No.23:  Type Mismatch 
+Error at Line No.25:  Type Mismatch 
 
-Error at Line No.25:  Undeclared Variable: b 
+Error at Line No.27:  Undeclared Variable: b 
 
-Error at Line No.26:  Not an array: a 
+Error at Line No.28:  Not an array: a 
 
-Error at Line No.26: Type Mismatch 
+Error at Line No.28: Type Mismatch 
 
-Error at Line No.27:  Type Mismatch 
+Error at Line No.29:  Type Mismatch 
 
-Error at Line No.28:  Invalid number of arguments 
+Error at Line No.30:  Invalid number of arguments 
 
-Error at Line No.29:  Not A Function 
+Error at Line No.31:  Not A Function 
 
-Error at Line No.33: Type Mismatch 
+Error at Line No.35: Type Mismatch 
 
 Total Errors : 15 
 
