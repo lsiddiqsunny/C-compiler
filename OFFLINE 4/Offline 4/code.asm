@@ -2,10 +2,18 @@
 .STACK 100H
 .DATA 
 a2 dw ?
+t0 dw ?
 c5 dw ?
 i5 dw ?
 j5 dw ?
+t1 dw ?
+t2 dw ?
+t3 dw ?
+t4 dw ?
+t5 dw ?
+t6 dw ?
 a6 dw ?
+t7 dw ?
 a5 dw 2 dup(?)
 .CODE
 func PROC
@@ -44,9 +52,27 @@ g ENDP
 main PROC
     MOV AX,@DATA
 	MOV DS,AX 
-	MOV ax,j5
+	MOV t1,0
+	MOV BX,t1
+	ADD BX,BX
+	MOV t2,1
+	MOV AX,t2
+	MOV a5[BX],AX
+	MOV t3,0
+	MOV BX,t3
+	ADD BX,BX
+	MOV AX,a5[BX]
+	MOV t4,AX
+	MOV AX,t4
+	MOV i5,AX
+	MOV AX,i5
 	CALL OUTDEC
 	INC i5
+	MOV AX,i5
+	CALL OUTDEC
+	MOV AX,c5
+	NOT AX
+	MOV t5,AX
     MOV AH,4CH
 	INT 21H
 main ENDP
@@ -94,10 +120,17 @@ OUTDEC PROC
     INT 21H 
     LOOP PRINT_LOOP 
     
+    MOV AH,2
+    MOV DL,10
+    INT 21H
+    
+    MOV DL,13
+    INT 21H
+	
     POP DX 
     POP CX 
     POP BX 
     POP AX 
-    RET 
+    ret 
 OUTDEC ENDP 
 END MAIN

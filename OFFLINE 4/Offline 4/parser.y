@@ -148,12 +148,19 @@ codes+=".MODEL SMALL\n\
     ADD DL,30H \n\ 
     INT 21H \n\ 
     LOOP PRINT_LOOP \n\ 
-    \n\ 
+    \n\    
+    MOV AH,2\n\
+    MOV DL,10\n\
+    INT 21H\n\
+    \n\
+    MOV DL,13\n\
+    INT 21H\n\
+	\n\
     POP DX \n\ 
     POP CX \n\ 
     POP BX \n\ 
     POP AX \n\ 
-    RET \n\ 
+    ret \n\ 
 OUTDEC ENDP \n\
 END MAIN\n");
      FILE* asmcode= fopen("code.asm","w");
@@ -577,7 +584,7 @@ statement : var_declaration { $<symbolinfo>$=new SymbolInfo();fprintf(parsertext
 											}
 											else{
 											
-												codes+="\tMOV ax,"+$<symbolinfo>3->get_name()+IntToString(table->lookupscopeid($<symbolinfo>3->get_name()));
+												codes+="\tMOV AX,"+$<symbolinfo>3->get_name()+IntToString(table->lookupscopeid($<symbolinfo>3->get_name()));
 												codes+="\n\tCALL OUTDEC\n";
 											}
 											$<symbolinfo>$->set_name("\n("+$<symbolinfo>3->get_name()+")");
@@ -636,13 +643,13 @@ variable : ID 		{$<symbolinfo>$=new SymbolInfo();
 										fprintf(error,"Error at Line No.%d:  Undeclared Variable: %s \n\n",line_count,$<symbolinfo>1->get_name().c_str());
 									}
 									//cout<<line_count<<" "<<$<symbolinfo>3->get_dectype()<<endl;
-									if($<symbolinfo>3->get_dectype()=="float "||$<symbolinfo>3->get_dectype()=="void "){
+									else if($<symbolinfo>3->get_dectype()=="float "||$<symbolinfo>3->get_dectype()=="void "){
 										error_count++;
 										fprintf(error,"Error at Line No.%d:  Non-integer Array Index  \n\n",line_count);
 										$<symbolinfo>$->set_idvalue($<symbolinfo>1->get_name()+IntToString(table->lookupscopeid($<symbolinfo>1->get_name())));
 
 									}
-									if(table->lookup($<symbolinfo>1->get_name())!=0){
+									else if(table->lookup($<symbolinfo>1->get_name())!=0){
 										//cout<<line_count<<" "<<table->lookup($<symbolinfo>1->get_name())->get_dectype()<<endl;
 										if(table->lookup($<symbolinfo>1->get_name())->get_dectype()!="int array" && table->lookup($<symbolinfo>1->get_name())->get_dectype()!="float array")
 										{
@@ -650,6 +657,7 @@ variable : ID 		{$<symbolinfo>$=new SymbolInfo();
 											error_count++;
 											fprintf(error,"Error at Line No.%d:  Type Mismatch \n\n",line_count);	
 										}
+										else{
 										
 										if(table->lookup($<symbolinfo>1->get_name())->get_dectype()=="int array"){
 
@@ -658,11 +666,17 @@ variable : ID 		{$<symbolinfo>$=new SymbolInfo();
 										if(table->lookup($<symbolinfo>1->get_name())->get_dectype()=="float array"){
 											$<symbolinfo>1->set_dectype("float ");
 										}
-										$<symbolinfo>$->set_dectype($<symbolinfo>1->get_dectype()); 
+										$<symbolinfo>$->set_dectype($<symbolinfo>1->get_dectype());
+										string codes="";
+										codes+=$<symbolinfo>3->get_ASMcode();
+										codes+="\tMOV BX,"+$<symbolinfo>3->get_idvalue()+"\n";
+										codes+="\tADD BX,BX\n";
 										$<symbolinfo>$->set_idvalue($<symbolinfo>1->get_name()+IntToString(table->lookupscopeid($<symbolinfo>1->get_name())));
+										//cout<<line_count<<" "<<$<symbolinfo>$->get_idvalue()<<endl;
+										$<symbolinfo>$->set_ASMcode(codes);
 
 										
-									}
+									}}
 									$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+"["+$<symbolinfo>3->get_name()+"]");  
 									$<symbolinfo>$->set_type("array");
 									}
@@ -672,6 +686,7 @@ expression : logic_expression	{$<symbolinfo>$=new SymbolInfo();fprintf(parsertex
 								 	$<symbolinfo>$->set_name($<symbolinfo>1->get_name()); 
 									$<symbolinfo>$->set_dectype($<symbolinfo>1->get_dectype()); 
 									$<symbolinfo>$->set_ASMcode($<symbolinfo>1->get_ASMcode());
+									$<symbolinfo>$->set_idvalue($<symbolinfo>1->get_idvalue());
 				
 								 }
 	   | variable ASSIGNOP logic_expression {$<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Line at %d : expression->variable ASSIGNOP logic_expression\n\n",line_count);
@@ -680,11 +695,25 @@ expression : logic_expression	{$<symbolinfo>$=new SymbolInfo();fprintf(parsertex
 												error_count++;
 												fprintf(error,"Error at Line No.%d:  Type Mismatch \n\n",line_count);
 												$<symbolinfo>$->set_dectype("int "); 
-											}else if(table->lookup($<symbolinfo>1->get_name())!=0) {
+											}else {
 												//cout<<line_count<<" "<<table->lookup($<symbolinfo>1->get_name())->get_dectype()<<""<<$<symbolinfo>3->get_dectype()<<endl;
-												if(table->lookup($<symbolinfo>1->get_name())->get_dectype()!=$<symbolinfo>3->get_dectype()){
+												if($<symbolinfo>1->get_dectype()!=$<symbolinfo>3->get_dectype()){
 													 error_count++;
 													fprintf(error,"Error at Line No.%d: Type Mismatch \n\n",line_count);
+												}else{
+													string codes=$<symbolinfo>1->get_ASMcode();
+													codes+=$<symbolinfo>3->get_ASMcode();
+													codes+="\tMOV AX,"+$<symbolinfo>3->get_idvalue()+"\n";
+													if($<symbolinfo>1->get_type()=="notarray"){
+													
+													
+													codes+="\tMOV "+$<symbolinfo>1->get_idvalue()+",AX\n";}
+													else{
+
+														codes+="\tMOV "+$<symbolinfo>1->get_idvalue()+"[BX],AX\n";
+													}
+													$<symbolinfo>$->set_ASMcode(codes);
+
 												}
 											}
 											$<symbolinfo>$->set_dectype($<symbolinfo>1->get_dectype()); 
@@ -697,6 +726,7 @@ logic_expression : rel_expression 	{$<symbolinfo>$=new SymbolInfo();fprintf(pars
 										$<symbolinfo>$->set_name($<symbolinfo>1->get_name()); 
 										$<symbolinfo>$->set_dectype($<symbolinfo>1->get_dectype()); 
 										$<symbolinfo>$->set_ASMcode($<symbolinfo>1->get_ASMcode());
+										$<symbolinfo>$->set_idvalue($<symbolinfo>1->get_idvalue());
 
 										}
 		 | rel_expression LOGICOP rel_expression {$<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Line at %d : logic_expression->rel_expression LOGICOP rel_expression\n\n",line_count);
@@ -717,6 +747,7 @@ rel_expression	: simple_expression {$<symbolinfo>$=new SymbolInfo();fprintf(pars
 									$<symbolinfo>$->set_name($<symbolinfo>1->get_name()); 
 									$<symbolinfo>$->set_dectype($<symbolinfo>1->get_dectype()); 
 									$<symbolinfo>$->set_ASMcode($<symbolinfo>1->get_ASMcode());
+									$<symbolinfo>$->set_idvalue($<symbolinfo>1->get_idvalue());
  
 									}
 		| simple_expression RELOP simple_expression	 {$<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Line at %d : rel_expression->simple_expression RELOP simple_expression\n\n",line_count);
@@ -738,6 +769,7 @@ simple_expression : term {$<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Li
 							$<symbolinfo>$->set_dectype($<symbolinfo>1->get_dectype());
 							$<symbolinfo>$->set_name($<symbolinfo>1->get_name());  
 							$<symbolinfo>$->set_ASMcode($<symbolinfo>1->get_ASMcode());
+							$<symbolinfo>$->set_idvalue($<symbolinfo>1->get_idvalue());
 
 
 							}
@@ -762,6 +794,7 @@ term :	unary_expression  {$<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Li
 							
 							$<symbolinfo>$->set_name($<symbolinfo>1->get_name()); 
 							$<symbolinfo>$->set_ASMcode($<symbolinfo>1->get_ASMcode());
+							$<symbolinfo>$->set_idvalue($<symbolinfo>1->get_idvalue());
 
 							}
      |  term MULOP unary_expression {$<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Line at %d : term->term MULOP unary_expression\n\n",line_count);
@@ -822,8 +855,20 @@ unary_expression : ADDOP unary_expression  {$<symbolinfo>$=new SymbolInfo(); fpr
 					error_count++;
 					fprintf(error,"Error at Line No.%d:  Type Mismatch \n\n",line_count);
 					$<symbolinfo>$->set_dectype("int "); 
-				}else 
-				$<symbolinfo>$->set_dectype($<symbolinfo>2->get_dectype());  
+				}else {
+					$<symbolinfo>$->set_dectype($<symbolinfo>2->get_dectype());  
+					string codes=$<symbolinfo>1->get_ASMcode();
+					codes+="\tMOV AX,"+$<symbolinfo>2->get_idvalue()+"\n";
+					codes+="\tNOT AX\n";
+					char *temp=newTemp();
+					codes+="\tMOV "+string(temp)+",AX\n";
+
+					$<symbolinfo>$->set_ASMcode(codes);
+					$<symbolinfo>$->set_idvalue(temp);
+					var_dec.push_back(temp);
+				
+				}
+				
 		 		$<symbolinfo>$->set_name("!"+$<symbolinfo>2->get_name()); 
 		 
 		 }
@@ -833,6 +878,7 @@ unary_expression : ADDOP unary_expression  {$<symbolinfo>$=new SymbolInfo(); fpr
 				$<symbolinfo>$->set_dectype($<symbolinfo>1->get_dectype()); 
 				$<symbolinfo>$->set_name($<symbolinfo>1->get_name()); 
 				$<symbolinfo>$->set_ASMcode($<symbolinfo>1->get_ASMcode());
+				$<symbolinfo>$->set_idvalue($<symbolinfo>1->get_idvalue());
 				
 		 }
 		 ;
@@ -841,6 +887,22 @@ factor	: variable { $<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Line at 
 					fprintf(parsertext,"%s\n\n",$<symbolinfo>1->get_name().c_str());
 					$<symbolinfo>$->set_dectype($<symbolinfo>1->get_dectype()); 
 					$<symbolinfo>$->set_name($<symbolinfo>1->get_name()); 
+
+					string codes=$<symbolinfo>1->get_ASMcode();
+					if($<symbolinfo>1->get_type()=="array"){
+						char *temp=newTemp();
+						codes+="\tMOV AX,"+$<symbolinfo>1->get_idvalue()+"[BX]\n";
+						codes+="\tMOV "+string(temp)+",AX\n";
+						var_dec.push_back(temp);
+						$<symbolinfo>$->set_idvalue(temp);
+
+					}
+					else{
+						$<symbolinfo>$->set_idvalue($<symbolinfo>1->get_idvalue());
+
+					}
+
+					$<symbolinfo>$->set_ASMcode(codes);
 					
 					}
 	| ID LPAREN argument_list RPAREN {$<symbolinfo>$=new SymbolInfo(); fprintf(parsertext,"Line at %d : factor->ID LPAREN argument_list RPAREN\n\n",line_count);
@@ -897,24 +959,29 @@ factor	: variable { $<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Line at 
 				fprintf(parsertext,"%s\n\n",$<symbolinfo>1->get_name().c_str());
 				$<symbolinfo>$->set_dectype("int "); 	
 				$<symbolinfo>$->set_name($<symbolinfo>1->get_name()); 
-			
+				char *temp=newTemp();
+				string codes="\tMOV "+string(temp)+","+$<symbolinfo>1->get_name()+"\n";
+				$<symbolinfo>$->set_ASMcode(codes);
+				$<symbolinfo>$->set_idvalue(string(temp));
+				var_dec.push_back(temp);
 				}
 	| CONST_FLOAT {$<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Line at %d : factor->CONST_FLOAT\n\n",line_count);
 					fprintf(parsertext,"%s\n\n",$<symbolinfo>1->get_name().c_str()); 
 					$<symbolinfo>$->set_dectype("float "); 	
 					$<symbolinfo>$->set_name($<symbolinfo>1->get_name()); 
-					
+					char *temp=newTemp();
+					string codes="\tMOV "+string(temp)+","+$<symbolinfo>1->get_name()+"\n";
+					$<symbolinfo>$->set_ASMcode(codes);
+					$<symbolinfo>$->set_idvalue(string(temp));
+					var_dec.push_back(temp);
 					}
 	| variable INCOP {$<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Line at %d : factor->variable INCOP\n\n",line_count);
 					fprintf(parsertext,"%s++\n\n",$<symbolinfo>1->get_name().c_str()); 
 					$<symbolinfo>$->set_dectype($<symbolinfo>1->get_dectype());
 					//cout<<$<symbolinfo>1->get_idvalue()<<endl;
 					string codes="";
-					if($<symbolinfo>1->get_type()=="notarray"){
-					codes+="\tINC "+$<symbolinfo>1->get_idvalue()+"\n";}
-					else{
-
-					}
+					codes+="\tINC "+$<symbolinfo>1->get_idvalue()+"\n";
+				
 					$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+"++");
 					$<symbolinfo>$->set_ASMcode(codes); 
 					 
@@ -923,11 +990,9 @@ factor	: variable { $<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Line at 
 					fprintf(parsertext,"%s--\n\n",$<symbolinfo>1->get_name().c_str());
 					$<symbolinfo>$->set_dectype($<symbolinfo>1->get_dectype()); 
 					string codes="";
-					if($<symbolinfo>1->get_type()=="notarray"){
-					codes+="\tDEC "+$<symbolinfo>1->get_idvalue()+"\n";}
-					else{
-						
-					}
+					
+					codes+="\tDEC "+$<symbolinfo>1->get_idvalue()+"\n";
+					
 					$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+"--");
 					$<symbolinfo>$->set_ASMcode(codes); 
 					 
