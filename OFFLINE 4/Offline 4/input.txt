@@ -16,11 +16,13 @@ int main(){
 	int a[2],c,i,j ; 
 
 	a[0]=1;
+	a[1]=1;
 	i=a[0];
-	println(i);
+	j=a[1]%5;
 	i++;
-	println(i);
-	!c;
+	j=i*j;
+	println(j);
+	1<2;
 	return 0;	
 }
 
