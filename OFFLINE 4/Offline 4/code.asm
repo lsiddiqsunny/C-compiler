@@ -15,6 +15,8 @@ t6 dw ?
 t7 dw ?
 t8 dw ?
 t9 dw ?
+t10 dw ?
+t11 dw ?
 t12 dw ?
 t13 dw ?
 t14 dw ?

@@ -922,6 +922,7 @@ term :	unary_expression  {$<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Li
 										 codes+="\tMOV "+string(temp)+", DX\n";
 										 $<symbolinfo>$->set_ASMcode(codes);
 										 $<symbolinfo>$->set_idvalue(temp);
+										 var_dec.push_back(temp);
 										}
 									else if($<symbolinfo>2->get_name()=="/"){
  									if($<symbolinfo>1->get_dectype()=="void "||$<symbolinfo>3->get_dectype()=="void "){
@@ -941,6 +942,7 @@ term :	unary_expression  {$<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Li
 										 codes+="\tMOV "+string(temp)+", AX\n";
 										 $<symbolinfo>$->set_ASMcode(codes);
 										 $<symbolinfo>$->set_idvalue(temp);
+										 var_dec.push_back(temp);
 
 											 
 										}
@@ -963,6 +965,7 @@ term :	unary_expression  {$<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Li
 										 codes+="\tMOV "+string(temp)+", AX\n";
 										 $<symbolinfo>$->set_ASMcode(codes);
 										 $<symbolinfo>$->set_idvalue(temp);
+										 var_dec.push_back(temp);
 										 
 										 }
 									 }
