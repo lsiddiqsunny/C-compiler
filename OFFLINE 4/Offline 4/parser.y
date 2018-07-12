@@ -645,7 +645,7 @@ statement : var_declaration { $<symbolinfo>$=new SymbolInfo();fprintf(parsertext
 											string codes="";
 											if(table->lookupscopeid($<symbolinfo>3->get_name())==-1){
 												error_count++;
-												fprintf(error,"Error at Line No.%d:  Undeclared Variable: %s \n\n",line_count,$<symbolinfo>3->get_name());
+												fprintf(error,"Error at Line No.%d:  Undeclared Variable: %s \n\n",line_count,$<symbolinfo>3->get_name().c_str());
 											}
 											else{
 											
@@ -1195,6 +1195,8 @@ factor	: variable { $<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Line at 
 								fprintf(parsertext,"(%s)\n\n",$<symbolinfo>2->get_name().c_str()); 
 								$<symbolinfo>$->set_dectype($<symbolinfo>2->get_dectype()); 
 								$<symbolinfo>$->set_name("("+$<symbolinfo>2->get_name()+")"); 
+								$<symbolinfo>$->set_ASMcode($<symbolinfo>2->get_ASMcode());
+								$<symbolinfo>$->set_idvalue($<symbolinfo>2->get_idvalue());
 								}
 	| CONST_INT { $<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Line at %d : factor->CONST_INT\n\n",line_count);
 				fprintf(parsertext,"%s\n\n",$<symbolinfo>1->get_name().c_str());
@@ -1220,23 +1222,34 @@ factor	: variable { $<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Line at 
 	| variable INCOP {$<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Line at %d : factor->variable INCOP\n\n",line_count);
 					fprintf(parsertext,"%s++\n\n",$<symbolinfo>1->get_name().c_str()); 
 					$<symbolinfo>$->set_dectype($<symbolinfo>1->get_dectype());
-					//cout<<$<symbolinfo>1->get_idvalue()<<endl;
+					char *temp=newTemp();
 					string codes="";
+					codes+="\tMOV AX,"+$<symbolinfo>1->get_idvalue()+"\n";
+					codes+="\tMOV "+string(temp)+",AX\n";
 					codes+="\tINC "+$<symbolinfo>1->get_idvalue()+"\n";
-				
+					var_dec.push_back(temp);
+					
+					
 					$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+"++");
 					$<symbolinfo>$->set_ASMcode(codes); 
+					$<symbolinfo>$->set_idvalue(temp);
+					 
 					 
 					 }
 	| variable DECOP {$<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Line at %d : factor->variable DECOP\n\n",line_count);
 					fprintf(parsertext,"%s--\n\n",$<symbolinfo>1->get_name().c_str());
 					$<symbolinfo>$->set_dectype($<symbolinfo>1->get_dectype()); 
+					char *temp=newTemp();
 					string codes="";
-					
+					codes+="\tMOV AX,"+$<symbolinfo>1->get_idvalue()+"\n";
+					codes+="\tMOV "+string(temp)+",AX\n";
 					codes+="\tDEC "+$<symbolinfo>1->get_idvalue()+"\n";
+					var_dec.push_back(temp);
+					
 					
 					$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+"--");
 					$<symbolinfo>$->set_ASMcode(codes); 
+					$<symbolinfo>$->set_idvalue(temp);
 					 
 					 }
 	;

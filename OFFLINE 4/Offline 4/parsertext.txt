@@ -1,800 +1,494 @@
-Line at 2 : type_specifier	: INT
+Line at 1 : type_specifier	: INT
 
 int 
-
-Line at 2 : type_specifier	: INT
-
-int 
-
-Line at 2 : parameter_list->type_specifier ID
-
-int  a
-
-Line at 2 : type_specifier	: INT
-
-int 
-
-Line at 2 : parameter_list->parameter_list COMMA type_specifier ID
-
-int  a,int  b
 
  New ScopeTable with id 2 created
+
+Line at 2 : type_specifier	: INT
+
+int 
+
+Line at 2 : declaration_list->ID
+
+a
+
+Line at 2 : declaration_list->declaration_list COMMA ID
+
+a,b
+
+Line at 2 : declaration_list->declaration_list COMMA ID
+
+a,b,i
+
+Line at 2 : var_declaration->type_specifier declaration_list SEMICOLON
+
+int  a,b,i;
+
+Line at 2 : statement -> var_declaration
+
+int  a,b,i;
+
+Line at 2 : statements->statement
+
+int  a,b,i;
 
 Line at 3 : variable->ID
 
 b
 
-Line at 3 : factor->variable
-
-b
-
-Line at 3 : unary_expression->factor
-
-b
-
-Line at 3 : term->unary_expression
-
-b
-
-Line at 3 : simple_expression->term
-
-b
-
 Line at 3 : factor->CONST_INT
 
-1
+0
 
 Line at 3 : unary_expression->factor
 
-1
+0
 
 Line at 3 : term->unary_expression
 
-1
+0
 
 Line at 3 : simple_expression->term
 
-1
-
-Line at 3 : rel_expression->simple_expression RELOP simple_expression
-
-b==1
-
-Line at 3 : logic_expression->rel_expression
-
-b==1
-
-Line at 3 : expression->logic_expression
-
-b==1
-
-Line at 3 : factor->CONST_INT
-
-1
-
-Line at 3 : unary_expression->factor
-
-1
-
-Line at 3 : unary_expression->ADDOP unary_expression
-
--1
-
-Line at 3 : term->unary_expression
-
--1
-
-Line at 3 : simple_expression->term
-
--1
+0
 
 Line at 3 : rel_expression->simple_expression
 
--1
+0
 
 Line at 3 : logic_expression->rel_expression
 
--1
+0
 
-Line at 3 : expression->logic_expression
+Line at 3 : expression->variable ASSIGNOP logic_expression
 
--1
+b=0
 
-Line at 3 : statement->RETURN expression SEMICOLON
+Line at 3 : expression_statement->expression SEMICOLON
 
-return -1;
+b=0;
 
-Line at 4 : statement->IF LPAREN expression RPAREN statement
+Line at 3 : statement -> expression_statement
 
-if(b==1)
-return -1;
+b=0;
 
-Line at 4 : statements->statement
+Line at 3 : statements->statements statement
 
-if(b==1)
-return -1;
+int  a,b,i; b=0;
 
-Line at 4 : type_specifier	: INT
+Line at 4 : variable->ID
 
-int 
+i
 
-Line at 4 : declaration_list->ID
+Line at 4 : factor->CONST_INT
 
-c
+0
 
-Line at 4 : var_declaration->type_specifier declaration_list SEMICOLON
+Line at 4 : unary_expression->factor
 
-int  c;
+0
 
-Line at 4 : statement -> var_declaration
+Line at 4 : term->unary_expression
 
-int  c;
+0
 
-Line at 4 : statements->statements statement
+Line at 4 : simple_expression->term
 
-if(b==1)
-return -1; int  c;
+0
 
-Line at 5 : variable->ID
+Line at 4 : rel_expression->simple_expression
 
-c
+0
+
+Line at 4 : logic_expression->rel_expression
+
+0
+
+Line at 4 : expression->variable ASSIGNOP logic_expression
+
+i=0
+
+Line at 4 : expression_statement->expression SEMICOLON
+
+i=0;
+
+Line at 4 : variable->ID
+
+i
+
+Line at 4 : factor->variable
+
+i
+
+Line at 4 : unary_expression->factor
+
+i
+
+Line at 4 : term->unary_expression
+
+i
+
+Line at 4 : simple_expression->term
+
+i
+
+Line at 4 : factor->CONST_INT
+
+4
+
+Line at 4 : unary_expression->factor
+
+4
+
+Line at 4 : term->unary_expression
+
+4
+
+Line at 4 : simple_expression->term
+
+4
+
+Line at 4 : rel_expression->simple_expression RELOP simple_expression
+
+i<4
+
+Line at 4 : logic_expression->rel_expression
+
+i<4
+
+Line at 4 : expression->logic_expression
+
+i<4
+
+Line at 4 : expression_statement->expression SEMICOLON
+
+i<4;
+
+Line at 4 : variable->ID
+
+i
+
+Line at 4 : factor->variable INCOP
+
+i++
+
+Line at 4 : unary_expression->factor
+
+i++
+
+Line at 4 : term->unary_expression
+
+i++
+
+Line at 4 : simple_expression->term
+
+i++
+
+Line at 4 : rel_expression->simple_expression
+
+i++
+
+Line at 4 : logic_expression->rel_expression
+
+i++
+
+Line at 4 : expression->logic_expression
+
+i++
+
+ New ScopeTable with id 3 created
 
 Line at 5 : variable->ID
 
 a
 
-Line at 5 : factor->variable
+Line at 5 : factor->CONST_INT
 
-a
+3
 
 Line at 5 : unary_expression->factor
 
-a
+3
 
 Line at 5 : term->unary_expression
 
-a
+3
 
 Line at 5 : simple_expression->term
 
-a
-
-Line at 5 : variable->ID
-
-b
-
-Line at 5 : factor->variable
-
-b
-
-Line at 5 : unary_expression->factor
-
-b
-
-Line at 5 : term->unary_expression
-
-b
-
-Line at 5 : simple_expression->simple_expression ADDOP term
-
-a+b
+3
 
 Line at 5 : rel_expression->simple_expression
 
-a+b
+3
 
 Line at 5 : logic_expression->rel_expression
 
-a+b
-
-Line at 5 : arguments->logic_expression
-
-a+b
-
-Line at 5 : variable->ID
-
-a
-
-Line at 5 : factor->variable
-
-a
-
-Line at 5 : unary_expression->factor
-
-a
-
-Line at 5 : term->unary_expression
-
-a
-
-Line at 5 : simple_expression->term
-
-a
-
-Line at 5 : variable->ID
-
-b
-
-Line at 5 : factor->variable
-
-b
-
-Line at 5 : unary_expression->factor
-
-b
-
-Line at 5 : term->unary_expression
-
-b
-
-Line at 5 : simple_expression->simple_expression ADDOP term
-
-a-b
-
-Line at 5 : rel_expression->simple_expression
-
-a-b
-
-Line at 5 : logic_expression->rel_expression
-
-a-b
-
-Line at 5 : arguments->arguments COMMA logic_expression 
-
-a+b,a-b
-
-Line at 5 : argument_list->arguments
-
-a+b,a-b
-
-Line at 5 : factor->ID LPAREN argument_list RPAREN
-
-h(a+b,a-b)
-
-Line at 5 : unary_expression->factor
-
-h(a+b,a-b)
-
-Line at 5 : term->unary_expression
-
-h(a+b,a-b)
-
-Line at 5 : simple_expression->term
-
-h(a+b,a-b)
-
-Line at 5 : rel_expression->simple_expression
-
-h(a+b,a-b)
-
-Line at 5 : logic_expression->rel_expression
-
-h(a+b,a-b)
+3
 
 Line at 5 : expression->variable ASSIGNOP logic_expression
 
-c=h(a+b,a-b)
+a=3
 
 Line at 5 : expression_statement->expression SEMICOLON
 
-c=h(a+b,a-b);
+a=3;
 
 Line at 5 : statement -> expression_statement
 
-c=h(a+b,a-b);
+a=3;
 
-Line at 5 : statements->statements statement
+Line at 5 : statements->statement
 
-if(b==1)
-return -1;
-int  c; c=h(a+b,a-b);
+a=3;
 
-Line at 6 : statement->PRINTLN LPAREN ID RPAREN SEMICOLON
+Line at 6 : variable->ID
 
+a
 
- (c);
+Line at 6 : factor->variable DECOP
 
-Line at 6 : statements->statements statement
+a--
 
-if(b==1)
-return -1;
-int  c;
-c=h(a+b,a-b); println(c)
+Line at 6 : unary_expression->factor
 
-Line at 7 : statement->PRINTLN LPAREN ID RPAREN SEMICOLON
+a--
 
+Line at 6 : term->unary_expression
 
- (a);
+a--
 
-Line at 7 : statements->statements statement
+Line at 6 : simple_expression->term
 
-if(b==1)
-return -1;
-int  c;
-c=h(a+b,a-b);
-println(c) println(a)
+a--
 
-Line at 8 : statement->PRINTLN LPAREN ID RPAREN SEMICOLON
+Line at 6 : rel_expression->simple_expression
 
+a--
 
- (b);
+Line at 6 : logic_expression->rel_expression
 
-Line at 8 : statements->statements statement
+a--
 
-if(b==1)
-return -1;
-int  c;
-c=h(a+b,a-b);
-println(c)
-println(a) println(b)
+Line at 6 : expression->logic_expression
 
-Line at 9 : variable->ID
+a--
 
-c
+ New ScopeTable with id 4 created
 
-Line at 9 : factor->variable
+Line at 7 : variable->ID
 
-c
+b
 
-Line at 9 : unary_expression->factor
+Line at 7 : factor->variable INCOP
 
-c
+b++
 
-Line at 9 : term->unary_expression
+Line at 7 : unary_expression->factor
 
-c
+b++
 
-Line at 9 : simple_expression->term
+Line at 7 : term->unary_expression
 
-c
+b++
 
-Line at 9 : rel_expression->simple_expression
+Line at 7 : simple_expression->term
 
-c
+b++
 
-Line at 9 : logic_expression->rel_expression
+Line at 7 : rel_expression->simple_expression
 
-c
+b++
 
-Line at 9 : expression->logic_expression
+Line at 7 : logic_expression->rel_expression
 
-c
+b++
 
-Line at 9 : statement->RETURN expression SEMICOLON
+Line at 7 : expression->logic_expression
 
-return c;
+b++
 
-Line at 9 : statements->statements statement
+Line at 7 : expression_statement->expression SEMICOLON
 
-if(b==1)
-return -1;
-int  c;
-c=h(a+b,a-b);
-println(c)
-println(a)
-println(b) return c;
+b++;
 
-Line at 11 : compound_statement->LCURL statements RCURL
+Line at 7 : statement -> expression_statement
 
-{if(b==1)
-return -1;
-int  c;
-c=h(a+b,a-b);
-println(c)
-println(a)
-println(b)
-return c;}
+b++;
+
+Line at 7 : statements->statement
+
+b++;
+
+Line at 8 : compound_statement->LCURL statements RCURL
+
+{b++;}
+
+ ScopeTable# 4 
+
+ ScopeTable# 3 
 
  ScopeTable# 2 
  51  --> < ID : a > 
  52  --> < ID : b > 
- 53  --> < ID : c > 
-
- ScopeTable# 1 
- 58  --> < ID : h > 
-
- ScopeTable with id 2 removed
-
-Line at 11 : func_definition->type_specifier ID LPAREN parameter_list RPAREN compound_statement 
-
-int  h(int  a,int  b) {
-if(b==1)
-return -1;
-int  c;
-c=h(a+b,a-b);
-println(c)
-println(a)
-println(b)
-return c;
-} 
-
-Line at 11 : unit->func_definition
-
-int  h(int  a,int  b){
-if(b==1)
-return -1;
-int  c;
-c=h(a+b,a-b);
-println(c)
-println(a)
-println(b)
-return c;
-}
-
-Line at 11 : program->unit
-
-int  h(int  a,int  b){
-if(b==1)
-return -1;
-int  c;
-c=h(a+b,a-b);
-println(c)
-println(a)
-println(b)
-return c;
-}
-
-
-Line at 12 : type_specifier	: INT
-
-int 
-
- New ScopeTable with id 3 created
-
-Line at 13 : type_specifier	: INT
-
-int 
-
-Line at 13 : declaration_list->ID
-
-c
-
-Line at 13 : declaration_list->declaration_list COMMA ID
-
-c,i
-
-Line at 13 : declaration_list->declaration_list COMMA ID
-
-c,i,j
-
-Line at 13 : var_declaration->type_specifier declaration_list SEMICOLON
-
-int  c,i,j;
-
-Line at 13 : statement -> var_declaration
-
-int  c,i,j;
-
-Line at 13 : statements->statement
-
-int  c,i,j;
-
-Line at 14 : variable->ID
-
-i
-
-Line at 14 : factor->CONST_INT
-
-6
-
-Line at 14 : unary_expression->factor
-
-6
-
-Line at 14 : term->unary_expression
-
-6
-
-Line at 14 : simple_expression->term
-
-6
-
-Line at 14 : rel_expression->simple_expression
-
-6
-
-Line at 14 : logic_expression->rel_expression
-
-6
-
-Line at 14 : expression->variable ASSIGNOP logic_expression
-
-i=6
-
-Line at 14 : expression_statement->expression SEMICOLON
-
-i=6;
-
-Line at 14 : statement -> expression_statement
-
-i=6;
-
-Line at 14 : statements->statements statement
-
-int  c,i,j; i=6;
-
-Line at 15 : variable->ID
-
-j
-
-Line at 15 : factor->CONST_INT
-
-5
-
-Line at 15 : unary_expression->factor
-
-5
-
-Line at 15 : term->unary_expression
-
-5
-
-Line at 15 : simple_expression->term
-
-5
-
-Line at 15 : rel_expression->simple_expression
-
-5
-
-Line at 15 : logic_expression->rel_expression
-
-5
-
-Line at 15 : expression->variable ASSIGNOP logic_expression
-
-j=5
-
-Line at 15 : expression_statement->expression SEMICOLON
-
-j=5;
-
-Line at 15 : statement -> expression_statement
-
-j=5;
-
-Line at 15 : statements->statements statement
-
-int  c,i,j;
-i=6; j=5;
-
-Line at 17 : variable->ID
-
-c
-
-Line at 17 : variable->ID
-
-i
-
-Line at 17 : factor->variable
-
-i
-
-Line at 17 : unary_expression->factor
-
-i
-
-Line at 17 : term->unary_expression
-
-i
-
-Line at 17 : simple_expression->term
-
-i
-
-Line at 17 : rel_expression->simple_expression
-
-i
-
-Line at 17 : logic_expression->rel_expression
-
-i
-
-Line at 17 : arguments->logic_expression
-
-i
-
-Line at 17 : variable->ID
-
-j
-
-Line at 17 : factor->variable
-
-j
-
-Line at 17 : unary_expression->factor
-
-j
-
-Line at 17 : term->unary_expression
-
-j
-
-Line at 17 : simple_expression->term
-
-j
-
-Line at 17 : rel_expression->simple_expression
-
-j
-
-Line at 17 : logic_expression->rel_expression
-
-j
-
-Line at 17 : arguments->arguments COMMA logic_expression 
-
-i,j
-
-Line at 17 : argument_list->arguments
-
-i,j
-
-Line at 17 : factor->ID LPAREN argument_list RPAREN
-
-h(i,j)
-
-Line at 17 : unary_expression->factor
-
-h(i,j)
-
-Line at 17 : term->unary_expression
-
-h(i,j)
-
-Line at 17 : simple_expression->term
-
-h(i,j)
-
-Line at 17 : rel_expression->simple_expression
-
-h(i,j)
-
-Line at 17 : logic_expression->rel_expression
-
-h(i,j)
-
-Line at 17 : expression->variable ASSIGNOP logic_expression
-
-c=h(i,j)
-
-Line at 17 : expression_statement->expression SEMICOLON
-
-c=h(i,j);
-
-Line at 17 : statement -> expression_statement
-
-c=h(i,j);
-
-Line at 17 : statements->statements statement
-
-int  c,i,j;
-i=6;
-j=5; c=h(i,j);
-
-Line at 18 : statement->PRINTLN LPAREN ID RPAREN SEMICOLON
-
-
- (c);
-
-Line at 18 : statements->statements statement
-
-int  c,i,j;
-i=6;
-j=5;
-c=h(i,j); println(c)
-
-Line at 20 : factor->CONST_INT
-
-0
-
-Line at 20 : unary_expression->factor
-
-0
-
-Line at 20 : term->unary_expression
-
-0
-
-Line at 20 : simple_expression->term
-
-0
-
-Line at 20 : rel_expression->simple_expression
-
-0
-
-Line at 20 : logic_expression->rel_expression
-
-0
-
-Line at 20 : expression->logic_expression
-
-0
-
-Line at 20 : statement->RETURN expression SEMICOLON
-
-return 0;
-
-Line at 20 : statements->statements statement
-
-int  c,i,j;
-i=6;
-j=5;
-c=h(i,j);
-println(c) return 0;
-
-Line at 21 : compound_statement->LCURL statements RCURL
-
-{int  c,i,j;
-i=6;
-j=5;
-c=h(i,j);
-println(c)
-return 0;}
-
- ScopeTable# 3 
- 53  --> < ID : c > 
  59  --> < ID : i > 
- 60  --> < ID : j > 
 
  ScopeTable# 1 
- 58  --> < ID : h > 
  64  --> < ID : main > 
 
- ScopeTable with id 3 removed
+ ScopeTable with id 4 removed
 
-Line at 21 : func_definition->type_specifier ID LPAREN RPAREN compound_statement
+Line at 8 : statement->compound_statement
+
+{
+b++;
+}
+
+Line at 8 : statement->WHILE LPAREN expression RPAREN statement
+
+while(a--)
+{
+b++;
+}
+
+Line at 8 : statements->statements statement
+
+a=3; while(a--)
+{
+b++;
+}
+
+Line at 9 : compound_statement->LCURL statements RCURL
+
+{a=3;
+while(a--)
+{
+b++;
+}}
+
+ ScopeTable# 3 
+
+ ScopeTable# 2 
+ 51  --> < ID : a > 
+ 52  --> < ID : b > 
+ 59  --> < ID : i > 
+
+ ScopeTable# 1 
+ 64  --> < ID : main > 
+
+ ScopeTable with id 4 removed
+
+Line at 9 : statement->compound_statement
+
+{
+a=3;
+while(a--)
+{
+b++;
+}
+}
+
+Line at 9 : statement ->FOR LPAREN expression_statement expression_statement expression RPAREN statement
+
+for(i=0; i<4; i++)
+{
+a=3;
+while(a--)
+{
+b++;
+}
+} 
+
+Line at 9 : statements->statements statement
+
+int  a,b,i;
+b=0; for(i=0;i<4;i++)
+i++
+
+Line at 10 : statement->PRINTLN LPAREN ID RPAREN SEMICOLON
+
+
+ (a);
+
+Line at 10 : statements->statements statement
+
+int  a,b,i;
+b=0;
+for(i=0;i<4;i++)
+i++ println(a)
+
+Line at 11 : statement->PRINTLN LPAREN ID RPAREN SEMICOLON
+
+
+ (b);
+
+Line at 11 : statements->statements statement
+
+int  a,b,i;
+b=0;
+for(i=0;i<4;i++)
+i++
+println(a) println(b)
+
+Line at 12 : compound_statement->LCURL statements RCURL
+
+{int  a,b,i;
+b=0;
+for(i=0;i<4;i++)
+i++
+println(a)
+println(b)}
+
+ ScopeTable# 2 
+ 51  --> < ID : a > 
+ 52  --> < ID : b > 
+ 59  --> < ID : i > 
+
+ ScopeTable# 1 
+ 64  --> < ID : main > 
+
+ ScopeTable with id 4 removed
+
+Line at 12 : func_definition->type_specifier ID LPAREN RPAREN compound_statement
 
 int  main() {
-int  c,i,j;
-i=6;
-j=5;
-c=h(i,j);
-println(c)
-return 0;
-}
-
-Line at 21 : unit->func_definition
-
-int  main(){
-int  c,i,j;
-i=6;
-j=5;
-c=h(i,j);
-println(c)
-return 0;
-}
-
-Line at 21 : program->program unit
-
-int  h(int  a,int  b){
-if(b==1)
-return -1;
-int  c;
-c=h(a+b,a-b);
-println(c)
+int  a,b,i;
+b=0;
+for(i=0;i<4;i++)
+i++
 println(a)
 println(b)
-return c;
 }
- int  main(){
-int  c,i,j;
-i=6;
-j=5;
-c=h(i,j);
-println(c)
-return 0;
+
+Line at 12 : unit->func_definition
+
+int  main(){
+int  a,b,i;
+b=0;
+for(i=0;i<4;i++)
+i++
+println(a)
+println(b)
+}
+
+Line at 12 : program->unit
+
+int  main(){
+int  a,b,i;
+b=0;
+for(i=0;i<4;i++)
+i++
+println(a)
+println(b)
 }
 
 
  Symbol Table : 
 
  ScopeTable# 1 
- 58  --> < ID : h > 
  64  --> < ID : main > 
 
-Total Lines : 22 
+Total Lines : 12 
 
 Total Errors : 0 
 

@@ -1,108 +1,65 @@
 .MODEL SMALL
 .STACK 100H
 .DATA 
-h_return dw ?
+main_return dw ?
 a2 dw ?
 b2 dw ?
+i2 dw ?
 t0 dw ?
 t1 dw ?
 t2 dw ?
-c2 dw ?
 t3 dw ?
 t4 dw ?
 t5 dw ?
-main_return dw ?
-c3 dw ?
-i3 dw ?
-j3 dw ?
 t6 dw ?
 t7 dw ?
-t8 dw ?
-t9 dw ?
 .CODE
-h PROC
-	PUSH AX
-	PUSH BX 
-	PUSH CX 
-	PUSH DX
-	MOV t0,1
-	MOV AX,b2
-	CMP AX,t0
-	JE L0
-	MOV t1,0
-	JMP L1
-L0:
-	MOV t1,1
-L1:
-	MOV AX,t1
-	CMP AX,0
-	JE L2
-	MOV t2,1
-	MOV AX,t2
-	NEG AX
-	MOV t2,AX
-	MOV h_return,AX
-	JMP LReturnh
-L2:
-	MOV AX,a2
-	ADD AX,b2
-	MOV t3,AX
-	MOV AX,a2
-	SUB AX,b2
-	MOV t4,AX
-	PUSH a2
-	PUSH b2
-	MOV AX,t3
-	MOV a2,AX
-	MOV AX,t4
-	MOV b2,AX
-	CALL h
-	POP b2
-	POP a2
-	MOV AX,h_return
-	MOV t5,AX
-	MOV c2,AX
-	CALL OUTDEC
-	MOV AX,a2
-	CALL OUTDEC
-	MOV AX,b2
-	CALL OUTDEC
-	MOV AX,c2
-	MOV h_return,AX
-	JMP LReturnh
-LReturnh:
-	POP DX
-	POP CX
-	POP BX
-	POP AX
-	ret
-h ENDP
 main PROC
     MOV AX,@DATA
 	MOV DS,AX 
-	MOV t6,6
-	MOV AX,t6
-	MOV i3,AX
-	MOV t7,5
-	MOV AX,t7
-	MOV j3,AX
-	PUSH a2
-	PUSH b2
-	MOV AX,i3
-	MOV a2,AX
-	MOV AX,j3
+	MOV t0,0
+	MOV AX,t0
 	MOV b2,AX
-	CALL h
-	POP b2
-	POP a2
-	MOV AX,h_return
-	MOV t8,AX
-	MOV c3,AX
+	MOV t1,0
+	MOV AX,t1
+	MOV i2,AX
+L4:
+	MOV t2,4
+	MOV AX,i2
+	CMP AX,t2
+	JL L0
+	MOV t3,0
+	JMP L1
+L0:
+	MOV t3,1
+L1:
+	MOV AX,t3
+	CMP AX,0
+	JE L5
+	MOV t5,3
+	MOV AX,t5
+	MOV a2,AX
+L2:
+	MOV AX,a2
+	MOV t6,AX
+	DEC a2
+	MOV AX,t6
+	CMP AX,0
+	JE L3
+	MOV AX,b2
+	MOV t7,AX
+	INC b2
+	JMP L2
+L3:
+	MOV AX,i2
+	MOV t4,AX
+	INC i2
+	JMP L4
+L5:
+	MOV AX,a2
 	CALL OUTDEC
-	MOV t9,0
-	MOV AX,t9
-	MOV main_return,AX
-	JMP LReturnmain
+	MOV AX,b2
+	CALL OUTDEC
 LReturnmain:
 	MOV AH,4CH
 	INT 21H
