@@ -531,7 +531,8 @@ statement : var_declaration { $<symbolinfo>$=new SymbolInfo();fprintf(parsertext
 	  | compound_statement {$<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Line at %d : statement->compound_statement\n\n",line_count);
 	  						fprintf(parsertext,"%s\n\n",$<symbolinfo>1->get_name().c_str()); 
 							$<symbolinfo>$->set_name($<symbolinfo>1->get_name()); 
- 
+ 							$<symbolinfo>$->set_ASMcode($<symbolinfo>1->get_ASMcode());
+
 							  }
 	  | FOR LPAREN expression_statement expression_statement expression RPAREN statement {$<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Line at %d : statement ->FOR LPAREN expression_statement expression_statement expression RPAREN statement\n\n",line_count);
 	  																					fprintf(parsertext,"for(%s %s %s)\n%s \n\n",$<symbolinfo>3->get_name().c_str(),$<symbolinfo>4->get_name().c_str(),$<symbolinfo>5->get_name().c_str(),$<symbolinfo>7->get_name().c_str());
@@ -539,6 +540,22 @@ statement : var_declaration { $<symbolinfo>$=new SymbolInfo();fprintf(parsertext
 																							error_count++;
 																							fprintf(error,"Error at Line No.%d:  Type Mismatch \n\n",line_count);
 																							//$<symbolinfo>$->set_dectype("int "); 
+																						}
+																						else{
+																							//cout<<line_count<<" "<<$<symbolinfo>7->get_ASMcode()<<endl;
+																							string codes=$<symbolinfo>3->get_ASMcode();
+																							char *label1=newLabel();
+																							char *label2=newLabel();
+																							codes+=string(label1)+":\n";
+																							codes+=$<symbolinfo>4->get_ASMcode();
+																							codes+="\tMOV AX,"+$<symbolinfo>4->get_idvalue()+"\n";
+																							codes+="\tCMP AX,0\n";
+																							codes+="\tJE "+string(label2)+"\n";
+																							codes+=$<symbolinfo>7->get_ASMcode();
+																							codes+=$<symbolinfo>5->get_ASMcode();
+																							codes+="\tJMP "+string(label1)+"\n";
+																							codes+=string(label2)+":\n";
+																							$<symbolinfo>$->set_ASMcode(codes);
 																						}
 																						
 																						$<symbolinfo>$->set_name("for("+$<symbolinfo>3->get_name()+$<symbolinfo>4->get_name()+$<symbolinfo>5->get_name()+")\n"+$<symbolinfo>5->get_name()); 
@@ -550,6 +567,18 @@ statement : var_declaration { $<symbolinfo>$=new SymbolInfo();fprintf(parsertext
 																		error_count++;
 																		fprintf(error,"Error at Line No.%d:  Type Mismatch \n\n",line_count);
 																		//$<symbolinfo>$->set_dectype("int "); 
+																	}else{
+																		string codes=$<symbolinfo>3->get_ASMcode();
+																		char *label1=newLabel();
+																		codes+="\tMOV AX,"+$<symbolinfo>3->get_idvalue()+"\n";
+																		codes+="\tCMP AX,0\n";
+																		codes+="JE "+string(label1)+"\n";
+																		codes+=$<symbolinfo>5->get_ASMcode();
+																		codes+=string(label1)+":\n";
+																		$<symbolinfo>$->set_ASMcode(codes);
+
+
+
 																	}
 																	
 																	$<symbolinfo>$->set_name("if("+$<symbolinfo>3->get_name()+")\n"+$<symbolinfo>5->get_name()); 
@@ -562,6 +591,20 @@ statement : var_declaration { $<symbolinfo>$=new SymbolInfo();fprintf(parsertext
 																fprintf(error,"Error at Line No.%d:  Type Mismatch \n\n",line_count);
 																//$<symbolinfo>$->set_dectype("int "); 
 															}
+															else{
+																string codes=$<symbolinfo>3->get_ASMcode();
+																char *label1=newLabel();
+																char *label2=newLabel();
+																codes+="\tMOV AX,"+$<symbolinfo>3->get_idvalue()+"\n";
+																codes+="\tCMP AX,0\n";
+																codes+="JE "+string(label1)+"\n";
+																codes+=$<symbolinfo>5->get_ASMcode();
+																codes+="\tJMP "+string(label2)+"\n";
+																codes+=string(label1)+":\n";
+																codes+=$<symbolinfo>7->get_ASMcode();
+																codes+=string(label2)+":\n";
+																$<symbolinfo>$->set_ASMcode(codes);
+															}
 															
 															$<symbolinfo>$->set_name("if("+$<symbolinfo>3->get_name()+")\n"+$<symbolinfo>5->get_name()+" else \n"+$<symbolinfo>7->get_name()); 
 															}
@@ -572,6 +615,19 @@ statement : var_declaration { $<symbolinfo>$=new SymbolInfo();fprintf(parsertext
 													error_count++;
 													fprintf(error,"Error at Line No.%d:  Type Mismatch \n\n",line_count);
 												//	$<symbolinfo>$->set_dectype("int "); 
+												}else{
+													string codes="";
+													char *label1=newLabel();
+													char *label2=newLabel();
+													codes+=string(label1)+":\n";
+													codes+=$<symbolinfo>3->get_ASMcode();
+													codes+="\tMOV AX,"+$<symbolinfo>3->get_idvalue()+"\n";
+													codes+="\tCMP AX,0\n";
+													codes+="\tJE "+string(label2)+"\n";
+													codes+=$<symbolinfo>5->get_ASMcode();
+													codes+="\tJMP "+string(label1)+"\n";
+													codes+=string(label2)+":\n";
+													$<symbolinfo>$->set_ASMcode(codes);
 												}
 												  $<symbolinfo>$->set_name("while("+$<symbolinfo>3->get_name()+")\n"+$<symbolinfo>5->get_name()); 
 												  }
@@ -610,6 +666,7 @@ expression_statement 	: SEMICOLON	{$<symbolinfo>$=new SymbolInfo();fprintf(parse
 									fprintf(parsertext,"%s;\n\n",$<symbolinfo>1->get_name().c_str());
 									$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+";"); 
 									$<symbolinfo>$->set_ASMcode($<symbolinfo>1->get_ASMcode());
+									$<symbolinfo>$->set_idvalue($<symbolinfo>1->get_idvalue());
 
 									}
 			;
