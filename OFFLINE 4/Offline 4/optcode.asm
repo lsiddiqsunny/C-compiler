@@ -41,7 +41,6 @@ L1:
 	MOV AX,t2
 	NEG AX
 	MOV t2,AX
-	MOV AX,t2
 	MOV h_return,AX
 	JMP LReturnh
 L2:
@@ -62,9 +61,7 @@ L2:
 	POP a2
 	MOV AX,h_return
 	MOV t5,AX
-	MOV AX,t5
 	MOV c2,AX
-	MOV AX,c2
 	CALL OUTDEC
 	MOV AX,a2
 	CALL OUTDEC
@@ -100,9 +97,7 @@ main PROC
 	POP a2
 	MOV AX,h_return
 	MOV t8,AX
-	MOV AX,t8
 	MOV c3,AX
-	MOV AX,c3
 	CALL OUTDEC
 	MOV t9,0
 	MOV AX,t9

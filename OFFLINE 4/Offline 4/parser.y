@@ -70,6 +70,8 @@ char *newTemp()
 	return t;
 }
 
+void optimization(FILE *asmcode);
+
 
 %}
 
@@ -99,14 +101,10 @@ char *newTemp()
 
 %%
 
-start : program {	
+start : program {
+	if(error_count==0){	
 	string codes="";
-	
-
-
-codes+=".MODEL SMALL\n\
-.STACK 100H\n\ 
-.DATA \n";
+	codes+=".MODEL SMALL\n\.STACK 100H\n\.DATA \n";
 	for(int i=0;i<var_dec.size();i++){
 		codes+=var_dec[i]+" dw ?\n";
 	}
@@ -165,7 +163,12 @@ codes+=".MODEL SMALL\n\
 OUTDEC ENDP \n\
 END MAIN\n");
      FILE* asmcode= fopen("code.asm","w");
+	 
 	 fprintf(asmcode,"%s",$<symbolinfo>1->get_ASMcode().c_str());
+	 fclose(asmcode);
+	 asmcode= fopen("code.asm","r");
+	 optimization(asmcode);
+	 }
 
 }
 
@@ -332,8 +335,8 @@ func_definition : type_specifier ID  LPAREN  parameter_list RPAREN {$<symbolinfo
 											}
 											else {
 												$<symbolinfo>$->set_ASMcode($<symbolinfo>$->get_ASMcode()+
-												"\tPUSH ax\n\tPUSH bx \n\tPUSH cx \n\tPUSH dx\n" +$<symbolinfo>7->get_ASMcode()+
-												"LReturn"+curfunction+":\n\tPOP dx\n\tPOP cx\n\tPOP bx\n\tPOP ax\n\tret\n");
+												"\tPUSH AX\n\tPUSH BX \n\tPUSH CX \n\tPUSH DX\n" +$<symbolinfo>7->get_ASMcode()+
+												"LReturn"+curfunction+":\n\tPOP DX\n\tPOP CX\n\tPOP BX\n\tPOP AX\n\tret\n");
 
 											}
 											$<symbolinfo>$->set_ASMcode($<symbolinfo>$->get_ASMcode()+$<symbolinfo>2->get_name()+" ENDP\n");
@@ -379,8 +382,8 @@ func_definition : type_specifier ID  LPAREN  parameter_list RPAREN {$<symbolinfo
 											}
 											else {
 												$<symbolinfo>$->set_ASMcode($<symbolinfo>$->get_ASMcode()+
-												"\tPUSH ax\n\tPUSH bx \n\tPUSH cx \n\tPUSH dx\n"+$<symbolinfo>6->get_ASMcode()+
-												"LReturn"+curfunction+":\n\tPOP dx\n\tPOP cx\n\tPOP bx\n\tPOP ax\n\tret\n");
+												"\tPUSH AX\n\tPUSH BX \n\tPUSH CX \n\tPUSH DX\n"+$<symbolinfo>6->get_ASMcode()+
+												"LReturn"+curfunction+":\n\tPOP DX\n\tPOP CX\n\tPOP BX\n\tPOP AX\n\tret\n");
 
 											}
 											$<symbolinfo>$->set_ASMcode($<symbolinfo>$->get_ASMcode()+$<symbolinfo>2->get_name()+" ENDP\n");
@@ -1153,8 +1156,12 @@ factor	: variable { $<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Line at 
 										else{
 											string codes=$<symbolinfo>3->get_ASMcode();
 											//cout<<s->get_isFunction()->get_return_type()<<endl;
+											
 											vector<string>para_list=s->get_isFunction()->get_paralist();
 											vector<string>para_type=s->get_isFunction()->get_paratype();
+											for(int i=0;i<para_list.size();i++){
+												codes+="\tPUSH "+para_list[i]+"\n";
+											}
 											for(int i=0;i<arg_list.size();i++){
 												codes+="\tMOV AX,"+arg_list[i]->get_idvalue()+"\n";
 												codes+="\tMOV "+para_list[i]+",AX\n";
@@ -1166,7 +1173,11 @@ factor	: variable { $<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Line at 
 													break;
 												}
 											}
+											
 											codes+="\tCALL "+$<symbolinfo>1->get_name()+"\n";
+											for(int i=para_list.size()-1;i>=0;i--){
+												codes+="\tPOP "+para_list[i]+"\n";
+											}
 											codes+="\tMOV AX,"+$<symbolinfo>1->get_name()+"_return\n";
 											char *temp=newTemp();
 											codes+="\tMOV "+string(temp)+",AX\n";
@@ -1255,6 +1266,92 @@ arguments : arguments COMMA logic_expression { $<symbolinfo>$=new SymbolInfo();f
 		  }
 	      ;
  %%
+ bool check(string s1,string s2){
+	 
+	 if(s1.size()!=s2.size() || s1.size()<11) return false;
+	int j=0;
+	for(;j<s1.size();j++){
+		if(s1[j]=='M') break;
+	}
+	if(j==s1.size()) return false;
+	 
+	 if(s1[j]!='M' || s1[j+1]!='O' || s1[j+2]!='V') return false;
+	j=0;
+	for(;j<s2.size();j++){
+		if(s2[j]=='M') break;
+	}
+	if(j==s2.size()) return false;
+
+	 if(s2[j]!='M' || s2[j+1]!='O' || s2[j+2]!='V') return false;
+	 
+//	cout<<s1<<endl;
+//	cout<<s2<<endl;
+
+	 string source1="",dist1="";
+	 string source2="",dist2="";
+	 int i;
+	 for(i=j+4;i<s1.size()-1;i++){
+		 if(s1[i]==' ' and source1.size()==0) continue;
+		 if(s1[i]==' ' || s1[i]==',') break;
+		 source1.push_back(s1[i]);
+	 }
+	//cout<<source1<<" ";
+	 for(;i<s1.size()-1;i++){
+		 if((s1[i]==' '||s1[i]==',') and dist1.size()==0) continue;
+		 if(s1[i]==' ') break;
+		 dist1.push_back(s1[i]);
+	 }
+	//cout<<dist1<<" ";
+
+	 for(i=j+4;i<s2.size()-1;i++){
+		 if(s2[i]==' ' and source2.size()==0) continue;
+		 if(s2[i]==' '|| s2[i]==',') break;
+		 source2.push_back(s2[i]);
+	 }
+	//cout<<source2<<" ";
+	 for(;i<s2.size()-1;i++){
+		 if((s2[i]==' '||s2[i]==',') and dist2.size()==0) continue;
+		 if(s2[i]==' ') break;
+		 dist2.push_back(s2[i]);
+	 }
+	 //cout<<dist2<<endl;
+
+	//cout<<source1<<","<<dist1<<endl<<source2<<","<<dist2<<endl;
+	 if(dist1==source2 and dist2==source1) return true;
+
+
+	 return false;
+ }
+void optimization(FILE *asmcode){
+	FILE* optcode= fopen("optcode.asm","w");
+	char * line = NULL;
+    size_t len = 0;
+    ssize_t read;
+	vector<string>v;
+    while ((read = getline(&line, &len, asmcode)) != -1) {
+       // printf("%s", line);
+	   v.push_back(string(line));
+    }
+	int sz=v.size();
+	int mark[sz];
+	for(int i=0;i<sz;i++) 
+		mark[i]=1;
+	for(int i=0;i<sz-1;i++){
+		if(check(v[i],v[i+1])){
+			mark[i+1]=0;
+		}
+	}
+	for(int i=0;i<sz;i++){
+		if(mark[i])
+		fprintf(optcode,"%s",v[i].c_str());
+	}
+
+	fclose(asmcode);
+	fclose(optcode);
+    if (line)
+        free(line);
+
+}
 int main(int argc,char *argv[])
 {
 
