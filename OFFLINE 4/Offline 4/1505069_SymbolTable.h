@@ -165,7 +165,10 @@ public:
         }
     }
     int getCurrentId(){
-        return current_id;
+        return current->get_id();
+    }
+    int getNextId(){
+        return (current_id+1);
     }
 
 };

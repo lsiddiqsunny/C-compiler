@@ -29,6 +29,7 @@ vector<SymbolInfo*>dec_list;
 vector<SymbolInfo*>arg_list;
 vector<string> var_dec;
 vector<pair<string,string> >arr_dec;
+string curfunction;
 
 
 void yyerror(char *s)
@@ -294,7 +295,7 @@ func_definition : type_specifier ID  LPAREN  parameter_list RPAREN {$<symbolinfo
 								error_count++;
 								fprintf(error,"Error at Line No.%d: Return Type Mismatch1 \n\n",line_count);
 						}
-					//	para_list.clear();
+						//	para_list.clear();
 					}
 					s->get_isFunction()->set_isdefined();}
 					else{
@@ -310,13 +311,16 @@ func_definition : type_specifier ID  LPAREN  parameter_list RPAREN {$<symbolinfo
 						//cout<<s->get_isFunction()->get_number_of_parameter()<<endl;
 						s->get_isFunction()->set_isdefined();
 						for(int i=0;i<para_list.size();i++){
-							s->get_isFunction()->add_number_of_parameter(para_list[i]->get_name(),para_list[i]->get_dectype());
+							s->get_isFunction()->add_number_of_parameter(para_list[i]->get_name()+IntToString(table->getNextId()),para_list[i]->get_dectype());
 					//	cout<<para_list[i]->get_dectype()<<para_list[i]->get_name()<<endl;
 					}
-				//	para_list.clear();
+					//	para_list.clear();
 					s->get_isFunction()->set_return_type($<symbolinfo>1->get_name());
+					//cout<<table->getNextId()<<endl;
 					//cout<<line_count<<" "<<s->get_isFunction()->get_return_type()<<endl;
 				}
+				curfunction=$<symbolinfo>2->get_name();
+				var_dec.push_back(curfunction+"_return");
 
 				} compound_statement 
 				{fprintf(parsertext,"Line at %d : func_definition->type_specifier ID LPAREN parameter_list RPAREN compound_statement \n\n",line_count);
@@ -324,12 +328,12 @@ func_definition : type_specifier ID  LPAREN  parameter_list RPAREN {$<symbolinfo
 											$<symbolinfo>$->set_ASMcode($<symbolinfo>2->get_name()+" PROC\n");
 											
 											if($<symbolinfo>2->get_name()=="main"){
-												$<symbolinfo>$->set_ASMcode($<symbolinfo>$->get_ASMcode()+"    MOV AX,@DATA\n\tMOV DS,AX \n"+$<symbolinfo>7->get_ASMcode()+"    MOV AH,4CH\n\tINT 21H\n");
+												$<symbolinfo>$->set_ASMcode($<symbolinfo>$->get_ASMcode()+"    MOV AX,@DATA\n\tMOV DS,AX \n"+$<symbolinfo>7->get_ASMcode()+"LReturn"+curfunction+":\n\tMOV AH,4CH\n\tINT 21H\n");
 											}
 											else {
 												$<symbolinfo>$->set_ASMcode($<symbolinfo>$->get_ASMcode()+
 												"\tPUSH ax\n\tPUSH bx \n\tPUSH cx \n\tPUSH dx\n" +$<symbolinfo>7->get_ASMcode()+
-												"\tPOP dx\n\tPOP cx\n\tPOP bx\n\tPOP ax\n\tret\n");
+												"LReturn"+curfunction+":\n\tPOP dx\n\tPOP cx\n\tPOP bx\n\tPOP ax\n\tret\n");
 
 											}
 											$<symbolinfo>$->set_ASMcode($<symbolinfo>$->get_ASMcode()+$<symbolinfo>2->get_name()+" ENDP\n");
@@ -361,7 +365,9 @@ func_definition : type_specifier ID  LPAREN  parameter_list RPAREN {$<symbolinfo
 												error_count++;
 												fprintf(error,"Error at Line No.%d:  Multiple defination of function %s\n\n",line_count,$<symbolinfo>2->get_name().c_str());
 											}
-											
+											//cout<<table->getNextId()<<endl;
+											curfunction=$<symbolinfo>2->get_name();
+											var_dec.push_back(curfunction+"_return");
 											$<symbolinfo>1->set_name($<symbolinfo>1->get_name()+" "+$<symbolinfo>2->get_name()+"()");
 											} compound_statement {
 											fprintf(parsertext,"Line at %d : func_definition->type_specifier ID LPAREN RPAREN compound_statement\n\n",line_count);
@@ -369,12 +375,12 @@ func_definition : type_specifier ID  LPAREN  parameter_list RPAREN {$<symbolinfo
 											$<symbolinfo>$->set_ASMcode($<symbolinfo>2->get_name()+" PROC\n");
 											
 											if($<symbolinfo>2->get_name()=="main"){
-												$<symbolinfo>$->set_ASMcode($<symbolinfo>$->get_ASMcode()+"    MOV AX,@DATA\n\tMOV DS,AX \n"+$<symbolinfo>6->get_ASMcode()+"    MOV AH,4CH\n\tINT 21H\n");
+												$<symbolinfo>$->set_ASMcode($<symbolinfo>$->get_ASMcode()+"    MOV AX,@DATA\n\tMOV DS,AX \n"+$<symbolinfo>6->get_ASMcode()+"LReturn"+curfunction+":\n\tMOV AH,4CH\n\tINT 21H\n");
 											}
 											else {
 												$<symbolinfo>$->set_ASMcode($<symbolinfo>$->get_ASMcode()+
 												"\tPUSH ax\n\tPUSH bx \n\tPUSH cx \n\tPUSH dx\n"+$<symbolinfo>6->get_ASMcode()+
-												"\tPOP dx\n\tPOP cx\n\tPOP bx\n\tPOP ax\n\tret\n");
+												"LReturn"+curfunction+":\n\tPOP dx\n\tPOP cx\n\tPOP bx\n\tPOP ax\n\tret\n");
 
 											}
 											$<symbolinfo>$->set_ASMcode($<symbolinfo>$->get_ASMcode()+$<symbolinfo>2->get_name()+" ENDP\n");
@@ -572,7 +578,7 @@ statement : var_declaration { $<symbolinfo>$=new SymbolInfo();fprintf(parsertext
 																		char *label1=newLabel();
 																		codes+="\tMOV AX,"+$<symbolinfo>3->get_idvalue()+"\n";
 																		codes+="\tCMP AX,0\n";
-																		codes+="JE "+string(label1)+"\n";
+																		codes+="\tJE "+string(label1)+"\n";
 																		codes+=$<symbolinfo>5->get_ASMcode();
 																		codes+=string(label1)+":\n";
 																		$<symbolinfo>$->set_ASMcode(codes);
@@ -597,7 +603,7 @@ statement : var_declaration { $<symbolinfo>$=new SymbolInfo();fprintf(parsertext
 																char *label2=newLabel();
 																codes+="\tMOV AX,"+$<symbolinfo>3->get_idvalue()+"\n";
 																codes+="\tCMP AX,0\n";
-																codes+="JE "+string(label1)+"\n";
+																codes+="\tJE "+string(label1)+"\n";
 																codes+=$<symbolinfo>5->get_ASMcode();
 																codes+="\tJMP "+string(label2)+"\n";
 																codes+=string(label1)+":\n";
@@ -643,7 +649,7 @@ statement : var_declaration { $<symbolinfo>$=new SymbolInfo();fprintf(parsertext
 												codes+="\tMOV AX,"+$<symbolinfo>3->get_name()+IntToString(table->lookupscopeid($<symbolinfo>3->get_name()));
 												codes+="\n\tCALL OUTDEC\n";
 											}
-											$<symbolinfo>$->set_name("\n("+$<symbolinfo>3->get_name()+")");
+											$<symbolinfo>$->set_name("println("+$<symbolinfo>3->get_name()+")");
 											 
 											$<symbolinfo>$->set_ASMcode(codes); 
 											  }
@@ -653,6 +659,12 @@ statement : var_declaration { $<symbolinfo>$=new SymbolInfo();fprintf(parsertext
 												error_count++;
 												fprintf(error,"Error at Line No.%d:  Type Mismatch \n\n",line_count);
 												$<symbolinfo>$->set_dectype("int "); 
+									}else{
+										string codes=$<symbolinfo>2->get_ASMcode();
+										codes+="\tMOV AX,"+$<symbolinfo>2->get_idvalue()+"\n";
+										codes+="\tMOV "+curfunction+"_return,AX\n";
+										codes+="\tJMP LReturn"+curfunction+"\n";
+										$<symbolinfo>$->set_ASMcode(codes);
 									}
 									$<symbolinfo>$->set_name("return "+$<symbolinfo>2->get_name()+";"); 
 									}
@@ -954,6 +966,7 @@ term :	unary_expression  {$<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Li
 							$<symbolinfo>$->set_ASMcode($<symbolinfo>1->get_ASMcode());
 							$<symbolinfo>$->set_idvalue($<symbolinfo>1->get_idvalue());
 
+
 							}
      |  term MULOP unary_expression {$<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Line at %d : term->term MULOP unary_expression\n\n",line_count);
 	 								fprintf(parsertext,"%s%s%s\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>2->get_name().c_str(),$<symbolinfo>3->get_name().c_str());
@@ -1084,6 +1097,7 @@ unary_expression : ADDOP unary_expression  {$<symbolinfo>$=new SymbolInfo(); fpr
 				$<symbolinfo>$->set_ASMcode($<symbolinfo>1->get_ASMcode());
 				$<symbolinfo>$->set_idvalue($<symbolinfo>1->get_idvalue());
 				
+				
 		 }
 		 ;
 
@@ -1137,16 +1151,28 @@ factor	: variable { $<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Line at 
 
 										}
 										else{
+											string codes=$<symbolinfo>3->get_ASMcode();
 											//cout<<s->get_isFunction()->get_return_type()<<endl;
 											vector<string>para_list=s->get_isFunction()->get_paralist();
 											vector<string>para_type=s->get_isFunction()->get_paratype();
 											for(int i=0;i<arg_list.size();i++){
+												codes+="\tMOV AX,"+arg_list[i]->get_idvalue()+"\n";
+												codes+="\tMOV "+para_list[i]+",AX\n";
+												//cout<<para_list[i]<<" "<<arg_list[i]->get_name()<<" "<<arg_list[i]->get_idvalue()<<endl;
 												if(arg_list[i]->get_dectype()!=para_type[i]){
+													
 													error_count++;
 													fprintf(error,"Error at Line No.%d: Type Mismatch \n\n",line_count);
 													break;
 												}
 											}
+											codes+="\tCALL "+$<symbolinfo>1->get_name()+"\n";
+											codes+="\tMOV AX,"+$<symbolinfo>1->get_name()+"_return\n";
+											char *temp=newTemp();
+											codes+="\tMOV "+string(temp)+",AX\n";
+											$<symbolinfo>$->set_ASMcode(codes);
+											$<symbolinfo>$->set_idvalue(temp);
+											var_dec.push_back(temp);
 
 										}
 									}
@@ -1167,6 +1193,7 @@ factor	: variable { $<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Line at 
 				string codes="\tMOV "+string(temp)+","+$<symbolinfo>1->get_name()+"\n";
 				$<symbolinfo>$->set_ASMcode(codes);
 				$<symbolinfo>$->set_idvalue(string(temp));
+				//cout<<codes<<endl;
 				var_dec.push_back(temp);
 				}
 	| CONST_FLOAT {$<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Line at %d : factor->CONST_FLOAT\n\n",line_count);
@@ -1206,6 +1233,7 @@ factor	: variable { $<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Line at 
 argument_list : arguments  {$<symbolinfo>$=new SymbolInfo(); fprintf(parsertext,"Line at %d : argument_list->arguments\n\n",line_count);
 							fprintf(parsertext,"%s\n\n",$<symbolinfo>1->get_name().c_str());
 							 $<symbolinfo>$->set_name($<symbolinfo>1->get_name());
+							 $<symbolinfo>$->set_ASMcode($<symbolinfo>1->get_ASMcode());
 							}
 				| 		%empty	{ $<symbolinfo>$=new SymbolInfo(); fprintf(parsertext,"Line at %d : argument_list-> \n\n",line_count);$<symbolinfo>$->set_name("");}
 			  ;
@@ -1214,13 +1242,15 @@ arguments : arguments COMMA logic_expression { $<symbolinfo>$=new SymbolInfo();f
 											fprintf(parsertext,"%s,%s\n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>3->get_name().c_str());
 											arg_list.push_back($<symbolinfo>3);
 											$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+","+$<symbolinfo>3->get_name());
+											$<symbolinfo>$->set_ASMcode($<symbolinfo>1->get_ASMcode()+$<symbolinfo>3->get_ASMcode());
 											}
 	      | logic_expression {$<symbolinfo>$=new SymbolInfo();
 		  					fprintf(parsertext,"Line at %d : arguments->logic_expression\n\n",line_count);
 		  					fprintf(parsertext,"%s\n\n",$<symbolinfo>1->get_name().c_str()); 
-							arg_list.push_back(new SymbolInfo($<symbolinfo>1->get_name(),$<symbolinfo>1->get_type(),$<symbolinfo>1->get_dectype()));
+							arg_list.push_back($<symbolinfo>1);
 							// cout<<$<symbolinfo>1->get_dectype()<<endl;
 		  					$<symbolinfo>$->set_name($<symbolinfo>1->get_name());
+							$<symbolinfo>$->set_ASMcode($<symbolinfo>1->get_ASMcode());
 							
 		  }
 	      ;

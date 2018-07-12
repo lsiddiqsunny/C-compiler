@@ -1,16 +1,15 @@
 
+int h(int a,int b){
+	if(b==1) return -1;
+	return h(a+b,a-b);
 
+}
 int main(){
 	int c,i,j ;
-	j=5; 
-	c=0;
-	i=0;
-	if(i<j){
-		c=5;
-	}
-	else{
-		c=10;
-	}
+	i=6; 
+	j=5;
+	
+	c=h(i,j);
 	println(c);
 	
 	return 0;	

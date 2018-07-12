@@ -14,6 +14,7 @@ class Function
         vector<string> parameter_list;
         vector<string> parameter_type;
         bool isdefined;
+        int scopeid;
 
         public:
             Function(){
@@ -22,6 +23,7 @@ class Function
                 parameter_list.clear();
                 parameter_type.clear();
                 return_type="";
+                scopeid=0;
 
             }
             void set_return_type(string type){
@@ -53,6 +55,12 @@ class Function
             }
             bool get_isdefined(){
                 return isdefined;
+            }
+            void set_scopeid(int n){
+                scopeid=n;
+            }
+            int get_scopeid(){
+                return scopeid;
             }
        
 
