@@ -1,12 +1,15 @@
 int main(){
-    int a,b,i;
-    b=0;
-    for(i=0;i<4;i++){
-        a=3;
-        while(a--){
-            b++;
-        }
-    }
-    println(a);
+    int a[3],b;
+    a[0]=5;
+    
+    b=a[0]++;;
+    println(b);
+    b=a[0];
+    println(b);
+    a[1]=2;
+    b=a[1];
+    println(b);
+    a[2]=3;
+    b=a[2];
     println(b);
 }

@@ -2,9 +2,7 @@
 .STACK 100H
 .DATA 
 main_return dw ?
-a2 dw ?
 b2 dw ?
-i2 dw ?
 t0 dw ?
 t1 dw ?
 t2 dw ?
@@ -13,51 +11,69 @@ t4 dw ?
 t5 dw ?
 t6 dw ?
 t7 dw ?
+t8 dw ?
+t9 dw ?
+t10 dw ?
+t11 dw ?
+t12 dw ?
+t13 dw ?
+a2 dw 3 dup(?)
 .CODE
 main PROC
     MOV AX,@DATA
 	MOV DS,AX 
 	MOV t0,0
-	MOV AX,t0
-	MOV b2,AX
-	MOV t1,0
+	MOV BX,t0
+	ADD BX,BX
+	MOV t1,5
 	MOV AX,t1
-	MOV i2,AX
-L4:
-	MOV t2,4
-	MOV AX,i2
-	CMP AX,t2
-	JL L0
-	MOV t3,0
-	JMP L1
-L0:
-	MOV t3,1
-L1:
+	MOV a2[BX],AX
+	MOV AX,a2[BX]
+	MOV t3,AX
+	MOV AX,a2[BX]
+	INC AX
+	MOV a2[BX],AX
 	MOV AX,t3
-	CMP AX,0
-	JE L5
-	MOV t5,3
-	MOV AX,t5
-	MOV a2,AX
-L2:
-	MOV AX,a2
-	MOV t6,AX
-	DEC a2
-	MOV AX,t6
-	CMP AX,0
-	JE L3
+	MOV b2,AX
 	MOV AX,b2
-	MOV t7,AX
-	INC b2
-	JMP L2
-L3:
-	MOV AX,i2
-	MOV t4,AX
-	INC i2
-	JMP L4
-L5:
-	MOV AX,a2
 	CALL OUTDEC
+	MOV t4,0
+	MOV BX,t4
+	ADD BX,BX
+	MOV AX,a2[BX]
+	MOV t5,AX
+	MOV AX,t5
+	MOV b2,AX
+	MOV AX,b2
+	CALL OUTDEC
+	MOV t6,1
+	MOV BX,t6
+	ADD BX,BX
+	MOV t7,2
+	MOV AX,t7
+	MOV a2[BX],AX
+	MOV t8,1
+	MOV BX,t8
+	ADD BX,BX
+	MOV AX,a2[BX]
+	MOV t9,AX
+	MOV AX,t9
+	MOV b2,AX
+	MOV AX,b2
+	CALL OUTDEC
+	MOV t10,2
+	MOV BX,t10
+	ADD BX,BX
+	MOV t11,3
+	MOV AX,t11
+	MOV a2[BX],AX
+	MOV t12,2
+	MOV BX,t12
+	ADD BX,BX
+	MOV AX,a2[BX]
+	MOV t13,AX
+	MOV AX,t13
+	MOV b2,AX
 	MOV AX,b2
 	CALL OUTDEC
 LReturnmain:

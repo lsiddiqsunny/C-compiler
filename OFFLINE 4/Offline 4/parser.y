@@ -1224,8 +1224,18 @@ factor	: variable { $<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Line at 
 					$<symbolinfo>$->set_dectype($<symbolinfo>1->get_dectype());
 					char *temp=newTemp();
 					string codes="";
+					if($<symbolinfo>1->get_type()=="array"){
+						codes+="\tMOV AX,"+$<symbolinfo>1->get_idvalue()+"[BX]\n";
+					}
+					else
 					codes+="\tMOV AX,"+$<symbolinfo>1->get_idvalue()+"\n";
 					codes+="\tMOV "+string(temp)+",AX\n";
+					if($<symbolinfo>1->get_type()=="array"){
+						codes+="\tMOV AX,"+$<symbolinfo>1->get_idvalue()+"[BX]\n";
+						codes+="\tINC AX\n";
+						codes+="\tMOV "+$<symbolinfo>1->get_idvalue()+"[BX],AX\n";
+					}
+					else
 					codes+="\tINC "+$<symbolinfo>1->get_idvalue()+"\n";
 					var_dec.push_back(temp);
 					
@@ -1241,11 +1251,19 @@ factor	: variable { $<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Line at 
 					$<symbolinfo>$->set_dectype($<symbolinfo>1->get_dectype()); 
 					char *temp=newTemp();
 					string codes="";
+					if($<symbolinfo>1->get_type()=="array"){
+						codes+="\tMOV AX,"+$<symbolinfo>1->get_idvalue()+"[BX]\n";
+					}
+					else
 					codes+="\tMOV AX,"+$<symbolinfo>1->get_idvalue()+"\n";
 					codes+="\tMOV "+string(temp)+",AX\n";
+					if($<symbolinfo>1->get_type()=="array"){
+						codes+="\tMOV AX,"+$<symbolinfo>1->get_idvalue()+"[BX]\n";
+						codes+="\tDEC AX\n";
+						codes+="\tMOV "+$<symbolinfo>1->get_idvalue()+"[BX],AX\n";
+					}
+					else
 					codes+="\tDEC "+$<symbolinfo>1->get_idvalue()+"\n";
-					var_dec.push_back(temp);
-					
 					
 					$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+"--");
 					$<symbolinfo>$->set_ASMcode(codes); 
