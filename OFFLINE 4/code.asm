@@ -56,11 +56,15 @@ g PROC
 	POP a2
 	MOV AX,f_return
 	MOV t3,AX
+	MOV AX,t3
 	ADD AX,a3
 	MOV t4,AX
+	MOV AX,t4
 	ADD AX,b3
 	MOV t5,AX
+	MOV AX,t5
 	MOV x3,AX
+	MOV AX,x3
 	MOV g_return,AX
 	JMP LReturng
 LReturng:
@@ -90,7 +94,9 @@ main PROC
 	POP a3
 	MOV AX,g_return
 	MOV t8,AX
+	MOV AX,t8
 	MOV a4,AX
+	MOV AX,a4
 	CALL OUTDEC
 	MOV t9,0
 	MOV AX,t9

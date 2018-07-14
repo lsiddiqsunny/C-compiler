@@ -62,6 +62,11 @@ class Function
             int get_scopeid(){
                 return scopeid;
             }
+            void getclear(){
+                parameter_list.clear();
+                parameter_type.clear();
+                set_number_of_parameter();
+            }
        
 
         };

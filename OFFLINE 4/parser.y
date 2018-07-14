@@ -32,9 +32,9 @@ vector<pair<string,string> >arr_dec;
 string curfunction;
 
 
-void yyerror(char *s)
-{
-	fprintf(stderr,"Line no %d : %s\n",line_count,s);
+void yyerror(const char *s)
+{	error_count++;
+	fprintf(error,"Line no %d : %s\n\n",line_count,s);
 
 }
 
@@ -75,7 +75,7 @@ void optimization(FILE *asmcode);
 
 %}
 
-
+%error-verbose
 %token IF ELSE FOR WHILE DO BREAK
 %token INT FLOAT CHAR DOUBLE VOID
 %token RETURN SWITCH CASE DEFAULT CONTINUE
@@ -299,6 +299,11 @@ func_definition : type_specifier ID  LPAREN  parameter_list RPAREN {$<symbolinfo
 								fprintf(error,"Error at Line No.%d: Return Type Mismatch1 \n\n",line_count);
 						}
 						//	para_list.clear();
+					}
+					s->get_isFunction()->getclear();
+					for(int i=0;i<para_list.size();i++){
+							s->get_isFunction()->add_number_of_parameter(para_list[i]->get_name()+IntToString(table->getNextId()),para_list[i]->get_dectype());
+					//	cout<<para_list[i]->get_dectype()<<para_list[i]->get_name()<<endl;
 					}
 					s->get_isFunction()->set_isdefined();}
 					else{
@@ -810,7 +815,8 @@ logic_expression : rel_expression 	{$<symbolinfo>$=new SymbolInfo();fprintf(pars
 														fprintf(error,"Error at Line No.%d:  Type Mismatch \n\n",line_count);
 														$<symbolinfo>$->set_dectype("int "); 
 													}else{
-														string codes=$<symbolinfo>1->get_ASMcode()+$<symbolinfo>3->get_ASMcode();
+														string codes=$<symbolinfo>1->get_ASMcode();
+														codes+=$<symbolinfo>3->get_ASMcode();
 														char *label1=newLabel();
 														char *label2=newLabel();
 														char *label3=newLabel();
@@ -872,7 +878,8 @@ rel_expression	: simple_expression {$<symbolinfo>$=new SymbolInfo();fprintf(pars
 														fprintf(error,"Error at Line No.%d:  Type Mismatch \n\n",line_count);
 														$<symbolinfo>$->set_dectype("int "); 
 													}else{
-														string codes=$<symbolinfo>1->get_ASMcode()+$<symbolinfo>3->get_ASMcode();
+														string codes=$<symbolinfo>1->get_ASMcode();
+														codes+=$<symbolinfo>3->get_ASMcode();
 														char *temp=newTemp();
 														char *label1=newLabel();
 														char *label2=newLabel();
