@@ -22,6 +22,7 @@ main_return dw ?
 x4 dw ?
 t10 dw ?
 t11 dw ?
+d4 dw 5 dup(?)
 .CODE
 f PROC
 	PUSH AX

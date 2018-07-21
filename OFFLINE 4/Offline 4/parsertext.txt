@@ -603,99 +603,123 @@ Line at 18 : statements->statement
 
 int  x;
 
-Line at 19 : variable->ID
+Line at 19 : type_specifier	: INT
 
-x
+int 
 
-Line at 19 : factor->CONST_INT
+Line at 19 : declaration_list->ID LTHIRD CONST_INT RTHIRD
 
-3
+d[5]
 
-Line at 19 : unary_expression->factor
+Line at 19 : var_declaration->type_specifier declaration_list SEMICOLON
 
-3
+int  d[5];
 
-Line at 19 : term->unary_expression
+Line at 19 : statement -> var_declaration
 
-3
-
-Line at 19 : simple_expression->term
-
-3
-
-Line at 19 : rel_expression->simple_expression
-
-3
-
-Line at 19 : logic_expression->rel_expression
-
-3
-
-Line at 19 : arguments->logic_expression
-
-3
-
-Line at 19 : argument_list->arguments
-
-3
-
-Line at 19 : factor->ID LPAREN argument_list RPAREN
-
-f(3)
-
-Line at 19 : unary_expression->factor
-
-f(3)
-
-Line at 19 : term->unary_expression
-
-f(3)
-
-Line at 19 : simple_expression->term
-
-f(3)
-
-Line at 19 : rel_expression->simple_expression
-
-f(3)
-
-Line at 19 : logic_expression->rel_expression
-
-f(3)
-
-Line at 19 : expression->variable ASSIGNOP logic_expression
-
-x=f(3)
-
-Line at 19 : expression_statement->expression SEMICOLON
-
-x=f(3);
-
-Line at 19 : statement -> expression_statement
-
-x=f(3);
+int  d[5];
 
 Line at 19 : statements->statements statement
 
-int  x; x=f(3);
+int  x; int  d[5];
 
-Line at 20 : statement->PRINTLN LPAREN ID RPAREN SEMICOLON
+Line at 20 : variable->ID
 
+x
 
- (x);
+Line at 20 : factor->CONST_INT
+
+3
+
+Line at 20 : unary_expression->factor
+
+3
+
+Line at 20 : term->unary_expression
+
+3
+
+Line at 20 : simple_expression->term
+
+3
+
+Line at 20 : rel_expression->simple_expression
+
+3
+
+Line at 20 : logic_expression->rel_expression
+
+3
+
+Line at 20 : arguments->logic_expression
+
+3
+
+Line at 20 : argument_list->arguments
+
+3
+
+Line at 20 : factor->ID LPAREN argument_list RPAREN
+
+f(3)
+
+Line at 20 : unary_expression->factor
+
+f(3)
+
+Line at 20 : term->unary_expression
+
+f(3)
+
+Line at 20 : simple_expression->term
+
+f(3)
+
+Line at 20 : rel_expression->simple_expression
+
+f(3)
+
+Line at 20 : logic_expression->rel_expression
+
+f(3)
+
+Line at 20 : expression->variable ASSIGNOP logic_expression
+
+x=f(3)
+
+Line at 20 : expression_statement->expression SEMICOLON
+
+x=f(3);
+
+Line at 20 : statement -> expression_statement
+
+x=f(3);
 
 Line at 20 : statements->statements statement
 
 int  x;
+int  d[5]; x=f(3);
+
+Line at 21 : statement->PRINTLN LPAREN ID RPAREN SEMICOLON
+
+
+ (x);
+
+Line at 21 : statements->statements statement
+
+int  x;
+int  d[5];
 x=f(3); println(x);
 
-Line at 22 : compound_statement->LCURL statements RCURL
+Line at 23 : compound_statement->LCURL statements RCURL
 
 {int  x;
+int  d[5];
 x=f(3);
 println(x);}
 
  ScopeTable# 4 
+ 54  --> < ID : d > 
  74  --> < ID : x > 
 
  ScopeTable# 1 
@@ -705,23 +729,25 @@ println(x);}
 
  ScopeTable with id 4 removed
 
-Line at 22 : func_definition->type_specifier ID LPAREN RPAREN compound_statement
+Line at 23 : func_definition->type_specifier ID LPAREN RPAREN compound_statement
 
 int  main() {
 int  x;
+int  d[5];
 x=f(3);
 println(x);
 }
 
-Line at 22 : unit->func_definition
+Line at 23 : unit->func_definition
 
 int  main(){
 int  x;
+int  d[5];
 x=f(3);
 println(x);
 }
 
-Line at 22 : program->program unit
+Line at 23 : program->program unit
 
 int  f(int  c){
 if(c==1)
@@ -739,6 +765,7 @@ int  b;
 }
  int  main(){
 int  x;
+int  d[5];
 x=f(3);
 println(x);
 }
@@ -751,7 +778,7 @@ println(x);
  57  --> < ID : g > 
  64  --> < ID : main > 
 
-Total Lines : 22 
+Total Lines : 23 
 
 Total Errors : 0 
 
