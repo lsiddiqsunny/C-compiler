@@ -1,19 +1,22 @@
-int f(int a){
-    return 2*a;
-    a=9;
+int f(int c){
+    if(c==1) return 1;
+    int a;
+    a=5;
+    a=a+f(c-1);
+    int b;
+    b=3;
+    return b*a;
 }
 
-int g(int a, int b){
-    int x;
-    x=f(a)+a+b;
-    return x;
+int g(){
+
+    int a;
+    int b;
 }
 
 int main(){
-    int a,b;
-    a=1;
-    b=2;
-    a=g(a,b);
-    println(a);
-    return 0;
+   int x;
+   x=f(3);
+   println(x);
+
 }

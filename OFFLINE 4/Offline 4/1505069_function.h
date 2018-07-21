@@ -13,6 +13,7 @@ class Function
         int number_of_parameter;
         vector<string> parameter_list;
         vector<string> parameter_type;
+        vector<string> var_list;
         bool isdefined;
         int scopeid;
 
@@ -24,6 +25,7 @@ class Function
                 parameter_type.clear();
                 return_type="";
                 scopeid=0;
+                var_list.clear();
 
             }
             void set_return_type(string type){
@@ -43,6 +45,14 @@ class Function
                 parameter_type.push_back(type);
               //  cout<<newpara<<endl;
                 set_number_of_parameter();
+            }
+            void add_var(string s){
+               
+                var_list.push_back(s);
+            }
+            vector<string>get_var(){
+               // cout<<var_list.size()<<endl;
+                return var_list;
             }
             vector<string> get_paralist(){
                 return parameter_list;

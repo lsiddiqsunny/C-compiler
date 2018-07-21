@@ -28,6 +28,7 @@ vector<SymbolInfo*>para_list;
 vector<SymbolInfo*>dec_list;
 vector<SymbolInfo*>arg_list;
 vector<string> var_dec;
+vector<string> func_var_dec;
 vector<pair<string,string> >arr_dec;
 string curfunction;
 
@@ -190,7 +191,8 @@ program : program unit {$<symbolinfo>$=new SymbolInfo(); fprintf(parsertext,"Lin
 unit : var_declaration {$<symbolinfo>$=new SymbolInfo(); fprintf(parsertext,"Line at %d : unit->var_declaration\n\n",line_count);
 						fprintf(parsertext,"%s\n\n",$<symbolinfo>1->get_name().c_str()); 
 						$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+"\n");
-							$<symbolinfo>$->set_ASMcode($<symbolinfo>1->get_ASMcode());
+						func_var_dec.clear();
+						$<symbolinfo>$->set_ASMcode($<symbolinfo>1->get_ASMcode());
 
 						}
      | func_declaration {$<symbolinfo>$=new SymbolInfo(); fprintf(parsertext,"Line at %d : unit->func_declaration\n\n",line_count);
@@ -339,12 +341,42 @@ func_definition : type_specifier ID  LPAREN  parameter_list RPAREN {$<symbolinfo
 												$<symbolinfo>$->set_ASMcode($<symbolinfo>$->get_ASMcode()+"    MOV AX,@DATA\n\tMOV DS,AX \n"+$<symbolinfo>7->get_ASMcode()+"LReturn"+curfunction+":\n\tMOV AH,4CH\n\tINT 21H\n");
 											}
 											else {
-												$<symbolinfo>$->set_ASMcode($<symbolinfo>$->get_ASMcode()+
-												"\tPUSH AX\n\tPUSH BX \n\tPUSH CX \n\tPUSH DX\n" +$<symbolinfo>7->get_ASMcode()+
-												"LReturn"+curfunction+":\n\tPOP DX\n\tPOP CX\n\tPOP BX\n\tPOP AX\n\tret\n");
+													SymbolInfo *s=table->lookup($<symbolinfo>2->get_name()); 
 
+											for(int i=0;i<func_var_dec.size();i++){
+												s->get_isFunction()->add_var(func_var_dec[i]);
 											}
-											$<symbolinfo>$->set_ASMcode($<symbolinfo>$->get_ASMcode()+$<symbolinfo>2->get_name()+" ENDP\n");
+											func_var_dec.clear();
+											
+												string codes=$<symbolinfo>$->get_ASMcode()+
+												"\tPUSH AX\n\tPUSH BX \n\tPUSH CX \n\tPUSH DX\n";
+											
+
+											vector<string>para_list=s->get_isFunction()->get_paralist();
+											vector<string>var_list=s->get_isFunction()->get_var();
+											for(int i=0;i<para_list.size();i++){
+												codes+="\tPUSH "+para_list[i]+"\n";
+											}
+											for(int i=0;i<var_list.size();i++){
+												codes+="\tPUSH "+var_list[i]+"\n";
+											}
+											codes+=	$<symbolinfo>7->get_ASMcode()+
+												"LReturn"+curfunction+":\n";
+												for(int i=var_list.size()-1;i>=0;i--){
+												codes+="\tPOP "+var_list[i]+"\n";
+											}
+											for(int i=para_list.size()-1;i>=0;i--){
+												codes+="\tPOP "+para_list[i]+"\n";
+											}
+
+												
+											codes+="\tPOP DX\n\tPOP CX\n\tPOP BX\n\tPOP AX\n\tret\n";
+													
+											$<symbolinfo>$->set_ASMcode(codes+$<symbolinfo>2->get_name()+" ENDP\n");
+											
+											}
+										
+											
 			
 				$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+" "+$<symbolinfo>2->get_name()+"("+$<symbolinfo>4->get_name()+")"+$<symbolinfo>7->get_name());
 				}
@@ -386,12 +418,40 @@ func_definition : type_specifier ID  LPAREN  parameter_list RPAREN {$<symbolinfo
 												$<symbolinfo>$->set_ASMcode($<symbolinfo>$->get_ASMcode()+"    MOV AX,@DATA\n\tMOV DS,AX \n"+$<symbolinfo>6->get_ASMcode()+"LReturn"+curfunction+":\n\tMOV AH,4CH\n\tINT 21H\n");
 											}
 											else {
-												$<symbolinfo>$->set_ASMcode($<symbolinfo>$->get_ASMcode()+
-												"\tPUSH AX\n\tPUSH BX \n\tPUSH CX \n\tPUSH DX\n"+$<symbolinfo>6->get_ASMcode()+
-												"LReturn"+curfunction+":\n\tPOP DX\n\tPOP CX\n\tPOP BX\n\tPOP AX\n\tret\n");
+												SymbolInfo *s=table->lookup($<symbolinfo>2->get_name()); 
 
+											for(int i=0;i<func_var_dec.size();i++){
+												s->get_isFunction()->add_var(func_var_dec[i]);
 											}
-											$<symbolinfo>$->set_ASMcode($<symbolinfo>$->get_ASMcode()+$<symbolinfo>2->get_name()+" ENDP\n");
+											func_var_dec.clear();
+											
+												string codes=$<symbolinfo>$->get_ASMcode()+
+												"\tPUSH AX\n\tPUSH BX \n\tPUSH CX \n\tPUSH DX\n";
+											
+
+											vector<string>para_list=s->get_isFunction()->get_paralist();
+											vector<string>var_list=s->get_isFunction()->get_var();
+											for(int i=0;i<para_list.size();i++){
+												codes+="\tPUSH "+para_list[i]+"\n";
+											}
+											for(int i=0;i<var_list.size();i++){
+												codes+="\tPUSH "+var_list[i]+"\n";
+											}
+											codes+=	$<symbolinfo>6->get_ASMcode()+
+												"LReturn"+curfunction+":\n";
+												for(int i=var_list.size()-1;i>=0;i--){
+												codes+="\tPOP "+var_list[i]+"\n";
+											}
+											for(int i=para_list.size()-1;i>=0;i--){
+												codes+="\tPOP "+para_list[i]+"\n";
+											}
+
+												
+											codes+="\tPOP DX\n\tPOP CX\n\tPOP BX\n\tPOP AX\n\tret\n";
+													
+											$<symbolinfo>$->set_ASMcode(codes+$<symbolinfo>2->get_name()+" ENDP\n");
+											}
+											
 											$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+$<symbolinfo>6->get_name());
 			
 					}
@@ -459,7 +519,9 @@ var_declaration : type_specifier declaration_list SEMICOLON {$<symbolinfo>$=new 
 																	
 															}
 															else{
+															//	func_var_dec.clear();
 															for(int i=0;i<dec_list.size();i++){
+
 																if(table->lookupcurrent(dec_list[i]->get_name())){
 																	error_count++;
 																	fprintf(error,"Error at Line No.%d:  Multiple Declaration of %s \n\n",line_count,dec_list[i]->get_name().c_str());
@@ -473,11 +535,13 @@ var_declaration : type_specifier declaration_list SEMICOLON {$<symbolinfo>$=new 
 																	table->Insert(dec_list[i]->get_name(),dec_list[i]->get_type(),$<symbolinfo>1->get_name()+"array");
 
 																}else{
+																func_var_dec.push_back(dec_list[i]->get_name()+IntToString(table->getCurrentId()));
 																table->Insert(dec_list[i]->get_name(),dec_list[i]->get_type(),$<symbolinfo>1->get_name());
 																var_dec.push_back(dec_list[i]->get_name()+IntToString(table->getCurrentId()));
 																}
 															}
 															}
+															
 															dec_list.clear();
 															$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+" "+$<symbolinfo>2->get_name()+";");
 															}
@@ -657,7 +721,7 @@ statement : var_declaration { $<symbolinfo>$=new SymbolInfo();fprintf(parsertext
 												codes+="\tMOV AX,"+$<symbolinfo>3->get_name()+IntToString(table->lookupscopeid($<symbolinfo>3->get_name()));
 												codes+="\n\tCALL OUTDEC\n";
 											}
-											$<symbolinfo>$->set_name("println("+$<symbolinfo>3->get_name()+")");
+											$<symbolinfo>$->set_name("println("+$<symbolinfo>3->get_name()+");");
 											 
 											$<symbolinfo>$->set_ASMcode(codes); 
 											  }
@@ -1157,7 +1221,7 @@ factor	: variable { $<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Line at 
 										$<symbolinfo>$->set_dectype(s->get_isFunction()->get_return_type());
 										if(num!=arg_list.size()){
 											error_count++;
-											fprintf(error,"Error at Line No.%d:  Invalid number of arguments \n\n",line_count);
+											fprintf(error,"Error at Line No.%d:  Invalid number of arguments %s\n\n",line_count,$<symbolinfo>1->get_name().c_str());
 
 										}
 										else{
@@ -1166,9 +1230,8 @@ factor	: variable { $<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Line at 
 											
 											vector<string>para_list=s->get_isFunction()->get_paralist();
 											vector<string>para_type=s->get_isFunction()->get_paratype();
-											for(int i=0;i<para_list.size();i++){
-												codes+="\tPUSH "+para_list[i]+"\n";
-											}
+											vector<string>var_list=s->get_isFunction()->get_var();
+										
 											for(int i=0;i<arg_list.size();i++){
 												codes+="\tMOV AX,"+arg_list[i]->get_idvalue()+"\n";
 												codes+="\tMOV "+para_list[i]+",AX\n";
@@ -1182,9 +1245,7 @@ factor	: variable { $<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Line at 
 											}
 											
 											codes+="\tCALL "+$<symbolinfo>1->get_name()+"\n";
-											for(int i=para_list.size()-1;i>=0;i--){
-												codes+="\tPOP "+para_list[i]+"\n";
-											}
+										
 											codes+="\tMOV AX,"+$<symbolinfo>1->get_name()+"_return\n";
 											char *temp=newTemp();
 											codes+="\tMOV "+string(temp)+",AX\n";
