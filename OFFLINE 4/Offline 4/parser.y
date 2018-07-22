@@ -1332,7 +1332,7 @@ factor	: variable { $<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Line at 
 					}
 					else
 					codes+="\tDEC "+$<symbolinfo>1->get_idvalue()+"\n";
-					
+					var_dec.push_back(temp);
 					$<symbolinfo>$->set_name($<symbolinfo>1->get_name()+"--");
 					$<symbolinfo>$->set_ASMcode(codes); 
 					$<symbolinfo>$->set_idvalue(temp);

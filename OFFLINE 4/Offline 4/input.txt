@@ -15,9 +15,7 @@ int g(){
 }
 
 int main(){
-   int x;
-   int d[5];
-   x=f(3);
-   println(x);
-
+   int x,y;
+ x=f(3);
+ println(x);
 }

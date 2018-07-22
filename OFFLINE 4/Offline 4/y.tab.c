@@ -2948,7 +2948,7 @@ END MAIN\n");
 					}
 					else
 					codes+="\tDEC "+(yyvsp[-1].symbolinfo)->get_idvalue()+"\n";
-					
+					var_dec.push_back(temp);
 					(yyval.symbolinfo)->set_name((yyvsp[-1].symbolinfo)->get_name()+"--");
 					(yyval.symbolinfo)->set_ASMcode(codes); 
 					(yyval.symbolinfo)->set_idvalue(temp);
