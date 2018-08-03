@@ -2,38 +2,40 @@
 .STACK 100H
 .DATA 
 f_return dw ?
+a2 dw ?
+b2 dw ?
 c2 dw ?
 t0 dw ?
 t1 dw ?
 t2 dw ?
-a2 dw ?
 t3 dw ?
 t4 dw ?
 t5 dw ?
 t6 dw ?
 t7 dw ?
-b2 dw ?
 t8 dw ?
-t9 dw ?
 g_return dw ?
 a3 dw ?
 b3 dw ?
 main_return dw ?
 x4 dw ?
 y4 dw ?
+t9 dw ?
 t10 dw ?
 t11 dw ?
+t12 dw ?
+t13 dw ?
 .CODE
 f PROC
 	PUSH AX
 	PUSH BX 
 	PUSH CX 
 	PUSH DX
-	PUSH c2
 	PUSH a2
 	PUSH b2
+	PUSH c2
 	MOV t0,1
-	MOV AX,c2
+	MOV AX,a2
 	CMP AX,t0
 	JE L0
 	MOV t1,0
@@ -49,37 +51,32 @@ L1:
 	MOV f_return,AX
 	JMP LReturnf
 L2:
-	MOV t3,5
-	MOV AX,t3
+	MOV t3,1
+	MOV AX,a2
+	SUB AX,t3
+	MOV t4,AX
+	MOV t5,1
+	MOV t6,2
+	MOV AX,t4
 	MOV a2,AX
-	MOV t4,1
-	MOV AX,c2
-	SUB AX,t4
-	MOV t5,AX
 	MOV AX,t5
+	MOV b2,AX
+	MOV AX,t6
 	MOV c2,AX
 	CALL f
 	MOV AX,f_return
-	MOV t6,AX
-	MOV AX,a2
-	ADD AX,t6
 	MOV t7,AX
-	MOV AX,t7
-	MOV a2,AX
-	MOV t8,3
-	MOV AX,t8
-	MOV b2,AX
-	MOV AX,b2
-	MOV BX,a2
+	MOV AX,a2
+	MOV BX,t7
 	MUL BX
-	MOV t9, AX
-	MOV AX,t9
+	MOV t8, AX
+	MOV AX,t8
 	MOV f_return,AX
 	JMP LReturnf
 LReturnf:
+	POP c2
 	POP b2
 	POP a2
-	POP c2
 	POP DX
 	POP CX
 	POP BX
@@ -105,16 +102,28 @@ g ENDP
 main PROC
     MOV AX,@DATA
 	MOV DS,AX 
-	MOV t10,3
+	MOV t9,6
+	MOV AX,t9
+	MOV y4,AX
+	MOV t10,2
+	MOV t11,3
+	MOV AX,y4
+	MOV a2,AX
 	MOV AX,t10
+	MOV b2,AX
+	MOV AX,t11
 	MOV c2,AX
 	CALL f
 	MOV AX,f_return
-	MOV t11,AX
-	MOV AX,t11
+	MOV t12,AX
+	MOV AX,t12
 	MOV x4,AX
 	MOV AX,x4
 	CALL OUTDEC
+	MOV t13,0
+	MOV AX,t13
+	MOV main_return,AX
+	JMP LReturnmain
 LReturnmain:
 	MOV AH,4CH
 	INT 21H
